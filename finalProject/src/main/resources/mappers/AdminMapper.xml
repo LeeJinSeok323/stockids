@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.AdminMapper">
+    <insert id="insertAdmin" parameterType="adminDTO">
+        insert into ADMIN(ADMIN_NUM, ADMIN_ID, ADMIN_PW, ADMIN_NAME, GENDER, BIRTH, POSITION)
+        values( #{adminNum}, #{adminId}, #{adminPw}, #{adminName}, #{gender}, #{birth}, #{position})
+    </insert>
+    <select id="selectAdminList" resultType="adminDTO">
+        select ADMIN_NUM, ADMIN_ID, ADMIN_PW, ADMIN_NAME, GENDER, BIRTH, POSITION
+        from ADMIN
+    </select>
+    <select id="selectAdminOne" parameterType="string" resultType="adminDTO">
+        select ADMIN_NUM, ADMIN_ID, ADMIN_PW, ADMIN_NAME, GENDER, BIRTH, POSITION
+        from ADMIN
+        where ADMIN_NUM = #{adminNum}
+    </select>
+
+    <delete id="deleteAdmin" parameterType="string" >
+        delete from admin where admin_num = #{adminNum}
+    </delete>
+</mapper>
