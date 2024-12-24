@@ -70,5 +70,4 @@ public class AdminController {
     public @ResponseBody String del(@RequestParam String adminNum, HttpServletRequest req) {
         return adminDeleteService.execute(adminNum, req);
     }
-
 }
