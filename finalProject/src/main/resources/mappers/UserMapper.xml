@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.finalProject.mapper.UserMapper">
+    <select id="loginSelect" parameterType="string" resultType="authInfo">
+        select MEMBER_NUM,MEMBER_ID as userId,MEMBER_PW as userPw,MEMBER_NAME as userName,GENDER,BIRTH,NICKNAME,TITLE_NUM from member
+        where member_id = #{userId}
+
+    </select>
+
+</mapper>
+
