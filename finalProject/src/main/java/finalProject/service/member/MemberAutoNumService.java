@@ -1,6 +1,6 @@
-package finalProject.service.Member;
+package finalProject.service.member;
 
-import finalProject.domain.member.MemberDTO;
+import finalProject.domain.MemberDTO;
 import finalProject.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

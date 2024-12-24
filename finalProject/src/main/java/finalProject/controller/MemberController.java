@@ -1,9 +1,9 @@
-package finalProject.controller.member;
+package finalProject.controller;
 
 
-import finalProject.Service.Member.MemberAutoNumService;
-import finalProject.Service.Member.MemberInsertService;
-import finalProject.command.member.MemberCommand;
+import finalProject.service.member.MemberAutoNumService;
+import finalProject.service.member.MemberInsertService;
+import finalProject.command.MemberCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

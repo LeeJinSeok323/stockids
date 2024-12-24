@@ -1,6 +1,6 @@
 package finalProject.mapper;
 
-import finalProject.domain.member.MemberDTO;
+import finalProject.domain.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

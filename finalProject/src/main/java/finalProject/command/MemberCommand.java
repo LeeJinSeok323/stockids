@@ -1,4 +1,4 @@
-package finalProject.command.member;
+package finalProject.command;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,6 +1,6 @@
 package finalProject.mapper;
 
-import finalProject.domain.login.AuthInfoDTO;
+import finalProject.domain.AuthInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

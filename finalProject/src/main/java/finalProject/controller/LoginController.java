@@ -1,7 +1,7 @@
-package finalProject.controller.login;
+package finalProject.controller;
 
-import finalProject.Service.Login.UserLoginService;
-import finalProject.command.login.LoginCommand;
+import finalProject.service.login.UserLoginService;
+import finalProject.command.LoginCommand;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

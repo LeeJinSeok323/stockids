@@ -1,4 +1,4 @@
-package finalProject.domain.member;
+package finalProject.domain;
 
 import lombok.Data;
 import org.apache.ibatis.type.Alias;

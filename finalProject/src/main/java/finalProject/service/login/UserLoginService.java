@@ -1,7 +1,7 @@
-package finalProject.service.Login;
+package finalProject.service.login;
 
-import finalProject.command.login.LoginCommand;
-import finalProject.domain.login.AuthInfoDTO;
+import finalProject.command.LoginCommand;
+import finalProject.domain.AuthInfoDTO;
 import finalProject.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

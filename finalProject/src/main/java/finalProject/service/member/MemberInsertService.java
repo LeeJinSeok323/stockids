@@ -1,7 +1,7 @@
-package finalProject.service.Member;
+package finalProject.service.member;
 
-import finalProject.command.member.MemberCommand;
-import finalProject.domain.member.MemberDTO;
+import finalProject.command.MemberCommand;
+import finalProject.domain.MemberDTO;
 import finalProject.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
