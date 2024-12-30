@@ -1,0 +1,45 @@
+/* HTML과 BODY를 전체 화면 크기로 확장 */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* 화면 전체 높이 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 컨텐츠를 유동적으로 확장 */
+.main-content {
+    flex: 1; /* 남은 공간을 채우도록 설정 */
+}
+
+/* 푸터 스타일 */
+.footer {
+    background-color: #ffffff;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-top: 1px solid #ddd;
+    position: relative; /* 스크롤이 있을 때 자연스럽게 맨 아래로 이동 */
+}
+.footer ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+.footer ul li {
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.3s;
+}
+.footer ul li:hover {
+    color: #0056b3;
+}

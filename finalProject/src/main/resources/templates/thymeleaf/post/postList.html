@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>postList</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
+</head>
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li id="list">관리자</li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn">로그인</button>
+</header>
+<body>
+<div class="main-content">
+    <!-- 글 작성 버튼을 최상단 우측에 위치 -->
+    <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
+        <a href="postWrite" class="write-btn">글 작성</a>
+    </div>
+
+    <!-- 게시글 목록 테이블 -->
+    <table border="1" width="600" align="center">
+        <form action="postDelete" method="post" id="frm">
+            <tr>
+                <td>번호</td>
+                <td>말머리</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>작성일</td>
+                <td>조회</td>
+                <td>추천</td>
+            </tr>
+            <tr th:each="dto : ${list}">
+                <td>[[${dto.postNum.substring(5)}]]</td>
+                <td>[[${dto.category}]]</td>
+                <td><a th:href="|postDetail/${dto.postNum}|">[[${dto.postSubject}]]</a></td>
+                <td>[[${dto.postAuthor}]]</td>
+                <td>[[${#dates.format(dto.postTime,'yyyy-MM-dd')}]]</td>
+                <td>[[${dto.viewCount}]]</td>
+                <td>[[${dto.likeCount}]]</td>
+            </tr>
+        </form>
+
+        <!-- 페이지 네비게이션 -->
+        <tr>
+            <th colspan="7">
+                <span th:if="${page <= 1}">⟨이전</span>
+                <span th:if="${page > 1}">
+            <a th:href="|postList?page=${page-1}&searchWord=${searchWord}|">⟨이전</a>
+        </span>
+                <th:block th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">
+                    <a th:href="|postList?page=${i}&searchWord=${searchWord}|"
+                       th:style="${page == i} ? 'color: #007bff;' : ''">[[${i}]]</a>
+                </th:block>
+                <span th:if="${page < maxPage}">
+            <a th:href="@{postList(page=${page+1},searchWord=${searchWord})}">다음⟩</a>
+        </span>
+                <span th:if="${page >= maxPage}">다음⟩</span>
+            </th>
+        </tr>
+
+    </table>
+
+    <!-- 검색 기능을 페이지 네비게이션 밑으로 위치 -->
+    <div class="search-container" style="text-align: center; margin-top: 20px;">
+        <form action="postList" method="get">
+<!--            <label for="searchWord">게시글 검색 :</label>-->
+            <input type="search" id="searchWord" name="searchWord" th:value="${searchWord}">
+            <input type="submit" value="검색">
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2024 StocKids. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
+</body>
+</html>
