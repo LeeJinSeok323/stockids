@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.PostMapper">
+
+    <sql id="postBaseColumns">
+        POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
+        VIEW_COUNT, LIKE_COUNT, POST_TIME
+    </sql>
+
+    <insert id="postInsert" parameterType="postDTO">
+        insert into post(
+            POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
+            VIEW_COUNT, LIKE_COUNT, POST_TIME)
+        values(#{postNum}, #{postAuthor}, #{category}
+             , #{postSubject},#{postContents}, 0, 0, sysdate)
+    </insert>
+
+    <select id="postSelectList" resultType="postDTO" parameterType="startEndPageDTO">
+        select *
+        from (select ROW_NUMBER() over (order by POST_NUM ) as rn
+        ,<include refid="postBaseColumns"/>
+        from post
+        <where>
+            <if test="searchWord != null">
+                POST_AUTHOR like '%'||#{searchWord}||'%'
+                or POST_SUBJECT like '%'||#{searchWord}||'%'
+                or CATEGORY like '%'||#{searchWord}||'%'
+            </if>
+        </where>
+        )
+        where rn BETWEEN #{startRow} and #{endRow}
+    </select>
+
+    <select id="postCount" resultType="integer">
+        select count(*) from post
+    </select>
+
+    <select id="postSelectOne" parameterType="string" resultType="postDTO">
+        select <include refid="postBaseColumns"/>
+        from post
+        where POST_NUM = #{postNum}
+    </select>
+
+    <update id="postUpdate" parameterType="postDTO">
+        update post set
+            POST_NUM = #{postNum},
+            POST_AUTHOR = #{postAuthor},
+            CATEGORY = #{category},
+            POST_SUBJECT = #{postSubject},
+            POST_CONTENTS = #{postContents}
+
+        where POST_NUM = #{postNum}
+    </update>
+
+    <delete id="postDelete" parameterType="string">
+        delete from post
+        where POST_NUM = #{postNum}
+    </delete>
+
+    <update id="postViewCountUpdate" parameterType="string">
+        update post
+        set VIEW_COUNT = VIEW_COUNT + 1
+        where POST_NUM = #{postNum}
+    </update>
+</mapper>
