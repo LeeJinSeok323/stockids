@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 등록</title>
+    <link rel="stylesheet" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/footer2.css">
+    <link rel="stylesheet" href="/static/css/adminHome.css">
+
+</head>
+<body>
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/user1/home">홈</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn">로그인</button>
+</header>
+
+<div class="admin-form-container">
+    <h1>관리자 등록</h1>
+    <form action="form" method="post" th:object="${adminCommand}">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="adminId">아이디:</label>
+                <input type="text" id="adminId" th:field="*{adminId}">
+                <span class="error" th:if="${#fields.hasErrors('adminId')}" th:errors="*{adminId}"></span>
+            </div>
+            <div class="form-group">
+                <label for="adminPw">비밀번호:</label>
+                <input type="password" id="adminPw" th:field="*{adminPw}">
+                <span class="error" th:if="${#fields.hasErrors('adminPw')}" th:errors="*{adminPw}"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="adminPwCon">비밀번호 확인:</label>
+                <input type="password" id="adminPwCon" th:field="*{adminPwCon}">
+                <span class="error" th:if="${#fields.hasErrors('adminPw')}" th:errors="*{adminPwCon}"></span>
+            </div>
+            <div class="form-group">
+                <label for="adminName">관리자 이름:</label>
+                <input type="text" id="adminName" name="adminName">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>성별:</label>
+                <div class="radio-group">
+                    <input type="radio" id="genderM" name="gender" value="M">
+                    <label for="genderM">남자</label>
+                    <input type="radio" id="genderF" name="gender" value="F">
+                    <label for="genderF">여자</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="birth">생일:</label>
+                <input type="date" id="birth" th:field="*{birth}"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="position">직무:</label>
+                <select id="position" th:field="*{position}">
+                    <option value="select">선택</option>
+                    <option value="normal">일반</option>
+                    <option value="Uncommon">드문</option>
+                    <option value="rare">레어</option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="submit" value="제출" class="submit-btn">
+        </div>
+    </form>
+</div>
+
+<footer class="footer">
+    <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
+</body>
+</html>

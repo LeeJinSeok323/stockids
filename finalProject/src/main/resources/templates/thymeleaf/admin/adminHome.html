@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/footer2.css">
+    <link rel="stylesheet" href="/static/css/adminHome.css">
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#list").click(function(){
+                list();
+            });
+        });
+        function list(){
+            $.ajax({
+                url:"/user1/list",
+                type:"get",
+                data:"",
+                success:function(result){
+                    let content = `
+                <div class="admin-list-container">
+                    <h1>관리자 목록</h1>
+                    <div class="admin-list">
+                    <div>
+                       <a href="form">
+                       <img src="/static/images/admin-add-button.png" width="400"></a>
+                    </div>
+            `;
+                    result.forEach(function(dto){
+                        content += `
+                   <div class="admin-card" onclick="detail('${dto.adminNum}')">
+                        <div class="admin-header">
+                            <span class="admin-id">${dto.adminName}</span>
+                            <span class="admin-position">${dto.position}</span>
+                        </div>
+                        <div class="admin-body">
+                            <p><strong>아이디:</strong>${dto.adminId}</p>
+                            <p><strong>성별:</strong> ${dto.gender}</p>
+                            <p><strong>생년월일:</strong> ${dto.birth}</p>
+                        </div>
+                    </div>
+                `;
+                    });
+                    content += `
+                    </div>
+                </div>
+            `;
+                    replaceContents(content);
+                },
+                error:function (){
+                    alert("서버 오류");
+                }
+            });
+        }
+
+        function detail(adminNum){
+            $.ajax({
+                url:"/user1/info",
+                type:"get",
+                data:{"adminNum": adminNum},
+                success:function(dto){
+                    let content = "";
+                    content += `
+                        <div class="admin-detail-container">
+                            <div class="header-row">
+                                <h1>관리자 상세 정보</h1>
+                                <button class="back-btn" onclick="list()">&lt;</button>
+                            </div>
+                            <div class="admin-info">
+                                <div class="info-row">
+                                    <p><strong>관리자 번호:</strong> <span id="adminNum">${dto.adminNum}</span></p>
+                                    <p><strong>아이디:</strong> <span id="adminId">${dto.adminId}</span></p>
+                                </div>
+                                <div class="info-row">
+                                    <p><strong>이름:</strong> <span id="adminName">${dto.adminName}</span></p>
+                                    <p><strong>성별:</strong> <span id="gender">${dto.gender}</span></p>
+                                </div>
+                                <div class="info-row">
+                                    <p><strong>생년월일:</strong> <span id="birth">${dto.birth}</span></p>
+                                    <p><strong>직위:</strong> <span id="position">${dto.position}</span></p>
+                                </div>
+                            </div>
+                            <div class="admin-actions">
+                                <button type="button" class="update-btn" onclick="edit('${dto.adminNum}')">수정</button>
+                                <button type="button" class="delete-btn" onclick="del('${dto.adminNum}')">삭제</button>
+                            </div>
+                        </div>
+                    `;
+                    replaceContents(content);
+                },
+                error:function (){
+                    alert("서버 오류");
+                }
+            });
+        }
+        function edit(adminNum){
+            $.ajax({
+                url:"/user1/info",
+                type:"get",
+                data:{"adminNum": adminNum},
+                success:function(dto){
+                    let content = "";
+                    content += `
+                        <div class="admin-form-container">
+                            <h1>관리자 정보 수정</h1>
+                            <form action="edit" method="post">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <button type="button" class="change-pw-btn" onclick="changePw();">비밀번호 변경하기</button>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="adminName">이름:</label>
+                                        <input type="text" id="adminName" name="adminName" value="${dto.adminName}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>성별:</label>
+                                        <div class="radio-group">
+                                            <input type="radio" id="genderM" name="gender" value="M">
+                                            <label for="genderM">남자</label>
+                                            <input type="radio" id="genderF" name="gender" value="F">
+                                            <label for="genderF">여자</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="birth">생년월일:</label>
+                                        <input type="date" id="birth" name="birth" value="${dto.birth}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="position">직무:</label>
+                                        <select id="position" name="position">
+                                            <option value="select">선택</option>
+                                            <option value="normal">일반</option>
+                                            <option value="Uncommon">드문</option>
+                                            <option value="rare">레어</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="submit-btn">변경</button>
+                                    <button type="button" class="cancel-btn" onclick="detail('${dto.adminNum}')">취소</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                    replaceContents(content);
+                },
+                error:function(){
+                    alert("서버 오류");
+                }
+            });
+        }
+        function del(adminNum){
+            $.ajax({
+                url:"/user1/del",
+                type:"post",
+                data:{"adminNum": adminNum},
+                success:function(result){
+                    if(result == "200"){ alert("삭제 완료"); }
+                    else {alert("다시 로그인 하세요");}
+                },
+                error:function(){
+                    alert("서버 오류");
+                }
+            });
+        }
+        function replaceContents(content){
+            $(function(){
+                $("#contents").html(content);
+            })
+        }
+    </script>
+</head>
+<body>
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li id="list">관리자</li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li>게시판</li>
+        </ul>
+    </nav>
+    <button class="login-btn">로그인</button>
+</header>
+<br><br><br><br><br>
+<div id="contents">
+
+</div>
+<footer class="footer">
+    <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
+
+</body>
+</html>

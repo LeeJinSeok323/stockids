@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.command.PostCommand;
+import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     @Autowired
     PostWriteService postWriteService;
-
+    @Autowired
+    AutoNumService autoNumService;
     @Autowired
     PostListService postListService;
     @Autowired
