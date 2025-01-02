@@ -1,5 +1,6 @@
 package finalProject.controller;
 
+import finalProject.service.login.SessionCheckService;
 import finalProject.service.login.UserLoginService;
 import finalProject.command.LoginCommand;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("login")
@@ -44,4 +46,15 @@ public class LoginController {
         session.invalidate(); // 세션 무효화
         return "redirect:/"; // 로그아웃 후 메인 페이지로 이동
     }
+
+    @Autowired
+    SessionCheckService sessionCheckService;
+
+    @GetMapping("/sessionCheck")
+    @ResponseBody
+    public boolean memberSessionCheck(HttpSession session) {
+        boolean check = sessionCheckService.execute(session);
+        return check;
+    }
+
 }
