@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.command.PostCommand;
+import finalProject.domain.AuthInfoDTO;
 import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
 import jakarta.servlet.http.HttpSession;
@@ -56,9 +57,10 @@ public class PostController {
     }
 
     @GetMapping("postDetail/{postNum}")
-    public String postDetail(@PathVariable("postNum") String postNum
-            ,Model model) {
+    public String postDetail(@PathVariable("postNum") String postNum, Model model, HttpSession session) {
         postDetailService.execute(model, postNum);
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        model.addAttribute("auth", auth);
         return "thymeleaf/post/postInfo";
     }
 

@@ -30,7 +30,8 @@
     <!-- 세부 정보 -->
     <div class="post-info">
         <div class="left-info">
-            [[${postCommand.category}]] | [[${postCommand.postAuthor}]] | [[${#dates.format(postCommand.postTime ,'yyyy-MM-dd')}]]
+            [[${postCommand.category}]] | [[${postCommand.postAuthor}]] | [[${#dates.format(postCommand.postTime,
+            'yyyy-MM-dd HH:mm')}]]
         </div>
         <div class="right-info">
             조회수: [[${postCommand.viewCount}]] | 추천: [[${postCommand.likeCount}]] | 댓글:
@@ -49,12 +50,14 @@
         <br>추천
         <br>10
     </div>
+
     <!-- 하단 버튼 -->
     <div class="post-buttons">
-        <a th:href="@{../postUpdate(postNum=${postCommand.postNum})}">글 수정</a> |
-        <a th:href="|../postDelete/*{postCommand.postNum}|">글 삭제</a> |
-        <a href="../postList">글목록</a>
+        <button th:if="${auth != null and auth.userId == postAuthorId}" onclick="location.href='../postUpdate(postNum=${postCommand.postNum})'">글 수정</button>
+        <button th:if="${auth != null and auth.userId == postAuthorId}" class="delete-button" onclick="location.href='../postDelete(postNum=${postCommand.postNum})'">글 삭제</button>
+        <button onclick="location.href='../postList'">글목록</button>
     </div>
+
     <br>
 </div>
 <footer class="footer">

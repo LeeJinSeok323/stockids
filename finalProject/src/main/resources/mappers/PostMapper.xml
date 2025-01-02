@@ -17,6 +17,13 @@
              , #{postSubject},#{postContents}, 0, 0, sysdate)
     </insert>
 
+    <select id="findAuthorIdByPostNum" resultType="String">
+        select m.MEMBER_ID AS postAuthor <!-- 작성자 닉네임으로 받아오기 -->
+        from POST p
+        join MEMBER m on p.POST_AUTHOR = m.MEMBER_NUM
+        where p.POST_NUM = #{postNum}
+    </select>
+
     <select id="postSelectList" resultType="postDTO" parameterType="startEndPageDTO">
         SELECT *
         FROM (
@@ -56,7 +63,6 @@
         join member m on p.POST_AUTHOR = m.MEMBER_NUM
         where p.POST_NUM = #{postNum}
     </select>
-
 
     <update id="postUpdate" parameterType="postDTO">
         update post set

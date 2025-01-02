@@ -38,15 +38,31 @@
     margin-top: 20px;
 }
 
-.post-buttons a {
-    color: #007BFF;
+.post-buttons button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px;
     text-decoration: none;
-    margin: 0 5px;
 }
 
-.post-buttons a:hover {
-    text-decoration: underline;
+.post-buttons button:hover {
+    background-color: #0056b3;
 }
+
+/* 삭제 버튼 빨간색 */
+.post-buttons .delete-button {
+    background-color: #dc3545;
+}
+
+.post-buttons .delete-button:hover {
+    background-color: #c82333; /* 호버 시 색상 변경 */
+}
+
 
 .recommend-button {
     text-align: center;
