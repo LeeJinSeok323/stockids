@@ -17,6 +17,9 @@
             });
         });
     </script>
+    <script th:if="${alertMessage}" th:inline="javascript">
+        alert([[${alertMessage}]]);
+    </script>
 </head>
 <body>
 

@@ -18,19 +18,30 @@
     </insert>
 
     <select id="postSelectList" resultType="postDTO" parameterType="startEndPageDTO">
-        select *
-        from (select ROW_NUMBER() over (order by POST_NUM ) as rn
-        ,<include refid="postBaseColumns"/>
-        from post
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY p.POST_NUM) AS rn,
+        p.POST_NUM AS postNum,
+        p.CATEGORY AS category,
+        p.POST_SUBJECT AS postSubject,
+        m.NICKNAME AS postAuthor,  <!-- 작성자 닉네임으로 받아오기 -->
+        p.POST_CONTENTS AS postContents,
+        p.VIEW_COUNT AS viewCount,
+        p.LIKE_COUNT AS likeCount,
+        p.POST_TIME AS postTime
+        FROM post p
+        JOIN member m ON p.POST_AUTHOR = m.MEMBER_NUM
         <where>
             <if test="searchWord != null">
-                POST_AUTHOR like '%'||#{searchWord}||'%'
-                or POST_SUBJECT like '%'||#{searchWord}||'%'
-                or CATEGORY like '%'||#{searchWord}||'%'
+                (
+                m.NICKNAME LIKE '%' || #{searchWord} || '%' OR
+                p.POST_SUBJECT LIKE '%' || #{searchWord} || '%' OR
+                p.CATEGORY LIKE '%' || #{searchWord} || '%'
+                )
             </if>
         </where>
         )
-        where rn BETWEEN #{startRow} and #{endRow}
+        WHERE rn BETWEEN #{startRow} AND #{endRow}
     </select>
 
     <select id="postCount" resultType="integer">
@@ -38,15 +49,18 @@
     </select>
 
     <select id="postSelectOne" parameterType="string" resultType="postDTO">
-        select <include refid="postBaseColumns"/>
-        from post
-        where POST_NUM = #{postNum}
+        select
+        <include refid="postBaseColumns"/>,
+        m.NICKNAME AS postAuthor <!-- 작성자 닉네임으로 받아오기 -->
+        from post p
+        join member m on p.POST_AUTHOR = m.MEMBER_NUM
+        where p.POST_NUM = #{postNum}
     </select>
+
 
     <update id="postUpdate" parameterType="postDTO">
         update post set
             POST_NUM = #{postNum},
-            POST_AUTHOR = #{postAuthor},
             CATEGORY = #{category},
             POST_SUBJECT = #{postSubject},
             POST_CONTENTS = #{postContents}
