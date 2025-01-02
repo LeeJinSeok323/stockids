@@ -13,4 +13,9 @@
         INSERT INTO MEMBER (MEMBER_NUM, MEMBER_ID, MEMBER_PW, MEMBER_NAME, GENDER, BIRTH, NICKNAME, TITLE_NUM)
         VALUES (#{memberNum}, #{memberId}, #{memberPw}, #{memberName}, #{gender}, #{memberBirth}, #{nickName}, NULL)
     </insert>
+
+    <select id="getMemberNum" parameterType="string" resultType="string">
+        select MEMBER_NUM from MEMBER
+        where MEMBER_ID = #{memberId}
+    </select>
 </mapper>
