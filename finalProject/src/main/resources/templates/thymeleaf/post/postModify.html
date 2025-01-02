@@ -6,6 +6,26 @@
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            form.addEventListener("submit", function (event) {
+                const subject = document.querySelector('input[name="postSubject"]').value.trim();
+                const contents = document.querySelector('textarea[name="postContents"]').value.trim();
+
+                if (!subject) {
+                    event.preventDefault(); // 폼 제출 중단
+                    alert("제목을 입력하세요.");
+                    return;
+                }
+
+                if (!contents) {
+                    event.preventDefault(); // 폼 제출 중단
+                    alert("내용을 입력하세요.");
+                }
+            });
+        });
+    </script>
 </head>
 <header class="header">
     <div class="logo">StocKids</div>
@@ -38,9 +58,6 @@
                     <input type="text" th:field="*{postSubject}" name="postSubject" placeholder="제목을 입력하세요">
                 </div>
             </td>
-        </tr>
-        <tr>
-            <td><input type="text" th:field="*{postAuthor}" name="postAuthor" id="userId"></td>
         </tr>
         <tr>
             <td><textarea name="postContents"  rows="10" cols="50">[[${postCommand.postContents}]]</textarea></td>
