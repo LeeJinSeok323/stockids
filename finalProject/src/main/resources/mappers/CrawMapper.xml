@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.CrawMapper">
+
+    <insert id="craw">
+        INSERT INTO ARTICLE (
+        ARTICLE_NUM,
+        ARTICLE_SUBJECT,
+        ARTICLE_SUMMARY,
+        ARTICLE_CONTENTS,
+        ORIGINAL_URL,
+        ARTICLE_STORE_DATE
+        )
+        VALUES
+            (
+            #{autuNum},
+            #{title},
+            #{description},
+            #{body},
+            #{link},
+            sysdate
+            )
+    </insert>
+
+    <select id="crawList" resultType="CrawDTO">
+        select * from article
+    </select>
+
+</mapper>
