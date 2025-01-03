@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import finalProject.domain.StartEndPageDTO;
 import java.util.List;
 
-@Service
+@Service("adminStartEndPageService")
 public class StartEndPageService {
     public StartEndPageDTO execute(int page, int limit, String searchWord) {
         int startRow = ((page - 1) * limit) + 1 ; // 11

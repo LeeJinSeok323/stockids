@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.ArticleMapper">
+    <select id="selectUnexpectedArticle" resultType="articleDTO">
+        select ARTICLE_NUM, ARTICLE_SUBJECT, ARTICLE_SUMMARY, ORIGINAL_URL
+            ,ARTICLE_STORE_DATE, ARTICLE_CONTENTS
+        from ARTICLE
+        where ARTICLE_NUM not in (select ARTICLE_PREDICTION_NUM from DAY_ARTICLE_PREDICTION)
+    </select>
+
+</mapper>
