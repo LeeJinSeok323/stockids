@@ -24,7 +24,7 @@ public class MemberInsertService {
         // MemberDTO로 변환하여 회원 정보 설정
         memberDTO.setMemberNum(memberNum);  // 자동 생성된 memberNum 설정
         memberDTO.setMemberId(memberCommand.getMemberId());
-        memberDTO.setMemberPw(memberCommand.getMemberPw());
+        memberDTO.setMemberPw(passwordEncoder.encode(memberCommand.getMemberPw()));
         memberDTO.setMemberName(memberCommand.getMemberName());
         memberDTO.setGender(memberCommand.getGender());
         memberDTO.setMemberBirth(memberCommand.getMemberBirth());

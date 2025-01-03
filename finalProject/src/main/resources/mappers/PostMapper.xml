@@ -10,11 +10,10 @@
     </sql>
 
     <insert id="postInsert" parameterType="postDTO">
-        insert into post(
-            POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
-            VIEW_COUNT, LIKE_COUNT, POST_TIME)
-        values(#{postNum}, #{postAuthor}, #{category}
-             , #{postSubject},#{postContents}, 0, 0, sysdate)
+        insert into post(POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
+                         VIEW_COUNT, LIKE_COUNT, POST_TIME)
+        values ( #{postNum}, #{postAuthor}, #{category}
+               , #{postSubject}, #{postContents}, 0, 0, sysdate)
     </insert>
 
     <select id="findAuthorIdByPostNum" resultType="String">
@@ -52,7 +51,8 @@
     </select>
 
     <select id="postCount" resultType="integer">
-        select count(*) from post
+        select count(*)
+        from post
     </select>
 
     <select id="postSelectOne" parameterType="string" resultType="postDTO">
@@ -65,17 +65,18 @@
     </select>
 
     <update id="postUpdate" parameterType="postDTO">
-        update post set
-            POST_NUM = #{postNum},
-            CATEGORY = #{category},
-            POST_SUBJECT = #{postSubject},
+        update post
+        set POST_NUM      = #{postNum},
+            CATEGORY      = #{category},
+            POST_SUBJECT  = #{postSubject},
             POST_CONTENTS = #{postContents}
 
         where POST_NUM = #{postNum}
     </update>
 
     <delete id="postDelete" parameterType="string">
-        delete from post
+        delete
+        from post
         where POST_NUM = #{postNum}
     </delete>
 
@@ -84,4 +85,5 @@
         set VIEW_COUNT = VIEW_COUNT + 1
         where POST_NUM = #{postNum}
     </update>
+
 </mapper>

@@ -9,4 +9,5 @@ public class AuthInfoDTO {
     String userId;
     String userPw;
     String userName;
+    String userNum;
 }

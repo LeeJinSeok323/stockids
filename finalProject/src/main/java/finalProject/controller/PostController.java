@@ -2,14 +2,22 @@ package finalProject.controller;
 
 import finalProject.command.PostCommand;
 import finalProject.domain.AuthInfoDTO;
+import finalProject.mapper.MemberMapper;
 import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("post")
@@ -26,6 +34,10 @@ public class PostController {
     PostUpdateService postUpdateService;
     @Autowired
     PostDeleteService postDeleteService;
+    @Autowired
+    PostLikeService postLikeService;
+    @Autowired
+    MemberMapper memberMapper;
 
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -36,12 +48,18 @@ public class PostController {
     }
 
     @GetMapping("postWrite")
-    public String postWrite(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String postWrite(Model model, HttpSession session) {
         // 세션에서 사용자 정보를 확인
-        Object auth = session.getAttribute("auth"); // 세션에 저장된 로그인 정보
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         if (auth == null) {
-            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 글 작성을 할 수 있습니다.");
-            return "redirect:/login";
+            try {
+                String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
+                return "redirect:/login?message=" + message;
+            } catch (UnsupportedEncodingException e) {
+                // 예외 처리
+                e.printStackTrace();
+                return "redirect:/login";
+            }
         }
         String autoNum = autoNumService.execute("post_", "post_num", 6, "post");
         PostCommand postCommand = new PostCommand();
@@ -80,5 +98,30 @@ public class PostController {
     public String postDelete(@PathVariable("postNum") String postNum) {
         postDeleteService.execute(postNum);
         return "redirect:../postList";
+    }
+
+    @PostMapping("postLike")
+    @ResponseBody
+    public Map<String, Object> postLike(HttpSession session, String postNum) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        Map<String, Object> response = new HashMap<>();
+
+        if (auth == null) {
+            try {
+                String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
+                response.put("success", false);
+                response.put("message", "/login?message=" + message);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                response.put("success", false);
+                response.put("message", "/login");
+            }
+        } else {
+            String memberNum = memberMapper.getMemberNum(auth.getUserId());
+            String likeCount = postLikeService.execute(postNum, memberNum);
+            response.put("success", true);
+            response.put("likeCount", likeCount);
+        }
+        return response;
     }
 }

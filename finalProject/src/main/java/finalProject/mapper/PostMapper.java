@@ -3,6 +3,7 @@ package finalProject.mapper;
 import finalProject.domain.StartEndPageDTO;
 import finalProject.domain.PostDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

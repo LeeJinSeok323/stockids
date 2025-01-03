@@ -6,6 +6,29 @@
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postInfo.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <script>
+        function handleRecommendClick(event) {
+            const postNum = $(event.currentTarget).data("post-num");
+
+            $.ajax({
+                url: '/post/postLike',
+                type: 'POST',
+                data: {postNum: postNum},
+                success: function (response) {
+                    if (response.success) {
+                        $(event.currentTarget).find('.like-count').text(response.likeCount);
+                    } else {
+                        window.location.href = response.message;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX 요청에 실패했습니다:', error);
+                    alert('추천 처리 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    </script>
 </head>
 <header class="header">
     <div class="logo">StocKids</div>
@@ -24,7 +47,7 @@
 <div class="main-content">
     <!-- 제목 -->
     <div class="post-title">
-       [[${postCommand.postSubject}]]
+        [[${postCommand.postSubject}]]
     </div>
 
     <!-- 세부 정보 -->
@@ -44,17 +67,24 @@
         <p>[[${postCommand.postContents}]]</p>
     </div>
     <hr>
-    <!-- 추천 이미지 버튼 추가 -->
+
+    <!-- 추천 이미지 버튼 -->
     <div class="recommend-button">
-        <img src="/static/images/post/like.png" alt="추천" class="recommend-img"/>
-        <br>추천
-        <br>10
+        <button type="button" class="recommend-btn" th:data-post-num="${postCommand.postNum}" onclick="handleRecommendClick(event)">
+            <img src="/static/images/post/like.png" alt="추천" class="recommend-img"/>
+            <br>추천
+            <br><span class="like-count">[[${postCommand.likeCount}]]</span>
+        </button>
     </div>
 
     <!-- 하단 버튼 -->
     <div class="post-buttons">
-        <button th:if="${auth != null and auth.userId == postAuthorId}" onclick="location.href='../postUpdate(postNum=${postCommand.postNum})'">글 수정</button>
-        <button th:if="${auth != null and auth.userId == postAuthorId}" class="delete-button" onclick="location.href='../postDelete(postNum=${postCommand.postNum})'">글 삭제</button>
+        <button th:if="${auth != null and auth.userId == postAuthorId}"
+                onclick="location.href='../postUpdate(postNum=${postCommand.postNum})'">글 수정
+        </button>
+        <button th:if="${auth != null and auth.userId == postAuthorId}" class="delete-button"
+                onclick="location.href='../postDelete(postNum=${postCommand.postNum})'">글 삭제
+        </button>
         <button onclick="location.href='../postList'">글목록</button>
     </div>
 
