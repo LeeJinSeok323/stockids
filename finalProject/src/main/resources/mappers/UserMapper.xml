@@ -20,6 +20,12 @@
         from admin
         where ADMIN_ID = #{userId}
     </select>
-
+    <select id="getUserNumById" parameterType="string" resultType="string">
+        select member_num as userId
+        from member where member_id = #{userId}
+        union
+        select admin_num
+        from admin where admin_id = #{userId}
+    </select>
 </mapper>
 
