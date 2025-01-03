@@ -11,5 +11,4 @@ import org.apache.ibatis.type.Alias;
     int startRow;
     int endRow;
     String searchWord;
-
 }

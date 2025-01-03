@@ -1,0 +1,67 @@
+.main-content {
+    width: 40%;
+    margin: 0 auto;
+    text-align: left;
+    margin-top: 70px; /* 헤더 높이만큼 마진 추가 */
+}
+
+.post-title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.post-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.left-info {
+    text-align: left;
+}
+
+.right-info {
+    text-align: right;
+}
+
+.post-content {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+.post-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.post-buttons a {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.post-buttons a:hover {
+    text-decoration: underline;
+}
+
+.recommend-button {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+.recommend-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.recommend-img:hover {
+    transform: scale(1.1); /* 호버 시 이미지 크기 확대 */
+}

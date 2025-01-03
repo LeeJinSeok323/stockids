@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.AuthInfoDTO;
+import finalProject.service.login.SessionCheckService;
 import finalProject.service.login.UserLoginService;
 import finalProject.command.LoginCommand;
 import jakarta.servlet.http.HttpSession;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LoginController {
     @Autowired
     UserLoginService userLoginService;
-
     @PostMapping("login")
     public String login(LoginCommand loginCommand, BindingResult result, HttpSession session, RedirectAttributes redirectAttributes) {
         userLoginService.execute(loginCommand, session, result);
@@ -51,6 +51,16 @@ public class LoginController {
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
         return "redirect:/"; // 로그아웃 후 메인 페이지로 이동
+    }
+
+    @Autowired
+    SessionCheckService sessionCheckService;
+
+    @GetMapping("/sessionCheck")
+    @ResponseBody
+    public boolean memberSessionCheck(HttpSession session) {
+        boolean check = sessionCheckService.execute(session);
+        return check;
     }
 
     @GetMapping("/user1/home")

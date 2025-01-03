@@ -1,0 +1,144 @@
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    margin: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* 게시글 목록 테이블 */
+table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 테이블 셀 공통 스타일 */
+table th, table td {
+    padding: 16px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* 첫 번째 tr (헤더 행) 배경색 파란색 */
+table tr:first-child {
+    background-color: #007bff;
+}
+
+table tr:first-child td {
+    color: white;
+    font-weight: bold;
+}
+
+/* 짝수 행 배경색 */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 제목 열 너비 조정 */
+table th:nth-child(3), table td:nth-child(3) {
+    width: 30%;
+    text-align: left;
+    padding-left: 16px;
+}
+
+/* 버튼 스타일 공통 */
+.write-btn-container a, .search-container input[type="submit"] {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.write-btn-container a {
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+.write-btn-container a:hover, .search-container input[type="submit"]:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 검색창 */
+.search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.search-container input[type="search"] {
+    padding: 12px;
+    font-size: 1rem;
+    width: 50%;
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+
+.search-container input[type="submit"] {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;           /* 테두리 제거 */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 페이지 네비게이션 */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+    background-color: white; /* 페이지 네비게이션 배경색 흰색으로 설정 */
+}
+
+.pagination a, .pagination span {
+    padding: 10px 16px;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+.pagination span {
+    color: #666;
+}
+
+/* 반응형 처리 */
+@media screen and (max-width: 768px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    table th, table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .search-container input[type="search"] {
+        width: 80%;
+    }
+
+    .search-container input[type="submit"] {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

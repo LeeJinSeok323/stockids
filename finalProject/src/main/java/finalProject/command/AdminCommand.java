@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 @Data
@@ -18,6 +20,7 @@ public class AdminCommand {
     String adminPwCon;
     String adminName;
     String gender;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date birth;
     String position;
 
