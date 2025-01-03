@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class GPTMessage {
     String role;
     String content;
-    String response_format;
 }

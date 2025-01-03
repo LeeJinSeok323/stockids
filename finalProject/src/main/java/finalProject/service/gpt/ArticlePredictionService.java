@@ -7,7 +7,6 @@ import finalProject.API.GPT.GPTApiClient;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,13 +17,13 @@ import java.util.Map;
 public class ArticlePredictionService {
     @Value("#{secret['gpt-api-key']}")
     private String apikey;
-    private final String model = "gpt-4o-mini";
-    ClassPathResource resource;
+    private final String model;
     ObjectMapper mapper;
     public ArticlePredictionService(){
         if(apikey == null){
             System.out.println("apikey를 찾을 수 없습니다.");
         }
+        model = "gpt-4o-mini";
         mapper = new ObjectMapper();
     }
 
@@ -48,7 +47,7 @@ public class ArticlePredictionService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("결과값은"+response.getChoices().get(0).getMessage().getContent());
+        System.out.println("결과값은"+response.getChoices().get(0).getMessage().getContent().substring(4));
     }
 
 
