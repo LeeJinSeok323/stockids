@@ -4,9 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="finalProject.mapper.UserMapper">
     <select id="loginSelect" parameterType="string" resultType="authInfo">
-        select MEMBER_NUM,MEMBER_ID as userId,MEMBER_PW as userPw,MEMBER_NAME as userName,GENDER,BIRTH,NICKNAME,TITLE_NUM from member
-        where member_id = #{userId}
-
+        select
+            MEMBER_ID as userId,
+            MEMBER_PW as userPw,
+            MEMBER_NAME as userName,
+            'false' as isAdmin
+        from member
+        where MEMBER_ID = #{userId}
+        union
+        select
+            ADMIN_ID as userId,
+            ADMIN_PW as userPw,
+            ADMIN_NAME as userName,
+            'true' as isAdmin
+        from admin
+        where ADMIN_ID = #{userId}
     </select>
 
 </mapper>

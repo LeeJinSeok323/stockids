@@ -31,6 +31,7 @@
 }
 
 .header ul li {
+    color: black;
     cursor: pointer;
     transition: color 0.3s;
 }
@@ -90,3 +91,39 @@
     background-color: #f0f0f0;
     color: #007bff;
 }
+
+/* 드롭다운 메뉴 */
+.header .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-width: 150px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* 드롭다운 메뉴 활성화 */
+.header .admin-menu:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.header .dropdown-menu li {
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.header .dropdown-menu li:hover {
+    background-color: #f0f0f0;
+    color: #007bff;
+}
+

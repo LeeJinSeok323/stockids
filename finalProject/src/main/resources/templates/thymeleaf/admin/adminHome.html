@@ -178,21 +178,69 @@
                 $("#contents").html(content);
             })
         }
+
+
+        $(function() {
+            $("#titleListMenu").click(function() {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function() {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function() {
+                window.location.href = "/user1/titleWrite";
+            });
+        });
     </script>
 </head>
 <body>
-<header class="header">
-    <div class="logo">StocKids</div>
-    <nav>
+
+
+<div th:unless="${isLoggedIn}">
+    <header class="header">
+        <div class="logo">StocKids</div>
+        <nav>
+            <ul>
+                <li><a href="/">홈</a></li>
+                <li><a href="#">주식 골라보기</a></li>
+                <li>게시판</li>
+            </ul>
+        </nav>
+        <button class="login-btn" onclick="location.href='/login';">로그인</button>
+    </header>
+</div>
+
+<div th:if="${isLoggedIn}">
+    <header class="header">
+        <div class="logo">StocKids</div>
         <ul>
             <li><a href="/">홈</a></li>
-            <li id="list">관리자</li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
             <li><a href="#">주식 골라보기</a></li>
             <li>게시판</li>
         </ul>
-    </nav>
-    <button class="login-btn">로그인</button>
-</header>
+        <button class="login-btn" onclick="location.href='/login/logout';">로그아웃</button>
+    </header>
+</div>
+
+
+
 <br><br><br><br><br>
 <div id="contents">
 

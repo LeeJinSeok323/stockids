@@ -10,6 +10,6 @@ public interface AdminMapper {
     public Integer insertAdmin(AdminDTO adminDTO);
     public List<AdminDTO> selectAdminList();
     public AdminDTO selectAdminOne(String adminNum);
-
+   public String getAdminNum(String adminId);
     public Integer deleteAdmin(String adminNum);
 }
