@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/title/titleInfo.css">
     <script type="text/javascript">
         $(function () {
             // '관리자' 버튼 클릭 시
@@ -70,32 +71,21 @@
         function replaceContents(content){
             $("#contents").html(content);
         }
+
         $(function(){
-            $("#checkBoxs").click(function(){
-                if($("#checkBoxs").prop("checked")){
-                    $("input:checkbox[name=titleDels]").prop("checked",true);
-                }else{
-                    $("input:checkbox[name=titleDels]").prop("checked",false);
+            $("btn").click(function(){});
+            $("#frm").ajaxSubmit({
+                url:"user1/titleWrite",
+                type:"post",
+                success:function(result){
+                    if(result.trin()==200){
+                        alert("칭호 등록 성공!");
+                        location.reload(); // 페이지 새로고침
+                    }else{
+                        $("#writeForm").html(result);
+                    }
                 }
             });
-            $("input:checkbox[name=titleDels]").click(function(){
-                var tot= $("input:checkbox[name=titleDels]").length;
-                var checked = $("input:checkbox[name=titleDels]:checked").length;
-                if(tot == checked){
-                    $("#checkBoxs").prop("checked",true);
-                }else{
-                    $("#checkBoxs").prop("checked",false);
-                }
-            });
-
-            $("#frm").submit(function(){
-                if($("input:checkbox[name=titleDels]:checked").length<1){
-                    alert("하나이상 선택하시오");
-                    return false;
-                }
-
-            });
-
         });
 
 
@@ -127,6 +117,7 @@
                 window.location.href = "/user1/titleWrite";
             });
         });
+
     </script>
 </head>
 <body>
@@ -159,44 +150,28 @@
 <br><br><br><br><br>
 <!-- 관리자 목록이 로드될 위치 -->
 <div id="contents"></div>
+<!-- 칭호 등록 폼 -->
 <div id="title-form" >
-    <table border=1 width="600" align="center">
-        <form action="/user1/memberList" method="get">
-            <tr><td colspan="6" style="text-align: center;">검색 :
-                <input type="search" name="searchWord" size="60" th:value="${searchWord}"/>
-                <input type="submit" value="검색"/>
-            </td></tr>
-        </form>
-        <tr>
-            <td style="text-align: center;">번호</td>
-            <td style="text-align: center;">아이디</td>
-            <td style="text-align: center;">이름</td>
-            <td style="text-align: center;">별명</td>
-            <td style="text-align: center;">칭호</td>
-            <td style="text-align: center;">칭호 수정</td>
-        </tr>
-        <tr th:each="dto : ${dtos}">
-            <td style="text-align: center;">[[${dto.memberNum}]]</td>
-            <td style="text-align: center;">[[${dto.memberId}]]</td>
-            <td style="text-align: center;">[[${dto.memberName}]]</td>
-            <td style="text-align: center;">[[${dto.nickName}]]</td>
-            <td style="text-align: center;">[[${dto.titleName}]]</td>
-            <td style="text-align: center;">
-                <form th:action="@{/user1/updateTitle}" method="post">
-                <input type="hidden" name="memberNum" th:value="${dto.memberNum}" />
-                    <select name="titleNum">
-                        <option value="">선택하세요</option>
-                        <option th:each="title : ${title}"
-                                th:value="${title.titleNum}"
-                                th:text="${title.titleName}"
-                                th:selected="${title.titleNum == dto.titleNum}">
-                        </option>
-                    </select>
-                    <input type="submit" value="수정" />
-                </form>
-            </td>
-        </tr>
+<form action="/user1/titleWrite" method="post" id="frm">
+    <table border="1" width="600" align="center">
+        <tr><th width="100">칭호번호<br>(자동부여)</th>
+            <td><input type="text" name="titleNum" th:value = "${titleCommand.titleNum}" readonly="readonly"/></td></tr>
+        <tr><th>칭호역할</th>
+            <td><textarea rows="10" cols="65" name="titleContents" >[[${titleCommand.titleContents}]]</textarea></td></tr>
+        <tr><th>칭호이름</th>
+            <td><input type="text" name="titleName" th:value = "${titleCommand.titleName}"/></td></tr>
+        <tr><th colspan="2"><input type="submit" id="btn" value="칭호 등록"/></th></tr>
     </table>
+</form>
 </div>
+<br><br><br>
+<footer class="footer">
+    <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
 </body>
 </html>

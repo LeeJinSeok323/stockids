@@ -13,12 +13,12 @@
         where MEMBER_ID = #{userId}
         union
         select
-            ADMIN_ID,
-            ADMIN_PW,
-            ADMIN_NAME,
-            'true'
+            ADMIN_ID as userId,
+            ADMIN_PW as userPw,
+            ADMIN_NAME as userName,
+            'true' as isAdmin
         from admin
         where ADMIN_ID = #{userId}
     </select>
-</mapper>
 
+</mapper>

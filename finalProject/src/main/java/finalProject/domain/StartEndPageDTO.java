@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias;
 @Data
 @AllArgsConstructor
 @Alias("startEndPageDTO")
-public class StartEndPageDTO {
+ public class StartEndPageDTO {
     int startRow;
     int endRow;
     String searchWord;

@@ -2,10 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>칭호 등록</title>
+    <link rel="stylesheet" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/footer2.css">
+    <link rel="stylesheet" href="/static/css/adminHome.css">
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // '관리자' 버튼 클릭 시
+            $("#list").click(function () {
+                list();
+                $("#title-form").hide(); // 칭호 등록 폼 숨기기
+            });
+
+            // '칭호 등록' 메뉴 클릭 시
+            $("#title-register").click(function () {
+                $("#contents").empty(); // 관리자 목록 숨기기
+                $("#title-form").show(); // 칭호 등록 폼 표시
+                history.pushState(null, '', '/user1/titleWrite'); // URL 변경
+            });
+        });
+
+
+
+        function list(){
+            $.ajax({
+                url:"/user1/list", // 관리자 목록을 불러오는 API
+                type:"get",
+                success:function(result){
+                    let content = `
+                    <div class="admin-list-container">
+                        <h1>관리자 목록</h1>
+                        <div class="admin-list">
+                            <div>
+                                <a href="form">
+                                    <img src="/static/images/admin-add-button.png" width="400"></a>
+                            </div>
+                `;
+                    result.forEach(function(dto){
+                        content += `
+                        <div class="admin-card" onclick="detail('${dto.adminNum}')">
+                            <div class="admin-header">
+                                <span class="admin-id">${dto.adminName}</span>
+                                <span class="admin-position">${dto.position}</span>
+                            </div>
+                            <div class="admin-body">
+                                <p><strong>아이디:</strong>${dto.adminId}</p>
+                                <p><strong>성별:</strong> ${dto.gender}</p>
+                                <p><strong>생년월일:</strong> ${dto.birth}</p>
+                            </div>
+                        </div>
+                    `;
+                    });
+                    content += `
+                        </div>
+                    </div>
+                `;
+                    replaceContents(content);
+                    history.pushState(null, '', '/user1/home'); // 주소 변경
+                },
+                error:function (){
+                    alert("서버 오류");
+                }
+            });
+        }
+
+        function replaceContents(content){
+            $("#contents").html(content);
+        }
+        $(function(){
+            $("#checkBoxs").click(function(){
+                if($("#checkBoxs").prop("checked")){
+                    $("input:checkbox[name=titleDels]").prop("checked",true);
+                }else{
+                    $("input:checkbox[name=titleDels]").prop("checked",false);
+                }
+            });
+            $("input:checkbox[name=titleDels]").click(function(){
+                var tot= $("input:checkbox[name=titleDels]").length;
+                var checked = $("input:checkbox[name=titleDels]:checked").length;
+                if(tot == checked){
+                    $("#checkBoxs").prop("checked",true);
+                }else{
+                    $("#checkBoxs").prop("checked",false);
+                }
+            });
+
+            $("#frm").submit(function(){
+                if($("input:checkbox[name=titleDels]:checked").length<1){
+                    alert("하나이상 선택하시오");
+                    return false;
+                }
+
+            });
+
+        });
+
+
+
+        $(function() {
+            // On click of the titleListMenu
+            $("#titleListMenu").click(function() {
+                // Remove the 'selected' class from all menu items
+                $(".nav-link").removeClass("selected");
+
+                // Add 'selected' class to the clicked item
+                $(this).find(".nav-link").addClass("selected");
+
+                // Navigate to the corresponding page
+                window.location.href = "/user1/titleList";
+            });
+
+            // On click of the memberListMenu
+            $("#memberListMenu").click(function() {
+                $(".nav-link").removeClass("selected");
+                $(this).find(".nav-link").addClass("selected");
+                window.location.href = "/user1/memberList";
+            });
+
+            // On click of the titleWriteMenu
+            $("#titleWriteMenu").click(function() {
+                $(".nav-link").removeClass("selected");
+                $(this).find(".nav-link").addClass("selected");
+                window.location.href = "/user1/titleWrite";
+            });
+        });
+    </script>
 </head>
 <body>
-<form action = "memberRegist" method = "post" th:object="${memberCommand}">
+<div th:unless="${isLoggedIn}">
+    <header class="header">
+        <div class="logo">StocKids</div>
+        <nav>
+            <ul>
+                <li><a href="/">홈</a></li>
+                <li><a href="#">주식 골라보기</a></li>
+                <li>게시판</li>
+            </ul>
+        </nav>
+        <button class="login-btn" onclick="location.href='/login';">로그인</button>
+    </header>
+</div>
+<br><br><br><br><br>
+<!-- 관리자 목록이 로드될 위치 -->
+<div id="contents"></div>
+<div id="title-form" >
+<form class="login-form" action="/user1/memberRegist" method="post" th:object="${memberCommand}">
 회원아이디: <input type="text" name="memberId" id="memberId" th:value="${memberCommand.memberId}"/><br/>
 회원비밀번호: <input type="password" name="memberPw"/><br/>
 회원비밀번호 확인: <input type="password" name="memberPwCon"/><br/>
@@ -17,5 +159,14 @@
 생년월일: <input type="date" name="memberBirth" th:value="${memberCommand.memberBirth}"><br/>
 <input type="submit" value="회원등록"/>
 </form>
+</div>
+<footer class="footer">
+    <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
 </body>
 </html>
