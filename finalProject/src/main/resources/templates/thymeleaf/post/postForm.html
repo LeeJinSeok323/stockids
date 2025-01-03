@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Post Form</title>
-  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
+    <meta charset="UTF-8">
+    <title>Post Form</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            form.addEventListener("submit", function (event) {
+                const subject = document.querySelector('input[name="postSubject"]').value.trim();
+                const contents = document.querySelector('textarea[name="postContents"]').value.trim();
+
+                if (!subject) {
+                    event.preventDefault(); // 폼 제출 중단
+                    alert("제목을 입력하세요.");
+                    return;
+                }
+
+                if (!contents) {
+                    event.preventDefault(); // 폼 제출 중단
+                    alert("내용을 입력하세요.");
+                }
+            });
+        });
+    </script>
 </head>
 <header class="header">
-  <div class="logo">StocKids</div>
-  <nav>
-    <ul>
-      <li><a href="/">홈</a></li>
-      <li id="list">관리자</li>
-      <li><a href="#">주식 골라보기</a></li>
-      <li><a href="/post/postList">게시판</a></li>
-    </ul>
-  </nav>
-  <button class="login-btn">로그인</button>
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li id="list">관리자</li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn">로그인</button>
 </header>
 <body>
 <div class="main-content" align="center">
-  <h3>게시글 작성</h3>
-  <form action="/post/postRegist" method="post">
-    <input type="hidden" name="postNum" th:value="${postCommand.postNum}" readonly="readonly">
-    <table>
-      <tr>
-        <td colspan="2">
-          <div class="category-title-wrapper">
-            <select name="category">
-              <option value="국내주식">국내주식</option>
-              <option value="해외주식">해외주식</option>
-              <option value="질문">질문</option>
-              <option value="종목추천,분석">종목추천,분석</option>
-              <option value="정보공유">정보공유</option>
-            </select>
-            <input type="text" name="postSubject" placeholder="제목을 입력하세요">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><input type="text" name="postAuthor" id="userId"></td>
-      </tr>
-      <tr>
-        <td><textarea name="postContents" rows="10" cols="50"></textarea></td>
-      </tr>
-    </table>
-    <br>
-    <input type="button" value="취소" onclick="location.href='/post/postList'">
-    <input type="submit" value="등록">
-  </form>
+    <h3>게시글 작성</h3>
+    <form action="/post/postRegist" method="post">
+        <input type="hidden" name="postNum" th:value="${postCommand.postNum}" readonly="readonly">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <div class="category-title-wrapper">
+                        <select name="category">
+                            <option value="국내주식">국내주식</option>
+                            <option value="해외주식">해외주식</option>
+                            <option value="질문">질문</option>
+                            <option value="종목추천,분석">종목추천,분석</option>
+                            <option value="정보공유">정보공유</option>
+                        </select>
+                        <input type="text" name="postSubject" placeholder="제목을 입력하세요">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><textarea name="postContents" rows="10" cols="50"></textarea></td>
+            </tr>
+        </table>
+        <br>
+        <input type="button" value="취소" onclick="location.href='/post/postList'">
+        <input type="submit" value="등록">
+    </form>
 </div>
 
 <footer class="footer">
-  <p>© 2024 StocKids. 모든 권리 보유.</p>
-  <ul>
-    <li>이용약관</li>
-    <li>개인정보 처리방침</li>
-    <li>고객센터</li>
-  </ul>
+    <p>© 2024 StocKids. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
 </footer>
 </body>
 </html>
