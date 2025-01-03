@@ -13,6 +13,8 @@ public class PostDetailService {
     public void execute(Model model, String postNum) {
         postMapper.postViewCountUpdate(postNum);
         PostDTO postDTO = postMapper.postSelectOne(postNum);
+        String postAuthorId = postMapper.findAuthorIdByPostNum(postNum);
         model.addAttribute("postCommand", postDTO);
+        model.addAttribute("postAuthorId", postAuthorId);
     }
 }

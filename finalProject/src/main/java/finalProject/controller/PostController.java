@@ -1,12 +1,23 @@
 package finalProject.controller;
 
 import finalProject.command.PostCommand;
+import finalProject.domain.AuthInfoDTO;
+import finalProject.mapper.MemberMapper;
 import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("post")
@@ -23,6 +34,10 @@ public class PostController {
     PostUpdateService postUpdateService;
     @Autowired
     PostDeleteService postDeleteService;
+    @Autowired
+    PostLikeService postLikeService;
+    @Autowired
+    MemberMapper memberMapper;
 
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -33,7 +48,19 @@ public class PostController {
     }
 
     @GetMapping("postWrite")
-    public String postWrite(Model model) {
+    public String postWrite(Model model, HttpSession session) {
+        // 세션에서 사용자 정보를 확인
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        if (auth == null) {
+            try {
+                String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
+                return "redirect:/login?message=" + message;
+            } catch (UnsupportedEncodingException e) {
+                // 예외 처리
+                e.printStackTrace();
+                return "redirect:/login";
+            }
+        }
         String autoNum = autoNumService.execute("post_", "post_num", 6, "post");
         PostCommand postCommand = new PostCommand();
         postCommand.setPostNum(autoNum);
@@ -42,15 +69,16 @@ public class PostController {
     }
 
     @PostMapping("postRegist")
-    public String postRegist(PostCommand postCommand) {
-        postWriteService.execute(postCommand);
+    public String postRegist(PostCommand postCommand, HttpSession session) {
+        postWriteService.execute(postCommand, session);
         return "redirect:/post/postList";
     }
 
     @GetMapping("postDetail/{postNum}")
-    public String postDetail(@PathVariable("postNum") String postNum
-            ,Model model) {
+    public String postDetail(@PathVariable("postNum") String postNum, Model model, HttpSession session) {
         postDetailService.execute(model, postNum);
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        model.addAttribute("auth", auth);
         return "thymeleaf/post/postInfo";
     }
 
@@ -70,5 +98,30 @@ public class PostController {
     public String postDelete(@PathVariable("postNum") String postNum) {
         postDeleteService.execute(postNum);
         return "redirect:../postList";
+    }
+
+    @PostMapping("postLike")
+    @ResponseBody
+    public Map<String, Object> postLike(HttpSession session, String postNum) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        Map<String, Object> response = new HashMap<>();
+
+        if (auth == null) {
+            try {
+                String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
+                response.put("success", false);
+                response.put("message", "/login?message=" + message);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                response.put("success", false);
+                response.put("message", "/login");
+            }
+        } else {
+            String memberNum = memberMapper.getMemberNum(auth.getUserId());
+            String likeCount = postLikeService.execute(postNum, memberNum);
+            response.put("success", true);
+            response.put("likeCount", likeCount);
+        }
+        return response;
     }
 }

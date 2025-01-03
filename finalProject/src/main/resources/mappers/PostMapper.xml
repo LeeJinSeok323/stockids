@@ -10,52 +10,73 @@
     </sql>
 
     <insert id="postInsert" parameterType="postDTO">
-        insert into post(
-            POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
-            VIEW_COUNT, LIKE_COUNT, POST_TIME)
-        values(#{postNum}, #{postAuthor}, #{category}
-             , #{postSubject},#{postContents}, 0, 0, sysdate)
+        insert into post(POST_NUM, POST_AUTHOR, CATEGORY, POST_SUBJECT, POST_CONTENTS,
+                         VIEW_COUNT, LIKE_COUNT, POST_TIME)
+        values ( #{postNum}, #{postAuthor}, #{category}
+               , #{postSubject}, #{postContents}, 0, 0, sysdate)
     </insert>
 
+    <select id="findAuthorIdByPostNum" resultType="String">
+        select m.MEMBER_ID AS postAuthor <!-- 작성자 닉네임으로 받아오기 -->
+        from POST p
+        join MEMBER m on p.POST_AUTHOR = m.MEMBER_NUM
+        where p.POST_NUM = #{postNum}
+    </select>
+
     <select id="postSelectList" resultType="postDTO" parameterType="startEndPageDTO">
-        select *
-        from (select ROW_NUMBER() over (order by POST_NUM ) as rn
-        ,<include refid="postBaseColumns"/>
-        from post
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY p.POST_NUM) AS rn,
+        p.POST_NUM AS postNum,
+        p.CATEGORY AS category,
+        p.POST_SUBJECT AS postSubject,
+        m.NICKNAME AS postAuthor,  <!-- 작성자 닉네임으로 받아오기 -->
+        p.POST_CONTENTS AS postContents,
+        p.VIEW_COUNT AS viewCount,
+        p.LIKE_COUNT AS likeCount,
+        p.POST_TIME AS postTime
+        FROM post p
+        JOIN member m ON p.POST_AUTHOR = m.MEMBER_NUM
         <where>
             <if test="searchWord != null">
-                POST_AUTHOR like '%'||#{searchWord}||'%'
-                or POST_SUBJECT like '%'||#{searchWord}||'%'
-                or CATEGORY like '%'||#{searchWord}||'%'
+                (
+                m.NICKNAME LIKE '%' || #{searchWord} || '%' OR
+                p.POST_SUBJECT LIKE '%' || #{searchWord} || '%' OR
+                p.CATEGORY LIKE '%' || #{searchWord} || '%'
+                )
             </if>
         </where>
         )
-        where rn BETWEEN #{startRow} and #{endRow}
+        WHERE rn BETWEEN #{startRow} AND #{endRow}
     </select>
 
     <select id="postCount" resultType="integer">
-        select count(*) from post
+        select count(*)
+        from post
     </select>
 
     <select id="postSelectOne" parameterType="string" resultType="postDTO">
-        select <include refid="postBaseColumns"/>
-        from post
-        where POST_NUM = #{postNum}
+        select
+        <include refid="postBaseColumns"/>,
+        m.NICKNAME AS postAuthor <!-- 작성자 닉네임으로 받아오기 -->
+        from post p
+        join member m on p.POST_AUTHOR = m.MEMBER_NUM
+        where p.POST_NUM = #{postNum}
     </select>
 
     <update id="postUpdate" parameterType="postDTO">
-        update post set
-            POST_NUM = #{postNum},
-            POST_AUTHOR = #{postAuthor},
-            CATEGORY = #{category},
-            POST_SUBJECT = #{postSubject},
+        update post
+        set POST_NUM      = #{postNum},
+            CATEGORY      = #{category},
+            POST_SUBJECT  = #{postSubject},
             POST_CONTENTS = #{postContents}
 
         where POST_NUM = #{postNum}
     </update>
 
     <delete id="postDelete" parameterType="string">
-        delete from post
+        delete
+        from post
         where POST_NUM = #{postNum}
     </delete>
 
@@ -64,4 +85,5 @@
         set VIEW_COUNT = VIEW_COUNT + 1
         where POST_NUM = #{postNum}
     </update>
+
 </mapper>

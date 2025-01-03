@@ -3,6 +3,7 @@ package finalProject.mapper;
 import finalProject.domain.StartEndPageDTO;
 import finalProject.domain.PostDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface PostMapper {
     public void postUpdate(PostDTO dto);
     public void postDelete(String postNum);
     public int postViewCountUpdate(String goodsNum);
+    public String findAuthorIdByPostNum(String postNum);
 }

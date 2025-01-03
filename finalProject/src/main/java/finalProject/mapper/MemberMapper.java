@@ -15,4 +15,5 @@ public interface MemberMapper {
     public List<MemberDTO> selectAllWithTitle(String searchWord);
     public void updateMemberTitle(@Param("memberNum") String memberNum, @Param("titleNum") String titleNum);
     void updateMemberInMemberTable(String memberNum, String titleNum);
+    public String getMemberNum(String memberId);
 }

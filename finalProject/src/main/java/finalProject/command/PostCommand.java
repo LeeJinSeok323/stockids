@@ -8,6 +8,7 @@ import java.util.Date;
 public class PostCommand {
     String postNum;       // 게시글 번호
     String postAuthor;    // 작성자
+    String postAuthorId;  // 작성자 id
     String category;      // 카테고리
     String postSubject;   // 제목
     Integer viewCount;    // 조회수

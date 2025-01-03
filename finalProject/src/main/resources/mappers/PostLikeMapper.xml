@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.PostLikeMapper">
+    <select id="checkPostLike" resultType="int">
+        SELECT COUNT(*)
+        FROM POST_LIKE
+        WHERE POST_NUM = #{postNum}
+          AND MEMBER_NUM = #{memberNum}
+    </select>
+
+    <insert id="addPostLike">
+        INSERT INTO POST_LIKE (POST_NUM, MEMBER_NUM, POST_AUTHOR)
+        VALUES (#{postNum}, #{memberNum}, (SELECT POST_AUTHOR FROM POST WHERE POST_NUM = #{postNum}))
+    </insert>
+
+    <delete id="removePostLike">
+        DELETE FROM POST_LIKE
+        WHERE POST_NUM = #{postNum}
+          AND MEMBER_NUM = #{memberNum}
+    </delete>
+
+    <update id="updateLikeCount">
+        UPDATE POST
+        SET LIKE_COUNT = LIKE_COUNT + 1
+        WHERE POST_NUM = #{postNum}
+    </update>
+
+    <update id="cancelLikeCount">
+        UPDATE POST
+        SET LIKE_COUNT = LIKE_COUNT - 1
+        WHERE POST_NUM = #{postNum}
+    </update>
+
+    <select id="getLikeCount" resultType="String">
+        SELECT LIKE_COUNT
+        FROM POST
+        WHERE POST_NUM = #{postNum}
+    </select>
+
+</mapper>
