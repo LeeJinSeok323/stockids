@@ -7,8 +7,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class StockInfoAPI {
-    private static final String BASE_URL = "url";
-    private static final String SERVICE_KEY = "api_key";
+    private static final String BASE_URL = "";
+    private static final String SERVICE_KEY = "";
 
     private String numOfRows;
     private String pageNo;

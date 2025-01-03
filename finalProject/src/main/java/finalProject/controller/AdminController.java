@@ -6,6 +6,7 @@ import finalProject.service.admin.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,8 @@ public class AdminController {
     AdminEditService adminEditService;
     @Autowired
     AdminDeleteService adminDeleteService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @RequestMapping("home")
     public String home() {
         return "thymeleaf/admin/adminHome";
@@ -62,6 +65,9 @@ public class AdminController {
 
     @PostMapping("edit")
     public @ResponseBody String edit(@RequestBody AdminCommand adminCommand) {
+
+        String encryptedPassword = passwordEncoder.encode(adminCommand.getAdminPw());
+        adminCommand.setAdminPw(encryptedPassword); // 암호화된 비밀번호로 업데이트
         return adminEditService.execute(adminCommand);
     }
 

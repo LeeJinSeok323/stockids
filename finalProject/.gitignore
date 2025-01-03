@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#file
+src/main/java/finalProject/API/StockInfoAPI.java
+src/main/java/finalProject/service/craw/CrawService.java

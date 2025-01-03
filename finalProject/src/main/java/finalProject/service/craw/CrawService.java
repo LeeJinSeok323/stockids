@@ -23,8 +23,8 @@ import java.util.Map;
 @Service
 public class CrawService {
 
-    private static final String CLIENT_ID = "id";
-    private static final String CLIENT_SECRET = "key";
+    private static final String CLIENT_ID = "";
+    private static final String CLIENT_SECRET = "";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<CrawItem> fetchNews(String query) throws IOException {
