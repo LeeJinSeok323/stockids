@@ -3,6 +3,17 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="finalProject.mapper.MemberMapper">
+    <select id="selectAll" resultType="mem">
+        select MEMBER_NUM, MEMBER_ID, MEMBER_PW, MEMBER_NAME, GENDER, BIRTH, NICKNAME, TITLE_NUM from member
+    <where>
+        <if test="searchWord != null">
+        MEMBER_NUM like '%' || #{searchWord} || '%'
+        or MEMBER_ID like '%' || #{searchWord} || '%'
+        or MEMBER_NAME like '%' || #{searchWord} || '%'
+        or NICKNAME like '%' || #{searchWord} || '%'
+        </if>
+    </where>
+    </select>
     <select id="memberAutoNum" resultType="string">
         SELECT LPAD(COALESCE(MAX(TO_NUMBER(REGEXP_REPLACE(member_num, '[^0-9]', ''))), 0) + 1, 6, '0') AS member_auto_num
         FROM member
@@ -13,4 +24,55 @@
         INSERT INTO MEMBER (MEMBER_NUM, MEMBER_ID, MEMBER_PW, MEMBER_NAME, GENDER, BIRTH, NICKNAME, TITLE_NUM)
         VALUES (#{memberNum}, #{memberId}, #{memberPw}, #{memberName}, #{gender}, #{memberBirth}, #{nickName}, NULL)
     </insert>
+
+    <update id="memberUpdate" parameterType="mem">
+        UPDATE MEMBER
+        SET MEMBER_PW = #{memberPw},
+            MEMBER_NAME = #{memberName},
+            NICKNAME = #{nickName},
+            GENDER = #{gender},
+            BIRTH = #{memberBirth}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <update id="updateMemberTitle">
+        MERGE INTO title_list
+            USING (
+                SELECT #{memberNum} AS MEMBER_NUM, #{titleNum} AS TITLE_NUM FROM DUAL
+            ) src
+            ON (title_list.MEMBER_NUM = src.MEMBER_NUM)
+            WHEN MATCHED THEN
+                UPDATE SET title_list.TITLE_NUM = src.TITLE_NUM
+            WHEN NOT MATCHED THEN
+                INSERT (MEMBER_NUM, TITLE_NUM)
+                    VALUES (src.MEMBER_NUM, src.TITLE_NUM)
+
+    </update>
+
+    <update id="updateMemberInMemberTable">
+        UPDATE member
+        SET TITLE_NUM =
+                CASE
+                    WHEN #{titleNum} = '' THEN NULL
+                    ELSE #{titleNum}
+                    END
+        WHERE MEMBER_NUM = #{memberNum}
+    </update>
+
+
+    <select id="selectAllWithTitle" resultType="mem">
+        SELECT member.MEMBER_NUM, member.MEMBER_ID, member.MEMBER_PW, member.MEMBER_NAME,
+        member.GENDER, member.BIRTH, member.NICKNAME, title.TITLE_NAME
+        FROM member
+        LEFT JOIN title_list ON member.MEMBER_NUM = title_list.MEMBER_NUM
+        LEFT JOIN title ON title_list.TITLE_NUM = title.TITLE_NUM
+        <where>
+            <if test="searchWord != null">
+                member.MEMBER_NUM like '%' || #{searchWord} || '%'
+                or member.MEMBER_ID like '%' || #{searchWord} || '%'
+                or member.MEMBER_NAME like '%' || #{searchWord} || '%'
+                or member.NICKNAME like '%' || #{searchWord} || '%'
+            </if>
+        </where>
+    </select>
 </mapper>

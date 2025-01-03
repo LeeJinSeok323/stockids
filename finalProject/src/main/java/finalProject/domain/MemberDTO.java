@@ -15,5 +15,6 @@ public class MemberDTO {
     String nickName;
     String gender;
     Date memberBirth;
-
+    String titleNum;
+    String titleName;
 }

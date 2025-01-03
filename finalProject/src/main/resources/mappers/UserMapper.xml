@@ -8,20 +8,17 @@
             MEMBER_ID as userId,
             MEMBER_PW as userPw,
             MEMBER_NAME as userName,
-            NICKNAME as nickName,
             'false' as isAdmin
         from member
         where MEMBER_ID = #{userId}
         union
         select
-            ADMIN_ID,
-            ADMIN_PW,
-            ADMIN_NAME,
-            ADMIN_NAME,
-            'true'
+            ADMIN_ID as userId,
+            ADMIN_PW as userPw,
+            ADMIN_NAME as userName,
+            'true' as isAdmin
         from admin
         where ADMIN_ID = #{userId}
     </select>
 
 </mapper>
-

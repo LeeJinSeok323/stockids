@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/title/titleList.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -70,33 +71,33 @@
         function replaceContents(content){
             $("#contents").html(content);
         }
-        $(function(){
-            $("#checkBoxs").click(function(){
-                if($("#checkBoxs").prop("checked")){
-                    $("input:checkbox[name=titleDels]").prop("checked",true);
-                }else{
-                    $("input:checkbox[name=titleDels]").prop("checked",false);
-                }
-            });
-            $("input:checkbox[name=titleDels]").click(function(){
-                var tot= $("input:checkbox[name=titleDels]").length;
-                var checked = $("input:checkbox[name=titleDels]:checked").length;
-                if(tot == checked){
-                    $("#checkBoxs").prop("checked",true);
-                }else{
-                    $("#checkBoxs").prop("checked",false);
-                }
-            });
-
-            $("#frm").submit(function(){
-                if($("input:checkbox[name=titleDels]:checked").length<1){
-                    alert("하나이상 선택하시오");
-                    return false;
-                }
-
-            });
-
+     $(function(){
+        $("#checkBoxs").click(function(){
+            if($("#checkBoxs").prop("checked")){
+               $("input:checkbox[name=titleDels]").prop("checked",true);
+            }else{
+               $("input:checkbox[name=titleDels]").prop("checked",false);
+            }
         });
+        $("input:checkbox[name=titleDels]").click(function(){
+         var tot= $("input:checkbox[name=titleDels]").length;
+         var checked = $("input:checkbox[name=titleDels]:checked").length;
+         if(tot == checked){
+             $("#checkBoxs").prop("checked",true);
+         }else{
+             $("#checkBoxs").prop("checked",false);
+         }
+        });
+
+         $("#frm").submit(function(){
+           if($("input:checkbox[name=titleDels]:checked").length<1){
+               alert("하나이상 선택하시오");
+               return false;
+           }
+
+         });
+
+     });
 
 
 
@@ -156,47 +157,51 @@
         <button class="login-btn" onclick="location.href='/login/logout';">로그아웃</button>
     </header>
 </div>
-<br><br><br><br><br>
+<br><br><br>
 <!-- 관리자 목록이 로드될 위치 -->
 <div id="contents"></div>
 <div id="title-form" >
-    <table border=1 width="600" align="center">
-        <form action="/user1/memberList" method="get">
-            <tr><td colspan="6" style="text-align: center;">검색 :
-                <input type="search" name="searchWord" size="60" th:value="${searchWord}"/>
-                <input type="submit" value="검색"/>
-            </td></tr>
-        </form>
+    <h1>칭호 내역</h1>
+<table border="1" width="800" align="center">
+    <form action="/user1/titleList" method="get">
         <tr>
-            <td style="text-align: center;">번호</td>
-            <td style="text-align: center;">아이디</td>
-            <td style="text-align: center;">이름</td>
-            <td style="text-align: center;">별명</td>
-            <td style="text-align: center;">칭호</td>
-            <td style="text-align: center;">칭호 수정</td>
-        </tr>
-        <tr th:each="dto : ${dtos}">
-            <td style="text-align: center;">[[${dto.memberNum}]]</td>
-            <td style="text-align: center;">[[${dto.memberId}]]</td>
-            <td style="text-align: center;">[[${dto.memberName}]]</td>
-            <td style="text-align: center;">[[${dto.nickName}]]</td>
-            <td style="text-align: center;">[[${dto.titleName}]]</td>
-            <td style="text-align: center;">
-                <form th:action="@{/user1/updateTitle}" method="post">
-                <input type="hidden" name="memberNum" th:value="${dto.memberNum}" />
-                    <select name="titleNum">
-                        <option value="">선택하세요</option>
-                        <option th:each="title : ${title}"
-                                th:value="${title.titleNum}"
-                                th:text="${title.titleName}"
-                                th:selected="${title.titleNum == dto.titleNum}">
-                        </option>
-                    </select>
-                    <input type="submit" value="수정" />
-                </form>
+            <td colspan="6">
+                이름 검색:
+                <input type="search" name="searchWord" size="60" th:value="${searchWord}" />
+                <input type="submit" value="검색" />
             </td>
         </tr>
-    </table>
+    </form>
+    <form action="titleDelete" method="post" id="frm">
+    <tr >
+        <th>칭호번호</th>
+        <th>칭호역할</th>
+        <th>칭호이름</th>
+        <th>
+            <div style="display: flex; align-items: center; justify-content: center;">
+            <input type="checkbox" id="checkBoxs"/>
+            <input type="submit" value="삭제" />
+            </div>
+        </th>
+    </tr>
+
+    <tr th:each="dto : ${list}">
+        <td th:text="${dto.titleNum}"></td>
+        <td th:text="${dto.titleContents}"></td>
+        <td th:text="${dto.titleName}"></td>
+        <td><input type="checkbox" name="titleDels" th:value="${dto.titleNum}" /></td>
+    </tr>
+    </form>
+</table>
 </div>
+<br><br><br>
+<footer class="footer">
+    <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
 </body>
 </html>

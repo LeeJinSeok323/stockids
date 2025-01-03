@@ -17,7 +17,13 @@
         where ADMIN_NUM = #{adminNum}
     </select>
 
+    <select id ="getAdminNum" parameterType="string" resultType="string">
+     select admin_num from admin
+     where admin_id = #{adminId}
+    </select>
     <delete id="deleteAdmin" parameterType="string" >
         delete from admin where admin_num = #{adminNum}
     </delete>
+
+
 </mapper>

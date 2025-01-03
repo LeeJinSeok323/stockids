@@ -6,19 +6,23 @@
     <link rel="stylesheet" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
-
 </head>
 <body>
-<header class="header">
+<header th:fragment="header" class="header">
     <div class="logo">StocKids</div>
     <nav>
         <ul>
-            <li><a href="/user1/home">홈</a></li>
+            <li><a href="/">홈</a></li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}"><a href="titleList">칭호 </li>
+            <li th:if="${isAdmin}"><a href="titleWrite">칭호 등록</a></li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li>게시판</li>
         </ul>
     </nav>
-    <button class="login-btn">로그인</button>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
-
 <div class="admin-form-container">
     <h1>관리자 등록</h1>
     <form action="form" method="post" th:object="${adminCommand}">

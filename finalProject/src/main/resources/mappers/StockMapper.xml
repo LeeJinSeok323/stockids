@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.StockMapper">
+
+    <update id="updateStockInfo">
+        UPDATE stock_info
+        SET
+        STOCK_NAME = #{stockName},
+        OPEN_PRICE = #{openPrice},
+        CLOSE_PRICE = #{closePrice},
+        LOW_PRICE = #{lowPrice},
+        HIGH_PRICE = #{highPrice}
+        WHERE STOCK_CODE = #{stockCode}
+    </update>
+
+    <insert id="insertStockInfo">
+        INSERT INTO stock_info (STOCK_CODE, STOCK_NAME, OPEN_PRICE, CLOSE_PRICE, LOW_PRICE, HIGH_PRICE)
+        VALUES (#{stockCode}, #{stockName}, #{openPrice}, #{closePrice}, #{lowPrice}, #{highPrice})
+    </insert>
+
+    <select id="isStockExist" resultType="int">
+        SELECT COUNT(*)
+        FROM STOCK_INFO
+        WHERE STOCK_CODE = #{stockCode}
+    </select>
+
+</mapper>
