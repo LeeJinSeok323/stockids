@@ -17,6 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LoginController {
     @Autowired
     UserLoginService userLoginService;
+    @Autowired
+    SessionCheckService sessionCheckService;
+
     @PostMapping("login")
     public String login(LoginCommand loginCommand, BindingResult result, HttpSession session, RedirectAttributes redirectAttributes) {
         userLoginService.execute(loginCommand, session, result);
@@ -53,8 +56,37 @@ public class LoginController {
         return "redirect:/"; // 로그아웃 후 메인 페이지로 이동
     }
 
-    @Autowired
-    SessionCheckService sessionCheckService;
+    //React 로그인 부분
+    @GetMapping("react")
+    public String showLoginPageReact() {
+        return "thymeleaf/react/LoginForReact";
+    }
+
+    @PostMapping("react/login")
+    public String reactLogin(LoginCommand loginCommand, BindingResult result, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        userLoginService.execute(loginCommand, session, result);
+        if (result.hasErrors()) {
+            return "thymeleaf/react/reactLogin";
+        }
+        AuthInfoDTO authInfo = (AuthInfoDTO) session.getAttribute("auth");
+        if (authInfo == null) {
+            return "thymeleaf/react/reactLogin";
+        }
+        if (authInfo != null) {
+            redirectAttributes.addFlashAttribute("isLoggedIn", true);
+            redirectAttributes.addFlashAttribute("isAdmin", authInfo.isAdmin());
+            return "thymeleaf/react/reactLogin";
+        }
+        return "thymeleaf/react/reactLogin";
+    }
+
+    @GetMapping("react/logout")
+    @ResponseBody
+    public void reactLogout(HttpSession session) {
+        session.invalidate();
+    }
+
+    ////
 
     @GetMapping("/sessionCheck")
     @ResponseBody
@@ -87,6 +119,11 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/user1/login")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
+
     @Controller
     public class MainController {
         @GetMapping("/")
@@ -99,11 +136,6 @@ public class LoginController {
             }
             return "thymeleaf/index";
         }
-    }
-
-    @GetMapping("/user1/login")
-    public String redirectToLogin() {
-        return "redirect:/login";
     }
 
     @ControllerAdvice
