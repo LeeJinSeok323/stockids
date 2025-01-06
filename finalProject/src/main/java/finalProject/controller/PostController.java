@@ -7,17 +7,12 @@ import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("post")
@@ -41,8 +36,8 @@ public class PostController {
 
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
-                       @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                       Model model) {
+                           @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                           Model model) {
         postListService.execute(page, searchWord, model);
         return "thymeleaf/post/postList";
     }
@@ -91,7 +86,7 @@ public class PostController {
     @PostMapping("postUpdate")
     public String postupdate(PostCommand postCommand) {
         postUpdateService.execute(postCommand);
-        return "redirect:postDetail/"+postCommand.getPostNum();
+        return "redirect:postDetail/" + postCommand.getPostNum();
     }
 
     @GetMapping("postDelete/{postNum}")
@@ -115,8 +110,7 @@ public class PostController {
         } else {
             String memberNum = memberMapper.getMemberNum(auth.getUserId());
             String likeCount = postLikeService.execute(postCommand, memberNum);
-            return "redirect:postDetail/"+postCommand.getPostNum();
+            return "redirect:postDetail/" + postCommand.getPostNum();
         }
     }
-
 }
