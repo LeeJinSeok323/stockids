@@ -7,28 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postInfo.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-    <script>
-        function handleRecommendClick(event) {
-            const postNum = $(event.currentTarget).data("post-num");
 
-            $.ajax({
-                url: '/post/postLike',
-                type: 'POST',
-                data: {postNum: postNum},
-                success: function (response) {
-                    if (response.success) {
-                        $(event.currentTarget).find('.like-count').text(response.likeCount);
-                    } else {
-                        window.location.href = response.message;
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('AJAX 요청에 실패했습니다:', error);
-                    alert('추천 처리 중 오류가 발생했습니다.');
-                }
-            });
-        }
-    </script>
 </head>
 <header class="header">
     <div class="logo">StocKids</div>
@@ -70,11 +49,14 @@
 
     <!-- 추천 이미지 버튼 -->
     <div class="recommend-button">
-        <button type="button" class="recommend-btn" th:data-post-num="${postCommand.postNum}" onclick="handleRecommendClick(event)">
-            <img src="/static/images/post/like.png" alt="추천" class="recommend-img"/>
-            <br>추천
-            <br><span class="like-count">[[${postCommand.likeCount}]]</span>
-        </button>
+        <form action="/post/postLike" method="post">
+            <input type="hidden" name="postNum" th:value="${postCommand.postNum}" />
+            <button type="submit" class="recommend-btn">
+                <img src="/static/images/post/like.png" alt="추천" class="recommend-img" />
+                <br>추천
+                <br><span class="like-count">[[${postCommand.likeCount}]]</span>
+            </button>
+        </form>
     </div>
 
     <!-- 하단 버튼 -->

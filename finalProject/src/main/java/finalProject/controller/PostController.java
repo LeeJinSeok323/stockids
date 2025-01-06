@@ -101,27 +101,22 @@ public class PostController {
     }
 
     @PostMapping("postLike")
-    @ResponseBody
-    public Map<String, Object> postLike(HttpSession session, String postNum) {
+    public String postLike(HttpSession session, PostCommand postCommand) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        Map<String, Object> response = new HashMap<>();
-
         if (auth == null) {
             try {
                 String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
-                response.put("success", false);
-                response.put("message", "/login?message=" + message);
+                return "redirect:/login?message=" + message;
             } catch (UnsupportedEncodingException e) {
+                // 예외 처리
                 e.printStackTrace();
-                response.put("success", false);
-                response.put("message", "/login");
+                return "redirect:/login";
             }
         } else {
             String memberNum = memberMapper.getMemberNum(auth.getUserId());
-            String likeCount = postLikeService.execute(postNum, memberNum);
-            response.put("success", true);
-            response.put("likeCount", likeCount);
+            String likeCount = postLikeService.execute(postCommand, memberNum);
+            return "redirect:postDetail/"+postCommand.getPostNum();
         }
-        return response;
     }
+
 }
