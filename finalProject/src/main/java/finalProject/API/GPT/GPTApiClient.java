@@ -17,6 +17,9 @@ public class GPTApiClient {
     private final ObjectMapper mapper;
 
     public GPTApiClient(String apikey) {
+        if(apikey == null){
+            System.out.println("apikey가 널임.");
+        }
         this.apiKey = apikey;
         this.mapper = new ObjectMapper();
     }
@@ -24,6 +27,7 @@ public class GPTApiClient {
     public JSONObject sendChatCompletionRequest(ChatGPTRequest chatGPTRequest) {
         try {
             String requestBody = chatGPTRequest.toJSONString();
+            System.out.println("apikey"+ apiKey);
             System.out.println("리퀘스트 바디"+requestBody);
             System.out.println("Request Body: " +
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(

@@ -9,5 +9,10 @@
         from ARTICLE
         where ARTICLE_NUM not in (select ARTICLE_PREDICTION_NUM from DAY_ARTICLE_PREDICTION)
     </select>
-
+    <insert id="insertArticlePrediction" parameterType="articlePredictionDTO">
+        insert into DAY_ARTICLE_PREDICTION (ARTICLE_PREDICTION_NUM, AI_MODEL, ARTICLE_PREDICTION_VALUE
+                                            ,ARTICLE_PREDICTION_DATE, ARTICLE_PREDICTION_CONTENTS)
+        values(#{articlePredictionNum}, #{gptModel}, #{articlePredictionValue}
+               ,sysdate, #{articlePredictionContents})
+    </insert>
 </mapper>
