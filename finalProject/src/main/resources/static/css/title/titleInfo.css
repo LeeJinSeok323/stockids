@@ -9,11 +9,27 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* 배경색 */
+    color: #333;
+}
+
+#title-form h1 {
+    text-align: center; /* 중앙 정렬 */
+    font-size: 2.4rem; /* 폰트 크기 */
+    color: #3c3f42; /* 제목 색상 */
+    margin-bottom: 20px; /* 아래 여백 */
+    font-weight: bold;
+}
+
 form {
     width: 40%;
     margin: 0 auto;
     padding: 10px;
     border-radius: 10px;
+    background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -47,7 +63,7 @@ table td {
 textarea {
     width: 95%;
     height: 150px;
-    padding: 10px;
+    padding: 1px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 5px;

@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
+    <link rel="stylesheet" href="/static/css/memberRegist.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -147,6 +149,7 @@
 <!-- 관리자 목록이 로드될 위치 -->
 <div id="contents"></div>
 <div id="title-form" >
+    <h1>회원 등록</h1>
 <form class="login-form" action="/user1/memberRegist" method="post" th:object="${memberCommand}">
 회원아이디: <input type="text" name="memberId" id="memberId" th:value="${memberCommand.memberId}"/><br/>
 회원비밀번호: <input type="password" name="memberPw"/><br/>
@@ -154,8 +157,14 @@
 회원이름: <input type="text" name="memberName" th:value="${memberCommand.memberName}"/><br/>
 별명: <input type="text" name="nickName" th:value="${memberCommand.nickName}"/><br/>
 회원성별:
+    <div class="radio-group">
+        <label>
 <input type="radio" name="gender" value="M">남자
+        </label>
+        <label>
 <input type="radio" name="gender" value="F">여자<br/>
+        </label>
+    </div>
 생년월일: <input type="date" name="memberBirth" th:value="${memberCommand.memberBirth}"><br/>
 <input type="submit" value="회원등록"/>
 </form>
