@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
 </head>
 <body>
 <header th:fragment="header" class="header">
@@ -14,8 +15,20 @@
         <ul>
             <li><a href="/">홈</a></li>
             <li th:if="${isAdmin}" id="list">관리자</li>
-            <li th:if="${isAdmin}"><a href="titleList">칭호 </li>
-            <li th:if="${isAdmin}"><a href="titleWrite">칭호 등록</a></li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
             <li><a href="#">주식 골라보기</a></li>
             <li>게시판</li>
         </ul>
