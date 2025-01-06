@@ -15,7 +15,10 @@ public class GPTController {
     @RequestMapping("test")
     public String test(HttpSession session) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        if(auth.isAdmin()){
+        if(auth == null) {
+            return "0";
+        }
+        else if(auth.isAdmin()){
             boolean isChanged = articlePredictionService.execute();
             if(isChanged)
                 return "200";
