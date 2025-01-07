@@ -50,15 +50,43 @@
     <!-- 추천 이미지 버튼 -->
     <div class="recommend-button">
         <form action="/post/postLike" method="post">
-            <input type="hidden" name="postNum" th:value="${postCommand.postNum}" />
+            <input type="hidden" name="postNum" th:value="${postCommand.postNum}"/>
             <button type="submit" class="recommend-btn">
-                <img src="/static/images/post/like.png" alt="추천" class="recommend-img" />
+                <img src="/static/images/post/like.png" alt="추천" class="recommend-img"/>
                 <br>추천
                 <br><span class="like-count">[[${postCommand.likeCount}]]</span>
             </button>
         </form>
     </div>
+    <br>
 
+    <div class="comment-section">
+        <h3>댓글 작성</h3>
+        <form action="/comment/commentWrite" method="post">
+            <input type="hidden" name="postNum" th:value="${postCommand.postNum}"/>
+            <textarea id="commentContents" name="commentContents" required></textarea>
+            <button type="submit" class="comment-submit-btn">작성</button>
+        </form>
+    </div>
+    <br>
+    <table border="1" width="600" align="center">
+        <tr>
+            <td>번호</td>
+            <td>작성자</td>
+            <td>내용</td>
+            <td>시간</td>
+            <td>글번호</td>
+            <td>작성자</td>
+        </tr>
+        <tr th:each="dto : ${list}">
+            <td>[[${dto.commentNum}]]</td>
+            <td>[[${dto.commentAuthor}]]</td>
+            <td>[[${dto.commentContents}]]</td>
+            <td>[[${#dates.format(dto.commentTime,'yyyy-MM-dd')}]]</td>
+            <td>[[${dto.postNum}]]</td>
+            <td>[[${dto.postAuthor}]]</td>
+        </tr>
+    </table>
     <!-- 하단 버튼 -->
     <div class="post-buttons">
         <button th:if="${auth != null and auth.userId == postAuthorId}"

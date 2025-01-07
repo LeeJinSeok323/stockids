@@ -33,6 +33,8 @@ public class PostController {
     PostLikeService postLikeService;
     @Autowired
     MemberMapper memberMapper;
+    @Autowired
+    CommentListService commentListService;
 
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -72,6 +74,7 @@ public class PostController {
     @GetMapping("postDetail/{postNum}")
     public String postDetail(@PathVariable("postNum") String postNum, Model model, HttpSession session) {
         postDetailService.execute(model, postNum);
+        commentListService.execute(model, postNum);
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         model.addAttribute("auth", auth);
         return "thymeleaf/post/postInfo";

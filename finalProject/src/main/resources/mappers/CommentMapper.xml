@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD MApper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.CommentMapper">
+    <insert id="commentInsert" parameterType="commentDTO">
+        INSERT INTO "COMMENT" (
+        COMMENT_NUM,
+        COMMENT_AUTHOR,
+        POST_AUTHOR,
+        POST_NUM,
+        COMMENT_CONTENTS,
+        COMMENT_TIME
+        ) VALUES (
+        #{commentNum},
+        #{commentAuthor},
+        #{postAuthor},
+        #{postNum},
+        #{commentContents},
+        SYSDATE
+        )
+    </insert>
+
+    <select id="commentSelectList" parameterType="commentDTO" resultType="commentDTO">
+        SELECT
+        C.COMMENT_NUM,
+        C.COMMENT_AUTHOR,
+        M.NICKNAME AS POST_AUTHOR,
+        C.POST_NUM,
+        C.COMMENT_CONTENTS,
+        C.COMMENT_TIME
+        FROM
+        "COMMENT" C
+        LEFT JOIN
+        "MEMBER" M
+        ON
+        C.COMMENT_AUTHOR = M.MEMBER_NUM
+        WHERE
+        C.POST_NUM = #{postNum}
+        ORDER BY
+        C.COMMENT_TIME DESC
+    </select>
+
+    <select id="getPostAuthorByPostNum" parameterType="string" resultType="string">
+        SELECT POST_AUTHOR
+        FROM POST
+        WHERE POST_NUM = #{postNum}
+    </select>
+</mapper>
