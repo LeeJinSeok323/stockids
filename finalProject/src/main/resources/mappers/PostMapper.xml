@@ -17,7 +17,7 @@
     </insert>
 
     <select id="findAuthorIdByPostNum" resultType="String">
-        select m.MEMBER_ID AS postAuthor <!-- 작성자 닉네임으로 받아오기 -->
+        select m.MEMBER_ID AS postAuthor
         from POST p
         join MEMBER m on p.POST_AUTHOR = m.MEMBER_NUM
         where p.POST_NUM = #{postNum}
