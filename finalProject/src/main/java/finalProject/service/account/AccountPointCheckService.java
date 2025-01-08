@@ -8,20 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountPointChargeService {
-    @Autowired
-    AccountMapper accountMapper;
+public class AccountPointCheckService {
 
     @Autowired
     UserMapper userMapper;
 
-    public void execute(Integer point, HttpSession session) {
+    @Autowired
+    AccountMapper accountMapper;
+
+    public Integer execute(HttpSession session) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         String userNum = userMapper.getUserNumById(auth.getUserId());
-        if(accountMapper.checkPoint(userNum) != null) {
-            accountMapper.pointUpdate(point, userNum);
-        } else{
-            accountMapper.pointCharge(point, userNum);
-        }
+        Integer checkPoint = accountMapper.checkPoint(userNum);
+        return checkPoint;
     }
+
 }

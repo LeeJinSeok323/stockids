@@ -10,7 +10,7 @@ import org.apache.ibatis.type.Alias;
 @NoArgsConstructor
 @Alias("stockDTO")
 public class StockDTO {
-    Integer stockCode;
+    String stockCode;
     String stockName;
     Integer openPrice;
     Integer closePrice;

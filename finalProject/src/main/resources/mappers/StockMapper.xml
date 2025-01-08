@@ -20,10 +20,56 @@
         VALUES (#{stockCode}, #{stockName}, #{openPrice}, #{closePrice}, #{lowPrice}, #{highPrice})
     </insert>
 
-    <select id="isStockExist" resultType="int">
+    <select id="isStockExist" resultType="integer" parameterType="string">
         SELECT COUNT(*)
         FROM STOCK_INFO
         WHERE STOCK_CODE = #{stockCode}
+    </select>
+
+    <insert id="purchase" parameterType="purchaseDTO">
+        insert into virture_stock (VIRTUAL_DEAL_NUM, MEMBER_NUM, STOCK_CODE, VIRTUAL_DEAL_PRICE, VIRTUAL_DEAL_VOLUME, VIRTUAL_DEAL_TIME)
+        values (#{virtualDealNum}, #{memberNum}, #{stockCode}, #{virtualDealPrice}, #{virtualDealVolume}, sysdate)
+    </insert>
+
+    <select id="cumulativeStockSelect" resultType="integer">
+        select count_stock from cumulative_stock where member_num = #{memberNum} and stock_code = #{stockCode}
+    </select>
+
+    <select id="cumulativeStockSelectAll" resultType="purchaseDTO">
+        select virtual_deal_price, virtual_deal_volume from virture_stock where member_num = #{memberNum}
+    </select>
+
+    <insert id="cumulativeStockInsert">
+        insert into cumulative_stock (member_num, stock_code, count_stock) values (#{memberNum}, #{stockCode}, #{countStock})
+    </insert>
+
+    <update id="cumulativeStockUpdate">
+        update cumulative_stock set count_stock = #{count} where member_num = #{memberNum} and stock_code = #{stockCode}
+    </update>
+
+    <resultMap id="MyStockResultMap" type="myStockDTO">
+        <association property="stockDTO" javaType="StockDTO">
+            <id column="STOCK_CODE" property="stockCode"/>
+            <result column="STOCK_NAME" property="stockName"/>
+        </association>
+        <association property="cumulativeStockDTO" javaType="CumulativeStockDTO">
+            <id column="STOCK_CODE" property="stockCode"/>
+            <result column="COUNT_STOCK" property="countStock"/>
+        </association>
+    </resultMap>
+
+    <select id="fetchMyStock" parameterType="string" resultMap="MyStockResultMap">
+        SELECT
+            s.STOCK_CODE AS STOCK_CODE,
+            s.STOCK_NAME AS STOCK_NAME,
+            cs.COUNT_STOCK AS COUNT_STOCK
+        FROM
+            stock_info s
+                JOIN
+            cumulative_stock cs
+            ON s.STOCK_CODE = cs.STOCK_CODE
+        WHERE
+            cs.member_num = #{memberNum}
     </select>
 
 </mapper>

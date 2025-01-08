@@ -21,7 +21,7 @@
         where ADMIN_ID = #{userId}
     </select>
     <select id="getUserNumById" parameterType="string" resultType="string">
-        select member_num as userId
+        select member_num as userNum
         from member where member_id = #{userId}
         union
         select admin_num

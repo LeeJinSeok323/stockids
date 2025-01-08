@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.AccountMapper">
+    <insert id="pointCharge">
+        insert into account (member_num, account_balance) values (#{userNum}, #{point})
+    </insert>
+
+    <select id="checkPoint" parameterType="String">
+        select ACCOUNT_BALANCE from account where member_Num = #{userNum}
+    </select>
+
+    <update id="pointUpdate">
+        UPDATE account SET ACCOUNT_BALANCE = ACCOUNT_BALANCE + #{point} WHERE MEMBER_NUM = #{userNum}
+    </update>
+
+    <update id="purchasePointUpdate">
+        update account set account_balance = #{point} where member_num = #{userNum}
+    </update>
+
+</mapper>
