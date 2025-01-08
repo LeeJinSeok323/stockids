@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StocKids</title>
+  <link rel="stylesheet" href="/static/css/header2.css">
+  <link rel="stylesheet" href="/static/css/footer2.css">
+  <link rel="stylesheet" href="/static/css/adminHome.css">
+  <link rel="stylesheet" href="/static/css/title/dropDown.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/title/titleInfo.css">
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      // '관리자' 버튼 클릭 시
+      $("#list").click(function () {
+        list();
+        $("#title-form").hide(); // 칭호 등록 폼 숨기기
+      });
+
+      // '칭호 등록' 메뉴 클릭 시
+      $("#title-register").click(function () {
+        $("#contents").empty(); // 관리자 목록 숨기기
+        $("#title-form").show(); // 칭호 등록 폼 표시
+        history.pushState(null, '', '/user1/alertWrite'); // URL 변경
+      });
+    });
+
+
+
+    function list(){
+      $.ajax({
+        url:"/user1/list", // 관리자 목록을 불러오는 API
+        type:"get",
+        success:function(result){
+          let content = `
+                    <div class="admin-list-container">
+                        <h1>관리자 목록</h1>
+                        <div class="admin-list">
+                            <div>
+                                <a href="form">
+                                    <img src="/static/images/admin-add-button.png" width="400"></a>
+                            </div>
+                `;
+          result.forEach(function(dto){
+            content += `
+                        <div class="admin-card" onclick="detail('${dto.adminNum}')">
+                            <div class="admin-header">
+                                <span class="admin-id">${dto.adminName}</span>
+                                <span class="admin-position">${dto.position}</span>
+                            </div>
+                            <div class="admin-body">
+                                <p><strong>아이디:</strong>${dto.adminId}</p>
+                                <p><strong>성별:</strong> ${dto.gender}</p>
+                                <p><strong>생년월일:</strong> ${dto.birth}</p>
+                            </div>
+                        </div>
+                    `;
+          });
+          content += `
+                        </div>
+                    </div>
+                `;
+          replaceContents(content);
+          history.pushState(null, '', '/user1/home'); // 주소 변경
+        },
+        error:function (){
+          alert("서버 오류");
+        }
+      });
+    }
+
+    function replaceContents(content){
+      $("#contents").html(content);
+    }
+
+    $(function() {
+      $("btn").click(function () {
+      });
+
+      $("#frm").ajaxSubmit({
+        url: "user1/alertWrite",
+        type: "post",
+        success: function (result) {
+          if (result.trin() == 300) {
+            alert("알람등록 성공!");
+            location.reload(); // 페이지 새로고침
+          } else {
+            $("#writeForm").html(result);
+          }
+        }
+      });
+    });
+      $(function () {
+        // On click of the titleListMenu
+        $("#titleListMenu").click(function () {
+          // Remove the 'selected' class from all menu items
+          $(".nav-link").removeClass("selected");
+
+          // Add 'selected' class to the clicked item
+          $(this).find(".nav-link").addClass("selected");
+
+          // Navigate to the corresponding page
+          window.location.href = "/user1/titleList";
+        });
+
+        // On click of the alertListMenu
+        $("#alertListMenu").click(function () {
+          // Remove the 'selected' class from all menu items
+          $(".nav-link").removeClass("selected");
+
+          // Add 'selected' class to the clicked item
+          $(this).find(".nav-link").addClass("selected");
+
+          // Navigate to the corresponding page
+          window.location.href = "/user1/alertList";
+        });
+
+        // On click of the memberListMenu
+        $("#memberListMenu").click(function () {
+          $(".nav-link").removeClass("selected");
+          $(this).find(".nav-link").addClass("selected");
+          window.location.href = "/user1/memberList";
+        });
+
+        // On click of the titleWriteMenu
+        $("#titleWriteMenu").click(function () {
+          $(".nav-link").removeClass("selected");
+          $(this).find(".nav-link").addClass("selected");
+          window.location.href = "/user1/titleWrite";
+        });
+      });
+
+      $(function () {
+        // On click of the alertWriteMenu
+        $("#alertWriteMenu").click(function () {
+          $(".nav-link").removeClass("selected");
+          $(this).find(".nav-link").addClass("selected");
+          window.location.href = "/user1/alertWrite";
+        });
+      });
+
+  </script>
+</head>
+<body>
+<div th:if="${isLoggedIn}">
+  <header class="header">
+    <div class="logo">StocKids</div>
+    <ul>
+      <li><a href="/">홈</a></li>
+      <li th:if="${isAdmin}" id="list">관리자</li>
+      <li th:if="${isAdmin}" class="admin-menu">
+        칭호
+        <ul class="dropdown-menu">
+          <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+            <span class="nav-link">칭호내역</span>
+          </li>
+          <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+            <span class="nav-link">유저칭호</span>
+          </li>
+          <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+            <span class="nav-link">칭호등록</span>
+          </li>
+        </ul>
+      </li>
+      <li th:if="${isAdmin}" class="admin-menu">
+        알림
+        <ul class="dropdown-menu">
+          <li th:if="${isAdmin}" class="admin-menu" id="alertWriteMenu">
+            <span class="nav-link">알림등록</span>
+          </li>
+          <li th:if="${isAdmin}" class="admin-menu" id="alertListMenu">
+            <span class="nav-link">알림관리</span>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#">주식 골라보기</a></li>
+      <li>게시판</li>
+    </ul>
+    <button class="login-btn" onclick="location.href='/login/logout';">로그아웃</button>
+  </header>
+</div>
+<br><br><br><br><br><br><br><br>
+<!-- 관리자 목록이 로드될 위치 -->
+<div id="contents"></div>
+<div id="title-form" >
+  <h1>알림 등록</h1>
+  <form action="/user1/alertWrite" method="post" id="frm">
+    <table border="1" width="600" align="center">
+      <tr><th width="100">알림번호<br>(자동부여)</th>
+        <td><input type="text" name="alertNum" th:value = "${alertCommand.alertNum}" readonly="readonly"/></td></tr>
+      <tr><th>알림역활</th>
+        <td><textarea rows="10" cols="65" name="alertContents" >[[${alertCommand.alertContents}]]</textarea></td></tr>
+      <tr><th colspan="2"><input type="submit" value="알림 등록"/></th></tr>
+    </table>
+  </form>
+</div>
+<br><br><br>
+<footer class="footer">
+  <p>© 2024 StocKidsy. 모든 권리 보유.</p>
+  <ul>
+    <li>이용약관</li>
+    <li>개인정보 처리방침</li>
+    <li>고객센터</li>
+  </ul>
+</footer>
+</body>
+</html>
