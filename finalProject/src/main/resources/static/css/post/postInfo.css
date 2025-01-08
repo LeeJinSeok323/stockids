@@ -63,7 +63,6 @@
     background-color: #c82333; /* 호버 시 색상 변경 */
 }
 
-
 .recommend-button {
     text-align: center;
     margin-bottom: 20px;
@@ -80,4 +79,101 @@
 
 .recommend-img:hover {
     transform: scale(1.1); /* 호버 시 이미지 크기 확대 */
+}
+
+.comment-section {
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.comment-section textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    margin-bottom: 10px; /* 댓글 입력창과 버튼 간의 간격 */
+    box-sizing: border-box; /* padding 포함하여 전체 너비 설정 */
+}
+
+.comment-submit-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.comment-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 댓글 등록 버튼 우측 정렬 */
+.comment-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 우측 정렬을 위한 설정 */
+}
+
+.comment-item {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.comment-content {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #333;
+    position: relative; /* 버튼을 우측에 배치하기 위해 position을 설정 */
+}
+
+.delete-comment-btn {
+    position: absolute; /* 우측 끝에 배치 */
+    right: 0;
+    top: 0;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.delete-comment-btn:hover {
+    background-color: #c82333;
+}
+
+.comment-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
 }
