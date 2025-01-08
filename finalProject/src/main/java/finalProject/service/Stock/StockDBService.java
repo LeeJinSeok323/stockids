@@ -23,7 +23,7 @@ public class StockDBService {
             JsonNode items = node.at("/response/body/items/item");
 
             for (JsonNode item : items) {
-                Integer stockCode = item.get("srtnCd").asInt();
+                String stockCode = item.get("isinCd").asText();
                 String stockName = item.get("itmsNm").asText();
                 Integer openPrice = item.get("mkp").asInt();
                 Integer closePrice = item.get("clpr").asInt();
