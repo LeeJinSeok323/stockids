@@ -1,16 +1,13 @@
 package finalProject.API.kafka;
 
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
-import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.Materialized;
 
 import java.util.Properties;
 
@@ -33,63 +30,34 @@ public class KafkaStreamsServer {
         // Kafka Streams의 토폴로지를 정의하는 객체
         StreamsBuilder builder = new StreamsBuilder();
 
-        // Member 역직렬화 설정
-        JsonDeserializer<MemberDTO.Create> memberDeserializer = new JsonDeserializer<>(MemberDTO.Create.class);
-        memberDeserializer.addTrustedPackages("com.example.*");
+        KStream<String, String> input = builder.stream(INPUT_TOPIC);
 
-        // "member" 토픽에서 문자열 데이터를 읽어서 KTable로 변환
-        KTable<String, MemberDTO.Create> table = builder.table(
-                TABLE_TOPIC,
-                Consumed.with(
-                        Serdes.String(),
-                        Serdes.serdeFrom(new JsonSerializer<>(), memberDeserializer)
+        // 데이터 중 시간값을 추출하여 그룹화
+        KStream<String, String> groupedStream = input.map((key, value) -> {
+            // 데이터를 파싱
+            String[] parts = value.split(":");
+            int term = 100;
+            int startTime = Integer.parseInt(parts[0].substring(10).trim());
+            for (String part : parts) {
+                String[] keyValue = part.split("=");
+                if (keyValue.length == 2 && keyValue[0].trim().equals("timestamp")) {
+                    if(Integer.parseInt(keyValue[1].trim()) > startTime + term)
+                        break;
+                }
+            }
+            return new KeyValue<>(String.valueOf(startTime), value);
+        });
+
+        // 그룹화된 데이터로 통계 생성
+        groupedStream.groupByKey() // Key(시간 그룹) 기준으로 그룹화
+                .reduce(
+                        (oldValue, newValue) -> StockStatistics.get(oldValue, newValue), // 최신 값 유지
+                        Materialized.with(Serdes.String(), Serdes.String()) // Key와 Value의 Serde 설정
                 )
-        );
+                .toStream() // KTable -> KStream 변환
+                .to(OUTPUT_TOPIC);
 
-        // Board 역직렬화 설정
-        JsonDeserializer<BoardDTO.Create> boardDeserializer = new JsonDeserializer<>(BoardDTO.Create.class);
-        boardDeserializer.addTrustedPackages("com.example.*");
 
-        // 스트림 토픽에서 문자열 데이터를 읽어서 KStream으로 변환
-        KStream<String, BoardDTO.Create> stream = builder.stream(
-                STREAM_TOPIC,
-                Consumed.with(
-                        Serdes.String(),
-                        Serdes.serdeFrom(new JsonSerializer<>(), boardDeserializer)
-                )
-        );
-
-        // KTable과 KStream을 inner join
-        KStream<String, BoardDetailDTO.Create> joined = stream
-                // board stream의 키를 memberId로 변경
-                .selectKey((key, value) -> value.getMemberId().toString())
-                // board stream과 member table을 member_id 키 값으로 조인
-                .join(table, (streamValue, tableValue) -> {
-                    if (streamValue.getMemberId().equals(tableValue.getMemberId())) {
-                        return BoardDetailDTO.Create.builder()
-                                .boardId(streamValue.getId())
-                                .memberId(streamValue.getMemberId())
-                                .nickname(tableValue.getNickName())
-                                .city(tableValue.getCity())
-                                .phone(tableValue.getPhone())
-                                .title(streamValue.getTitle())
-                                .body(streamValue.getBody())
-                                .modifiedAt(streamValue.getModifiedAt())
-                                .createdAt(streamValue.getCreatedAt())
-                                .build();
-                    } else {
-                        return null;
-                    }
-                });
-
-        // 조인된 스트림을 BoardDetailDTO.Create로 직렬화해서 joined 토픽으로 전송
-        joined.to(
-                JOINED_TOPIC,
-                Produced.with(
-                        Serdes.String(),
-                        new JsonSerde<>(BoardDetailDTO.Create.class)
-                )
-        );
 
         // 토폴로지를 빌드하여 Kafka Streams 객체 생성
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
