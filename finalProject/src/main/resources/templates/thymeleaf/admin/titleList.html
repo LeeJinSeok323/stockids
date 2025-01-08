@@ -26,12 +26,11 @@
         });
 
 
-
-        function list(){
+        function list() {
             $.ajax({
-                url:"/user1/list", // 관리자 목록을 불러오는 API
-                type:"get",
-                success:function(result){
+                url: "/user1/list", // 관리자 목록을 불러오는 API
+                type: "get",
+                success: function (result) {
                     let content = `
                     <div class="admin-list-container">
                         <h1>관리자 목록</h1>
@@ -41,7 +40,7 @@
                                     <img src="/static/images/admin-add-button.png" width="400"></a>
                             </div>
                 `;
-                    result.forEach(function(dto){
+                    result.forEach(function (dto) {
                         content += `
                         <div class="admin-card" onclick="detail('${dto.adminNum}')">
                             <div class="admin-header">
@@ -63,48 +62,48 @@
                     replaceContents(content);
                     history.pushState(null, '', '/user1/home'); // 주소 변경
                 },
-                error:function (){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
 
-        function replaceContents(content){
+        function replaceContents(content) {
             $("#contents").html(content);
         }
-     $(function(){
-        $("#checkBoxs").click(function(){
-            if($("#checkBoxs").prop("checked")){
-               $("input:checkbox[name=titleDels]").prop("checked",true);
-            }else{
-               $("input:checkbox[name=titleDels]").prop("checked",false);
-            }
+
+        $(function () {
+            $("#checkBoxs").click(function () {
+                if ($("#checkBoxs").prop("checked")) {
+                    $("input:checkbox[name=titleDels]").prop("checked", true);
+                } else {
+                    $("input:checkbox[name=titleDels]").prop("checked", false);
+                }
+            });
+            $("input:checkbox[name=titleDels]").click(function () {
+                var tot = $("input:checkbox[name=titleDels]").length;
+                var checked = $("input:checkbox[name=titleDels]:checked").length;
+                if (tot == checked) {
+                    $("#checkBoxs").prop("checked", true);
+                } else {
+                    $("#checkBoxs").prop("checked", false);
+                }
+            });
+
+            $("#frm").submit(function () {
+                if ($("input:checkbox[name=titleDels]:checked").length < 1) {
+                    alert("하나이상 선택하시오");
+                    return false;
+                }
+
+            });
+
         });
-        $("input:checkbox[name=titleDels]").click(function(){
-         var tot= $("input:checkbox[name=titleDels]").length;
-         var checked = $("input:checkbox[name=titleDels]:checked").length;
-         if(tot == checked){
-             $("#checkBoxs").prop("checked",true);
-         }else{
-             $("#checkBoxs").prop("checked",false);
-         }
-        });
-
-         $("#frm").submit(function(){
-           if($("input:checkbox[name=titleDels]:checked").length<1){
-               alert("하나이상 선택하시오");
-               return false;
-           }
-
-         });
-
-     });
 
 
-
-        $(function() {
+        $(function () {
             // On click of the titleListMenu
-            $("#titleListMenu").click(function() {
+            $("#titleListMenu").click(function () {
                 // Remove the 'selected' class from all menu items
                 $(".nav-link").removeClass("selected");
 
@@ -116,14 +115,14 @@
             });
 
             // On click of the memberListMenu
-            $("#memberListMenu").click(function() {
+            $("#memberListMenu").click(function () {
                 $(".nav-link").removeClass("selected");
                 $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/memberList";
             });
 
             // On click of the titleWriteMenu
-            $("#titleWriteMenu").click(function() {
+            $("#titleWriteMenu").click(function () {
                 $(".nav-link").removeClass("selected");
                 $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/titleWrite";
@@ -153,49 +152,49 @@
                 </ul>
             </li>
             <li><a href="#">주식 골라보기</a></li>
-            <li>게시판</li>
+            <li><a href="/post/postList">게시판</a></li>
         </ul>
         <button class="login-btn" onclick="location.href='/login/logout';">로그아웃</button>
     </header>
 </div>
-<br><br><br>
-<!-- 관리자 목록이 로드될 위치 -->
-<div id="contents"></div>
-<div id="title-form" >
-    <h1>칭호 내역</h1>
-<table border="1" width="800" align="center">
-    <form action="/user1/titleList" method="get">
-        <tr>
-            <td colspan="6">
-                이름 검색:
-                <input type="search" name="searchWord" size="60" th:value="${searchWord}" />
-                <input type="submit" value="검색" />
-            </td>
-        </tr>
-    </form>
-    <form action="titleDelete" method="post" id="frm">
-    <tr >
-        <th>칭호번호</th>
-        <th>칭호역할</th>
-        <th>칭호이름</th>
-        <th>
-            <div style="display: flex; align-items: center; justify-content: center;">
-            <input type="checkbox" id="checkBoxs"/>
-            <input type="submit" value="삭제" />
-            </div>
-        </th>
-    </tr>
+<div class="main-content">
+    <!-- 관리자 목록이 로드될 위치 -->
+    <div id="contents"></div>
+    <div id="title-form">
+        <h1>칭호 내역</h1>
+        <table border="1" width="800" align="center">
+            <form action="/user1/titleList" method="get">
+                <tr>
+                    <td colspan="6">
+                        이름 검색:
+                        <input type="search" name="searchWord" size="60" th:value="${searchWord}"/>
+                        <input type="submit" value="검색"/>
+                    </td>
+                </tr>
+            </form>
+            <form action="titleDelete" method="post" id="frm">
+                <tr>
+                    <th>칭호번호</th>
+                    <th>칭호역할</th>
+                    <th>칭호이름</th>
+                    <th>
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <input type="checkbox" id="checkBoxs"/>
+                            <input type="submit" value="삭제"/>
+                        </div>
+                    </th>
+                </tr>
 
-    <tr th:each="dto : ${list}">
-        <td th:text="${dto.titleNum}"></td>
-        <td th:text="${dto.titleContents}"></td>
-        <td th:text="${dto.titleName}"></td>
-        <td><input type="checkbox" name="titleDels" th:value="${dto.titleNum}" /></td>
-    </tr>
-    </form>
-</table>
+                <tr th:each="dto : ${list}">
+                    <td th:text="${dto.titleNum}"></td>
+                    <td th:text="${dto.titleContents}"></td>
+                    <td th:text="${dto.titleName}"></td>
+                    <td><input type="checkbox" name="titleDels" th:value="${dto.titleNum}"/></td>
+                </tr>
+            </form>
+        </table>
+    </div>
 </div>
-<br><br><br>
 <footer class="footer">
     <p>© 2024 StocKidsy. 모든 권리 보유.</p>
     <ul>

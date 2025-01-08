@@ -1,18 +1,20 @@
-/* HTML과 BODY를 전체 화면 크기로 확장 */
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%; /* 화면 전체 높이 */
+    height: 100%; /* 전체 화면 크기 */
     display: flex;
     flex-direction: column;
+    box-sizing: border-box; /* 여백 계산 안정화 */
 }
 
-/* 컨텐츠를 유동적으로 확장 */
 .main-content {
-    flex: 1; /* 남은 공간을 채우도록 설정 */
+    flex: 1; /* 유동적으로 공간 채움 */
+    margin-top: 60px; /* 헤더 높이만큼 여백 */
+    padding: 20px; /* 본문 내용 여백 */
+    box-sizing: border-box;
+    overflow-y: auto; /* 내용이 길 경우 스크롤 추가 */
 }
 
-/* 푸터 스타일 */
 .footer {
     background-color: #ffffff;
     color: #333;
@@ -21,7 +23,8 @@ html, body {
     align-items: center;
     padding: 20px 40px;
     border-top: 1px solid #ddd;
-    position: relative; /* 스크롤이 있을 때 자연스럽게 맨 아래로 이동 */
+    position: relative; /* 위치 고정 제거 */
+    z-index: 500; /* 레이어 우선 순위 */
 }
 .footer ul {
     list-style: none;
@@ -29,12 +32,6 @@ html, body {
     gap: 15px;
     margin: 0;
     padding: 0;
-}
-
-.footer p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #666;
 }
 
 .footer ul li {
@@ -45,4 +42,10 @@ html, body {
 
 .footer ul li:hover {
     color: #0056b3;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
 }

@@ -6,7 +6,9 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.querySelector("form");
@@ -27,20 +29,61 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#titleListMenu").click(function () {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function () {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function () {
+                window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+        });
+    </script>
 </head>
+<body>
+
 <header class="header">
     <div class="logo">StocKids</div>
     <nav>
         <ul>
             <li><a href="/">홈</a></li>
-            <li id="list">관리자</li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
             <li><a href="#">주식 골라보기</a></li>
             <li><a href="/post/postList">게시판</a></li>
         </ul>
     </nav>
-    <button class="login-btn">로그인</button>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
-<body>
+
 <div class="main-content" align="center">
     <h3>게시글 작성</h3>
     <form action="/post/postRegist" method="post">
