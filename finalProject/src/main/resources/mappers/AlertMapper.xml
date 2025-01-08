@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.AlertMapper">
+
+    <select id="alertAutoNum" resultType="string">
+        SELECT
+            #{sep} || LPAD(NVL(MAX(TO_NUMBER(REGEXP_SUBSTR(${columnName}, '[0-9]+'))), 0) + 1, #{padding}, '0')
+        FROM ${tableName}
+    </select>
+    <sql id = "alertColumnsBase">
+        ALERT_NUM,ALERT_CONTENTS
+
+    </sql>
+    <insert id="alertInsert" parameterType="Alert">
+        insert into ALERT(<include refid="alertColumnsBase"/>)
+        values(#{alertNum},#{alertContents})
+
+    </insert>
+    <select id ="allSelect" resultType="Alert">
+        select * from (
+        select ROW_NUMBER() over (order by alert_num desc) as rn,
+        alert_num, alert_contents
+        from alert
+        <where>
+            <if test="searchWord !=null">
+                alert_contents like '%' || #{searchWord} ||'%'
+                or alert_num like '%' || #{searchWord} || '%'
+            </if>
+        </where>
+        )sub1
+        where rn between #{startRow} and #{endRow}
+    </select>
+    <select id="alertCount"  parameterType = "string" resultType="integer">
+        select count(*) from alert
+        <where>
+            <if test="searchWord !=null">
+                alert_contents like '%' || #{searchWord} || '%'
+                or alert_num like '%' || #{searchWord} || '%'
+            </if>
+        </where>
+    </select>
+    <select id="getAllAlerts" resultType="Alert">
+        SELECT ALERT_NUM, ALERT_CONTENTS FROM alert
+    </select>
+    <delete id="alertDelete" parameterType="string">
+        BEGIN
+        -- alert_list 테이블에서 alert_num 삭제
+        delete from alert_list
+        where alert_num in
+        <foreach collection="alert" item="alertNum" open="(" close=")" index="index" separator=",">
+            #{alertNum}
+        </foreach>;
+
+        -- alert 테이블에서 alert_num 삭제
+        delete from alert
+        where alert_num in
+        <foreach collection="alert" item="alertNum" open="(" close=")" index="index" separator=",">
+            #{alertNum}
+        </foreach>;
+        END;
+    </delete>
+    <insert id="insertAlertToAlertList">
+        INSERT INTO ALERT_LIST (ALERT_NUM, MEMBER_NUM, ALERT_DATE)
+        VALUES (#{alertNum}, #{memberNum}, #{alertDate})
+    </insert>
+    <select id="getAllMembers" resultType="mem">
+        SELECT MEMBER_NUM, MEMBER_NAME FROM MEMBER
+    </select>
+</mapper>
