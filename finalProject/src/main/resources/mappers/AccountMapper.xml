@@ -15,4 +15,8 @@
         UPDATE account SET ACCOUNT_BALANCE = ACCOUNT_BALANCE + #{point} WHERE MEMBER_NUM = #{userNum}
     </update>
 
+    <update id="purchasePointUpdate">
+        update account set account_balance = #{point} where member_num = #{userNum}
+    </update>
+
 </mapper>
