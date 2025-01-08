@@ -26,12 +26,11 @@
         });
 
 
-
-        function list(){
+        function list() {
             $.ajax({
-                url:"/user1/list", // 관리자 목록을 불러오는 API
-                type:"get",
-                success:function(result){
+                url: "/user1/list", // 관리자 목록을 불러오는 API
+                type: "get",
+                success: function (result) {
                     let content = `
                     <div class="admin-list-container">
                         <h1>관리자 목록</h1>
@@ -41,7 +40,7 @@
                                     <img src="/static/images/admin-add-button.png" width="400"></a>
                             </div>
                 `;
-                    result.forEach(function(dto){
+                    result.forEach(function (dto) {
                         content += `
                         <div class="admin-card" onclick="detail('${dto.adminNum}')">
                             <div class="admin-header">
@@ -63,35 +62,36 @@
                     replaceContents(content);
                     history.pushState(null, '', '/user1/home'); // 주소 변경
                 },
-                error:function (){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
 
-        function replaceContents(content){
+        function replaceContents(content) {
             $("#contents").html(content);
         }
-        $(function(){
-            $("#checkBoxs").click(function(){
-                if($("#checkBoxs").prop("checked")){
-                    $("input:checkbox[name=titleDels]").prop("checked",true);
-                }else{
-                    $("input:checkbox[name=titleDels]").prop("checked",false);
+
+        $(function () {
+            $("#checkBoxs").click(function () {
+                if ($("#checkBoxs").prop("checked")) {
+                    $("input:checkbox[name=titleDels]").prop("checked", true);
+                } else {
+                    $("input:checkbox[name=titleDels]").prop("checked", false);
                 }
             });
-            $("input:checkbox[name=titleDels]").click(function(){
-                var tot= $("input:checkbox[name=titleDels]").length;
+            $("input:checkbox[name=titleDels]").click(function () {
+                var tot = $("input:checkbox[name=titleDels]").length;
                 var checked = $("input:checkbox[name=titleDels]:checked").length;
-                if(tot == checked){
-                    $("#checkBoxs").prop("checked",true);
-                }else{
-                    $("#checkBoxs").prop("checked",false);
+                if (tot == checked) {
+                    $("#checkBoxs").prop("checked", true);
+                } else {
+                    $("#checkBoxs").prop("checked", false);
                 }
             });
 
-            $("#frm").submit(function(){
-                if($("input:checkbox[name=titleDels]:checked").length<1){
+            $("#frm").submit(function () {
+                if ($("input:checkbox[name=titleDels]:checked").length < 1) {
                     alert("하나이상 선택하시오");
                     return false;
                 }
@@ -101,10 +101,9 @@
         });
 
 
-
-        $(function() {
+        $(function () {
             // On click of the titleListMenu
-            $("#titleListMenu").click(function() {
+            $("#titleListMenu").click(function () {
                 // Remove the 'selected' class from all menu items
                 $(".nav-link").removeClass("selected");
 
@@ -116,14 +115,14 @@
             });
 
             // On click of the memberListMenu
-            $("#memberListMenu").click(function() {
+            $("#memberListMenu").click(function () {
                 $(".nav-link").removeClass("selected");
                 $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/memberList";
             });
 
             // On click of the titleWriteMenu
-            $("#titleWriteMenu").click(function() {
+            $("#titleWriteMenu").click(function () {
                 $(".nav-link").removeClass("selected");
                 $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/titleWrite";
@@ -139,35 +138,36 @@
             <ul>
                 <li><a href="/">홈</a></li>
                 <li><a href="#">주식 골라보기</a></li>
-                <li>게시판</li>
+                <li><a href="/post/postList">게시판</a></li>
             </ul>
         </nav>
         <button class="login-btn" onclick="location.href='/login';">로그인</button>
     </header>
 </div>
-<br><br><br><br><br>
-<!-- 관리자 목록이 로드될 위치 -->
-<div id="contents"></div>
-<div id="title-form" >
-    <h1>회원 등록</h1>
-<form class="login-form" action="/user1/memberRegist" method="post" th:object="${memberCommand}">
-회원아이디: <input type="text" name="memberId" id="memberId" th:value="${memberCommand.memberId}"/><br/>
-회원비밀번호: <input type="password" name="memberPw"/><br/>
-회원비밀번호 확인: <input type="password" name="memberPwCon"/><br/>
-회원이름: <input type="text" name="memberName" th:value="${memberCommand.memberName}"/><br/>
-별명: <input type="text" name="nickName" th:value="${memberCommand.nickName}"/><br/>
-회원성별:
-    <div class="radio-group">
-        <label>
-<input type="radio" name="gender" value="M">남자
-        </label>
-        <label>
-<input type="radio" name="gender" value="F">여자<br/>
-        </label>
+<div class="main-content">
+    <!-- 관리자 목록이 로드될 위치 -->
+    <div id="contents"></div>
+    <div id="title-form">
+        <h1>회원 등록</h1>
+        <form class="login-form" action="/user1/memberRegist" method="post" th:object="${memberCommand}">
+            회원아이디: <input type="text" name="memberId" id="memberId" th:value="${memberCommand.memberId}"/><br/>
+            회원비밀번호: <input type="password" name="memberPw"/><br/>
+            회원비밀번호 확인: <input type="password" name="memberPwCon"/><br/>
+            회원이름: <input type="text" name="memberName" th:value="${memberCommand.memberName}"/><br/>
+            별명: <input type="text" name="nickName" th:value="${memberCommand.nickName}"/><br/>
+            회원성별:
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="gender" value="M">남자
+                </label>
+                <label>
+                    <input type="radio" name="gender" value="F">여자<br/>
+                </label>
+            </div>
+            생년월일: <input type="date" name="memberBirth" th:value="${memberCommand.memberBirth}"><br/>
+            <input type="submit" value="회원등록"/>
+        </form>
     </div>
-생년월일: <input type="date" name="memberBirth" th:value="${memberCommand.memberBirth}"><br/>
-<input type="submit" value="회원등록"/>
-</form>
 </div>
 <footer class="footer">
     <p>© 2024 StocKidsy. 모든 권리 보유.</p>
