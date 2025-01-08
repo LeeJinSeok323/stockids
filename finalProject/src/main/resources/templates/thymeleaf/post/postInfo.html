@@ -7,7 +7,17 @@
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postInfo.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.delete-comment-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const commentNum = button.getAttribute('data-comment-num');
+                    const postNum = button.getAttribute('data-post-num');
+                    location.href = `/comment/commentDelete/${commentNum}?postNum=${postNum}`;
+                });
+            });
+        });
+    </script>
 </head>
 <header class="header">
     <div class="logo">StocKids</div>
@@ -60,40 +70,37 @@
     </div>
     <br>
 
+    <div th:each="dto : ${list}">
+        <div class="comment-item">
+            <div class="comment-header">
+                <span class="comment-author" th:text="${dto.commentAuthor}"></span>
+                <span class="comment-time" th:text="${#dates.format(dto.commentTime, 'MM-dd HH:mm:ss')}"></span>
+            </div>
+            <div class="comment-content">
+                <span th:text="${dto.commentContents}"></span>
+                <button th:if="${auth != null and auth.userId == dto.commentAuthorId}"
+                        class="delete-comment-btn"
+                        th:attr="data-comment-num=${dto.commentNum}, data-post-num=${postCommand.postNum}">
+                    삭제
+                </button>
+            </div>
+            <hr class="comment-divider">
+        </div>
+    </div>
     <div class="comment-section">
-        <h3>댓글 작성</h3>
         <form action="/comment/commentWrite" method="post">
             <input type="hidden" name="postNum" th:value="${postCommand.postNum}"/>
-            <textarea id="commentContents" name="commentContents" required></textarea>
+            <textarea id="commentContents" name="commentContents" required placeholder="댓글을 작성해주세요..."></textarea>
             <button type="submit" class="comment-submit-btn">작성</button>
         </form>
     </div>
-    <br>
-    <table border="1" width="600" align="center">
-        <tr>
-            <td>번호</td>
-            <td>작성자</td>
-            <td>내용</td>
-            <td>시간</td>
-            <td>글번호</td>
-            <td>작성자</td>
-        </tr>
-        <tr th:each="dto : ${list}">
-            <td>[[${dto.commentNum}]]</td>
-            <td>[[${dto.commentAuthor}]]</td>
-            <td>[[${dto.commentContents}]]</td>
-            <td>[[${#dates.format(dto.commentTime,'yyyy-MM-dd')}]]</td>
-            <td>[[${dto.postNum}]]</td>
-            <td>[[${dto.postAuthor}]]</td>
-        </tr>
-    </table>
     <!-- 하단 버튼 -->
     <div class="post-buttons">
         <button th:if="${auth != null and auth.userId == postAuthorId}"
-                onclick="location.href='../postUpdate(postNum=${postCommand.postNum})'">글 수정
+                th:attr="onclick='location.href=\'../postUpdate?postNum=' + ${postCommand.postNum} + '\''">글 수정
         </button>
         <button th:if="${auth != null and auth.userId == postAuthorId}" class="delete-button"
-                onclick="location.href='../postDelete(postNum=${postCommand.postNum})'">글 삭제
+                th:attr="onclick='location.href=\'/post/postDelete/' + ${postCommand.postNum} + '\''">글 삭제
         </button>
         <button onclick="location.href='../postList'">글목록</button>
     </div>

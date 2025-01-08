@@ -2,13 +2,16 @@ package finalProject.controller;
 
 import finalProject.command.CommentCommand;
 import finalProject.domain.AuthInfoDTO;
+import finalProject.domain.CommentDTO;
 import finalProject.mapper.CommentMapper;
 import finalProject.mapper.UserMapper;
 import finalProject.service.AutoNumService;
+import finalProject.service.post.CommentDeleteService;
 import finalProject.service.post.CommentWriteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -24,7 +27,9 @@ public class CommentController {
     @Autowired
     UserMapper userMapper;
     @Autowired
-    CommentMapper commentMapper;
+    CommentDeleteService commentDeleteService;
+    @Autowired
+    private CommentMapper commentMapper;
 
     @PostMapping("commentWrite")
     public String commentWrite(HttpSession session, CommentCommand commentCommand) {
@@ -44,5 +49,13 @@ public class CommentController {
         commentCommand.setCommentAuthor(userMapper.getUserNumById(auth.getUserId()));
         commentWriteService.execute(commentCommand);
         return "redirect:/post/postDetail/" + commentCommand.getPostNum();
+    }
+
+    @GetMapping("commentDelete/{commentNum}")
+    public String postDelete(@PathVariable("commentNum") String commentNum,
+                             @RequestParam("postNum") String postNum
+            , Model model, HttpSession session) {
+        commentDeleteService.execute(commentNum);
+        return "redirect:/post/postDetail/" + postNum;
     }
 }

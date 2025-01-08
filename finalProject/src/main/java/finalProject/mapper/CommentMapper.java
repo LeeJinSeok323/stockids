@@ -11,4 +11,5 @@ public interface CommentMapper {
     public void commentInsert(CommentDTO commentDTO);
     public List<CommentDTO> commentSelectList(String postNum);
     public String getPostAuthorByPostNum(String postNum);
+    public void commentDelete(String commentNum);
 }

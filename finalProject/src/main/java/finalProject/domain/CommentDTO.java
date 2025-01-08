@@ -14,6 +14,7 @@ import java.util.Date;
 public class CommentDTO {
     String commentNum;        // 댓글 번호
     String commentAuthor;     // 댓글 작성자
+    String commentAuthorId;
     String commentContents;   // 댓글 내용
     Date commentTime;         // 댓글 작성 시간
 
