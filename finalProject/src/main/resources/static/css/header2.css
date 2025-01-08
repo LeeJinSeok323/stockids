@@ -24,18 +24,15 @@
     gap: 20px;
     margin: 0;
     padding: 0;
-    @media screen and (max-width: 768px){
-        margin-right: 55px;
-        gap: 10px;
-    }
 }
 
-.header ul li {
-    cursor: pointer;
-    transition: color 0.3s;
+.header ul li a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
 }
 
-.header ul li:hover {
+.header ul li a:hover {
     color: #007bff;
 }
 
@@ -53,6 +50,7 @@
 .header .login-btn:hover {
     background-color: #0056b3;
 }
+
 .header .admin-menu {
     position: relative;
     cursor: pointer;
@@ -65,7 +63,7 @@
     left: 0;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 10px;
     min-width: 120px;
     z-index: 1000;
@@ -89,4 +87,21 @@
 .header .submenu li:hover {
     background-color: #f0f0f0;
     color: #007bff;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+    .header ul {
+        gap: 10px;
+        margin-right: 15px;
+    }
+
+    .header {
+        padding: 10px;
+        height: 50px; /* 모바일 화면에서 헤더 높이 조정 */
+    }
+
+    body {
+        padding-top: 50px; /* 모바일 화면에서 여백 조정 */
+    }
 }

@@ -193,6 +193,12 @@
             $("#titleWriteMenu").click(function() {
                 window.location.href = "/user1/titleWrite";
             });
+            $("#alertWriteMenu").click(function() {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function() {
+                window.location.href = "/user1/alertList";
+            });
         });
     </script>
 </head>
@@ -230,6 +236,17 @@
                     </li>
                     <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
                         <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                알림
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="alertWriteMenu">
+                        <span class="nav-link">알림등록</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="alertListMenu">
+                        <span class="nav-link">알림 리스트</span>
                     </li>
                 </ul>
             </li>
