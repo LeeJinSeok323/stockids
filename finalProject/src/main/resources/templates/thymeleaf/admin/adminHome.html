@@ -9,17 +9,18 @@
     <link rel="stylesheet" href="/static/css/title/dropDown.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-        $(function(){
-            $("#list").click(function(){
+        $(function () {
+            $("#list").click(function () {
                 list();
             });
         });
-        function list(){
+
+        function list() {
             $.ajax({
-                url:"/user1/list",
-                type:"get",
-                data:"",
-                success:function(result){
+                url: "/user1/list",
+                type: "get",
+                data: "",
+                success: function (result) {
                     let content = `
                 <div class="admin-list-container">
                     <h1>관리자 목록</h1>
@@ -29,7 +30,7 @@
                        <img src="/static/images/admin-add-button.png" width="400"></a>
                     </div>
             `;
-                    result.forEach(function(dto){
+                    result.forEach(function (dto) {
                         content += `
                    <div class="admin-card" onclick="detail('${dto.adminNum}')">
                         <div class="admin-header">
@@ -50,18 +51,18 @@
             `;
                     replaceContents(content);
                 },
-                error:function (){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
 
-        function detail(adminNum){
+        function detail(adminNum) {
             $.ajax({
-                url:"/user1/info",
-                type:"get",
-                data:{"adminNum": adminNum},
-                success:function(dto){
+                url: "/user1/info",
+                type: "get",
+                data: {"adminNum": adminNum},
+                success: function (dto) {
                     let content = "";
                     content += `
                         <div class="admin-detail-container">
@@ -91,17 +92,18 @@
                     `;
                     replaceContents(content);
                 },
-                error:function (){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
-        function edit(adminNum){
+
+        function edit(adminNum) {
             $.ajax({
-                url:"/user1/info",
-                type:"get",
-                data:{"adminNum": adminNum},
-                success:function(dto){
+                url: "/user1/info",
+                type: "get",
+                data: {"adminNum": adminNum},
+                success: function (dto) {
                     let content = "";
                     content += `
                         <div class="admin-form-container">
@@ -155,42 +157,47 @@
                     `;
                     replaceContents(content);
                 },
-                error:function(){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
-        function del(adminNum){
+
+        function del(adminNum) {
             $.ajax({
-                url:"/user1/del",
-                type:"post",
-                data:{"adminNum": adminNum},
-                success:function(result){
-                    if(result == "200"){ alert("삭제 완료"); }
-                    else {alert("다시 로그인 하세요");}
+                url: "/user1/del",
+                type: "post",
+                data: {"adminNum": adminNum},
+                success: function (result) {
+                    if (result == "200") {
+                        alert("삭제 완료");
+                    } else {
+                        alert("다시 로그인 하세요");
+                    }
                 },
-                error:function(){
+                error: function () {
                     alert("서버 오류");
                 }
             });
         }
-        function replaceContents(content){
-            $(function(){
+
+        function replaceContents(content) {
+            $(function () {
                 $("#contents").html(content);
             })
         }
 
 
-        $(function() {
-            $("#titleListMenu").click(function() {
+        $(function () {
+            $("#titleListMenu").click(function () {
                 window.location.href = "/user1/titleList";
             });
 
-            $("#memberListMenu").click(function() {
+            $("#memberListMenu").click(function () {
                 window.location.href = "/user1/memberList";
             });
 
-            $("#titleWriteMenu").click(function() {
+            $("#titleWriteMenu").click(function () {
                 window.location.href = "/user1/titleWrite";
             });
         });
@@ -234,17 +241,15 @@
                 </ul>
             </li>
             <li><a href="#">주식 골라보기</a></li>
-            <li>게시판</li>
+            <li><a href="/post/postList">게시판</a></li>
         </ul>
         <button class="login-btn" onclick="location.href='/login/logout';">로그아웃</button>
     </header>
 </div>
+<div class="main-content">
+    <div id="contents">
 
-
-
-<br><br><br><br><br>
-<div id="contents">
-
+    </div>
 </div>
 <footer class="footer">
     <p>© 2024 StocKidsy. 모든 권리 보유.</p>
