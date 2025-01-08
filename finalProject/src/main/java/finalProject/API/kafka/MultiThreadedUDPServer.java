@@ -89,12 +89,12 @@ public class MultiThreadedUDPServer {
                 // 받은 메세지를 스레드가 코드별로 분류해서 처리
                 StockA3 transaction = stockA3.parseTransaction(buffer);
                 // 여기서부터는 transaction 객체를 이용하여 원하는 작업 수행
-                String logMessage = "[" + threadCnt +"]" +  " T_id = " + threadId + ":" + "거래시간 = " + transaction.get거래시간() + ":" + "종목코드 = " + transaction.get종목코드() + ":" +
-                        "거래종류 = " + transaction.get거래종류() + ":" +
-                        "체결가격 = " + transaction.get체결가격() + ":" +
-                        "거래량 = " + transaction.get거래량() + ":" + "누적거래량 = " + transaction.get누적거래량();
+                String logMessage = "timestamp = " + transaction.get거래시간() + ":" + "stockCode = " + transaction.get종목코드() + ":" +
+                        "dealPrice = " + transaction.get체결가격() + ":" +
+                        "dealVolume = " + transaction.get거래량() + ":" +
+                        "totalDealVolume = " + transaction.get누적거래량();
                 System.out.println(logMessage);
-                producer.send(new ProducerRecord<>("stock", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
+                producer.send(new ProducerRecord<>("stock-input", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
                 // DB에  insert하기
             } catch (Exception e) {
                 e.printStackTrace();

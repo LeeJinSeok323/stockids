@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 @Service
 public class ProducerConsumerStartService {
     //@PostConstruct
-    public void init() {
+    public void execute() {
         // Kafka producer 시작
         MultiThreadedUDPServer.getInstance().startServer();
 
