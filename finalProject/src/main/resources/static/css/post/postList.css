@@ -75,7 +75,7 @@ table th:nth-child(3), table td:nth-child(3) {
 
 /* 검색창 */
 .search-container {
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -141,4 +141,15 @@ table th:nth-child(3), table td:nth-child(3) {
         width: 100%;
         margin-top: 10px;
     }
+}
+/* a 태그 기본 스타일 */
+a {
+    color: black;
+    text-decoration: none; /* 밑줄 제거 */
+    transition: color 0.3s ease; /* 부드러운 색상 전환 */
+}
+
+/* a 태그 호버 스타일 */
+a:hover {
+    color: #007bff; /* 파란색으로 변경 */
 }

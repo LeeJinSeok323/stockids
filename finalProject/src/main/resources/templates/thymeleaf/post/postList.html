@@ -6,21 +6,61 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
+    <script type="text/javascript">
+        $(function () {
+            $("#titleListMenu").click(function () {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function () {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function () {
+                window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+        });
+    </script>
 </head>
+<body>
 <header class="header">
     <div class="logo">StocKids</div>
     <nav>
         <ul>
             <li><a href="/">홈</a></li>
-            <li id="list">관리자</li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
             <li><a href="#">주식 골라보기</a></li>
             <li><a href="/post/postList">게시판</a></li>
         </ul>
     </nav>
-    <button class="login-btn">로그인</button>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
-<body>
 <div class="main-content">
     <!-- 글 작성 버튼을 최상단 우측에 위치 -->
     <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
@@ -29,24 +69,24 @@
 
     <!-- 게시글 목록 테이블 -->
     <table border="1" width="600" align="center">
-            <tr>
-                <td>번호</td>
-                <td>말머리</td>
-                <td>제목</td>
-                <td>작성자</td>
-                <td>작성일</td>
-                <td>조회</td>
-                <td>추천</td>
-            </tr>
-            <tr th:each="dto : ${list}">
-                <td>[[${dto.postNum.substring(5)}]]</td>
-                <td>[[${dto.category}]]</td>
-                <td><a th:href="|postDetail/${dto.postNum}|">[[${dto.postSubject}]]</a></td>
-                <td>[[${dto.postAuthor}]]</td>
-                <td>[[${#dates.format(dto.postTime,'yyyy-MM-dd')}]]</td>
-                <td>[[${dto.viewCount}]]</td>
-                <td>[[${dto.likeCount}]]</td>
-            </tr>
+        <tr>
+            <td>번호</td>
+            <td>말머리</td>
+            <td>제목</td>
+            <td>작성자</td>
+            <td>작성일</td>
+            <td>조회</td>
+            <td>추천</td>
+        </tr>
+        <tr th:each="dto : ${list}">
+            <td>[[${dto.postNum.substring(5)}]]</td>
+            <td>[[${dto.category}]]</td>
+            <td><a th:href="|postDetail/${dto.postNum}|">[[${dto.postSubject}]]</a></td>
+            <td>[[${dto.postAuthor}]]</td>
+            <td>[[${#dates.format(dto.postTime,'yyyy-MM-dd')}]]</td>
+            <td>[[${dto.viewCount}]]</td>
+            <td>[[${dto.likeCount}]]</td>
+        </tr>
 
         <!-- 페이지 네비게이션 -->
         <tr>
@@ -68,10 +108,8 @@
 
     </table>
 
-    <!-- 검색 기능을 페이지 네비게이션 밑으로 위치 -->
-    <div class="search-container" style="text-align: center; margin-top: 20px;">
+    <div class="search-container">
         <form action="postList" method="get">
-<!--            <label for="searchWord">게시글 검색 :</label>-->
             <input type="search" id="searchWord" name="searchWord" th:value="${searchWord}">
             <input type="submit" value="검색">
         </form>
