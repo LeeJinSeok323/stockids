@@ -35,6 +35,10 @@
         select count_stock from cumulative_stock where member_num = #{memberNum} and stock_code = #{stockCode}
     </select>
 
+    <select id="cumulativeStockSelectAll" resultType="purchaseDTO">
+        select virtual_deal_price, virtual_deal_volume from virture_stock where member_num = #{memberNum}
+    </select>
+
     <insert id="cumulativeStockInsert">
         insert into cumulative_stock (member_num, stock_code, count_stock) values (#{memberNum}, #{stockCode}, #{countStock})
     </insert>
@@ -42,5 +46,30 @@
     <update id="cumulativeStockUpdate">
         update cumulative_stock set count_stock = #{count} where member_num = #{memberNum} and stock_code = #{stockCode}
     </update>
+
+    <resultMap id="MyStockResultMap" type="myStockDTO">
+        <association property="stockDTO" javaType="StockDTO">
+            <id column="STOCK_CODE" property="stockCode"/>
+            <result column="STOCK_NAME" property="stockName"/>
+        </association>
+        <association property="cumulativeStockDTO" javaType="CumulativeStockDTO">
+            <id column="STOCK_CODE" property="stockCode"/>
+            <result column="COUNT_STOCK" property="countStock"/>
+        </association>
+    </resultMap>
+
+    <select id="fetchMyStock" parameterType="string" resultMap="MyStockResultMap">
+        SELECT
+            s.STOCK_CODE AS STOCK_CODE,
+            s.STOCK_NAME AS STOCK_NAME,
+            cs.COUNT_STOCK AS COUNT_STOCK
+        FROM
+            stock_info s
+                JOIN
+            cumulative_stock cs
+            ON s.STOCK_CODE = cs.STOCK_CODE
+        WHERE
+            cs.member_num = #{memberNum}
+    </select>
 
 </mapper>
