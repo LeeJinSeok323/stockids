@@ -15,9 +15,9 @@ public interface StockMapper {
     void updateStockInfo(StockDTO stockDTO);
     void insertStockInfo(StockDTO stockDTO);
     void purchase(PurchaseDTO purchaseDTO);
-    Integer cumulativeStockSelect(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode);
-    void cumulativeStockUpdate(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode, @Param("count") Integer count);
-    void cumulativeStockInsert(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode, @Param("countStock") Integer countStock);
+    CumulativeStockDTO cumulativeStockSelect(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode);
+    void cumulativeStockUpdate(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode, @Param("count") Integer count, @Param("avg") Integer avg);
+    void cumulativeStockInsert(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode, @Param("countStock") Integer countStock, @Param("price") Integer price);
     List<MyStockDTO> fetchMyStock(String memberNum);
     List<PurchaseDTO> cumulativeStockSelectAll(String memberNum);
 }
