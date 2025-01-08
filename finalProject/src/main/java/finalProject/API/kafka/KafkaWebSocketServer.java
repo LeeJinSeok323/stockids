@@ -50,14 +50,6 @@ public class KafkaWebSocketServer extends WebSocketServer {
             conn.send(message);
         }
     }
-    public static void main(String[] args) {
-        InetSocketAddress address = new InetSocketAddress("localhost", 8080);
-        KafkaWebSocketServer server = new KafkaWebSocketServer(address);
-        server.start();
-        System.out.println("WebSocket server started on port: " + server.getPort());
-        // Kafka Consumer 실행
-        server.startKafkaConsumer();
-    }
     public void startKafkaConsumer() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");  // Kafka 서버 주소

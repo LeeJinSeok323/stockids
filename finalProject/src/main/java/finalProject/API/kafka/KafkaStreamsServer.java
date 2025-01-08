@@ -14,7 +14,7 @@ import java.util.Properties;
 public class KafkaStreamsServer {
     public static final String INPUT_TOPIC = "stock-input";
     public static final String OUTPUT_TOPIC = "stock-output";
-    public void StartStreams(){
+    public static void StartStreams(){
         // Kafka Streams의 속성을 설정하는 객체
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "stock-kafka-streams");

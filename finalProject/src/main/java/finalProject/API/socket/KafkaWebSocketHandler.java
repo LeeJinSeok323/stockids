@@ -1,4 +1,4 @@
-package finalProject.service.kafka;
+package finalProject.API.socket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;

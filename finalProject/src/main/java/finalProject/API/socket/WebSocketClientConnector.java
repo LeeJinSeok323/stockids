@@ -1,4 +1,4 @@
-package finalProject.service.kafka;
+package finalProject.API.socket;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
