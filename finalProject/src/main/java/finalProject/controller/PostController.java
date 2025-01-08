@@ -7,17 +7,12 @@ import finalProject.service.AutoNumService;
 import finalProject.service.post.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("post")
@@ -38,11 +33,13 @@ public class PostController {
     PostLikeService postLikeService;
     @Autowired
     MemberMapper memberMapper;
+    @Autowired
+    CommentListService commentListService;
 
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
-                       @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                       Model model) {
+                           @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                           Model model) {
         postListService.execute(page, searchWord, model);
         return "thymeleaf/post/postList";
     }
@@ -77,6 +74,7 @@ public class PostController {
     @GetMapping("postDetail/{postNum}")
     public String postDetail(@PathVariable("postNum") String postNum, Model model, HttpSession session) {
         postDetailService.execute(model, postNum);
+        commentListService.execute(model, postNum);
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         model.addAttribute("auth", auth);
         return "thymeleaf/post/postInfo";
@@ -91,7 +89,7 @@ public class PostController {
     @PostMapping("postUpdate")
     public String postupdate(PostCommand postCommand) {
         postUpdateService.execute(postCommand);
-        return "redirect:postDetail/"+postCommand.getPostNum();
+        return "redirect:postDetail/" + postCommand.getPostNum();
     }
 
     @GetMapping("postDelete/{postNum}")
@@ -101,27 +99,21 @@ public class PostController {
     }
 
     @PostMapping("postLike")
-    @ResponseBody
-    public Map<String, Object> postLike(HttpSession session, String postNum) {
+    public String postLike(HttpSession session, PostCommand postCommand) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        Map<String, Object> response = new HashMap<>();
-
         if (auth == null) {
             try {
                 String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
-                response.put("success", false);
-                response.put("message", "/login?message=" + message);
+                return "redirect:/login?message=" + message;
             } catch (UnsupportedEncodingException e) {
+                // 예외 처리
                 e.printStackTrace();
-                response.put("success", false);
-                response.put("message", "/login");
+                return "redirect:/login";
             }
         } else {
             String memberNum = memberMapper.getMemberNum(auth.getUserId());
-            String likeCount = postLikeService.execute(postNum, memberNum);
-            response.put("success", true);
-            response.put("likeCount", likeCount);
+            String likeCount = postLikeService.execute(postCommand, memberNum);
+            return "redirect:postDetail/" + postCommand.getPostNum();
         }
-        return response;
     }
 }

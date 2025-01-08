@@ -1,5 +1,6 @@
 package finalProject.service.post;
 
+import finalProject.domain.CommentDTO;
 import finalProject.domain.PostDTO;
 import finalProject.mapper.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
