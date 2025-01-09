@@ -1,5 +1,6 @@
 package finalProject.service.inquire;
 
+import finalProject.domain.AuthInfoDTO;
 import finalProject.domain.InquireDTO;
 import finalProject.domain.MemberDTO;
 import finalProject.domain.StartEndPageDTO;
@@ -18,20 +19,11 @@ public class InquireListService {
    @Autowired
     StartEndPageService startEndPageService;
 
-   public void execute(Integer page,String searchWord, Model model, String userId){
+   public void execute(Integer page,String searchWord, Model model){
        Integer limit = 10;
-       MemberDTO memberInfo = inquireMapper.getMemberInfo(userId);
        StartEndPageDTO sepDTO = startEndPageService.execute(page, limit, searchWord);
        List<InquireDTO> list = inquireMapper.inquireSelectList(sepDTO);
-       for (InquireDTO inquire : list) {
-           MemberDTO author = inquireMapper.getMemberInfoByNum(inquire.getMemberNum());
-           if (author != null) {
-               inquire.setMemberName(author.getMemberName());
-           }
-       }
-
        Integer count = inquireMapper.inquireCount(sepDTO);
        startEndPageService.execute(page, limit, count, searchWord, list, model);
-       model.addAttribute("memberName", memberInfo.getMemberName());
    }
 }

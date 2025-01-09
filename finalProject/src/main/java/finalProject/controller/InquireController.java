@@ -2,6 +2,8 @@ package finalProject.controller;
 
 import finalProject.command.InquireCommand;
 import finalProject.domain.AuthInfoDTO;
+import finalProject.domain.MemberDTO;
+import finalProject.mapper.InquireMapper;
 import finalProject.service.AutoNumService;
 import finalProject.service.inquire.InquireListService;
 import finalProject.service.inquire.InquireWriteService;
@@ -25,18 +27,26 @@ public class InquireController {
     AutoNumService autoNumService;
     @Autowired
     InquireWriteService inquireWriteService;
+    @Autowired
+    InquireMapper inquireMapper;
 
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
                            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                            Model model, HttpSession session)
     {
-        AuthInfoDTO authInfo = (AuthInfoDTO) session.getAttribute("auth");
-        if(authInfo == null){
-
-        return "redirect:/login";
-    }
-        inquireListService.execute(page,searchWord,model,authInfo.getUserId());
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        if (auth == null) {
+            try {
+                String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
+                return "redirect:/login?message=" + message;
+            } catch (UnsupportedEncodingException e) {
+                // 예외 처리
+                e.printStackTrace();
+                return "redirect:/login";
+            }
+        }
+        inquireListService.execute(page,searchWord,model);
         return "thymeleaf/inquire/inquireList";
     }
 
@@ -57,6 +67,12 @@ public class InquireController {
     String autoNum=autoNumService.execute("inquire_", "inquire_num",9,"inquire");
     InquireCommand inquireCommand = new InquireCommand();
     inquireCommand.setInquireNum(autoNum);
+
+        // 로그인한 사용자의 정보 가져오기
+        MemberDTO memberInfo = inquireMapper.getMemberInfo(auth.getUserId());
+        inquireCommand.setMemberNum(memberInfo.getMemberNum());
+        inquireCommand.setMemberName(memberInfo.getMemberName());
+
     model.addAttribute("inquireCommand", inquireCommand);
     return "thymeleaf/inquire/inquireForm";
 

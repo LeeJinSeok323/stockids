@@ -6,20 +6,22 @@
 
     <select id="inquireSelectList" resultType="inquire" parameterType="startEndPageDTO">
         select * from (
-        select ROW_NUMBER() over (order by inquire_num desc) as rn,
-       inquire_num,
-        member_num,
-        inquire_subject,
-        inquire_contents,
-        inquire_time
-        from inquire
+        select ROW_NUMBER() over (order by i.inquire_num desc) as rn,
+        i.inquire_num,
+        i.member_num,
+        i.inquire_subject,
+        i.inquire_contents,
+        i.inquire_time,
+        m.member_name
+        from inquire i
+        join member m on i.member_num = m.member_num
         <where>
-            <if test="searchWord !=null">
-                inquire_subject like '%' || #{searchWord} ||'%'
-                or inquire_contents like '%' || #{searchWord} || '%'
+            <if test="searchWord != null">
+                i.inquire_subject like '%' || #{searchWord} || '%'
+                or i.inquire_contents like '%' || #{searchWord} || '%'
             </if>
         </where>
-        )sub2
+        ) sub2
         where rn between #{startRow} and #{endRow}
     </select>
 
@@ -51,7 +53,7 @@
         ) values (
                      #{inquireNum},
                      #{memberNum},
-                     #{inquireSubjects},
+                     #{inquireSubject},
                      #{inquireContents},
                      sysdate
                  )
