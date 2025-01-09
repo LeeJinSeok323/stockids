@@ -69,15 +69,15 @@
     <table>
         <tr>
             <td>번호</td>
-            <td>제목</td>
-            <td style="text-align: center;">작성자</td>
+            <td>작성자</td>
+            <td style="text-align: center;">제목</td>
             <td>작성일</td>
             <td>답변상태</td>
         </tr>
         <tr th:each="dto : ${list}">
             <td>[[${dto.inquireNum.substring(8)}]]</td>
-            <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubject}]]</a></td>
             <td>[[${dto.memberName}]]</td>
+            <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubject}]]</a></td>
             <td>[[${#dates.format(dto.inquireTime,'yyyy-MM-dd')}]]</td>
             <td>답변 상태 : </td>
         </tr>
