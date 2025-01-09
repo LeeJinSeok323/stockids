@@ -1,6 +1,5 @@
 package finalProject.API.socket;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,7 @@ public class WebSocketClientConnector {
     @Value("${websocket.server.url}")
     private String serverUrl;  // application.properties에서 설정
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         connect();
         scheduleReconnection();

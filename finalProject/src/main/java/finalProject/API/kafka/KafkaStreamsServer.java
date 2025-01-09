@@ -20,12 +20,14 @@ public class KafkaStreamsServer {
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "stock-kafka-streams");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         // 문자열 데이터를 직렬화하고 역직렬화 | 파티션이 하나이기 때문에 Key 값 설정 불필요.
-        // props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(
                 StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
                 LogAndContinueExceptionHandler.class
         );
+        props.put(StreamsConfig.STATE_DIR_CONFIG, "C:\\kafka-streams\\state-store");
+
 
         // Kafka Streams의 토폴로지를 정의하는 객체
         StreamsBuilder builder = new StreamsBuilder();
@@ -36,16 +38,22 @@ public class KafkaStreamsServer {
         KStream<String, String> groupedStream = input.map((key, value) -> {
             // 데이터를 파싱
             String[] parts = value.split(":");
-            int term = 100;
             int startTime = Integer.parseInt(parts[0].substring(10).trim());
+            int timestamp = 0;
+
+            StringBuilder sb = new StringBuilder();
             for (String part : parts) {
                 String[] keyValue = part.split("=");
+                sb.append(keyValue[0]);
                 if (keyValue.length == 2 && keyValue[0].trim().equals("timestamp")) {
-                    if(Integer.parseInt(keyValue[1].trim()) > startTime + term)
-                        break;
+                    timestamp = Integer.parseInt(keyValue[1].trim());
+                    timestamp -= timestamp % 100;
+                    keyValue[1] = String.valueOf(timestamp);
                 }
+                sb.append("="+keyValue[1]+":");
             }
-            return new KeyValue<>(String.valueOf(startTime), value);
+            value = sb.toString().substring(0, sb.toString().length() - 1);
+            return new KeyValue<>(String.valueOf(timestamp), value);
         });
 
         // 그룹화된 데이터로 통계 생성

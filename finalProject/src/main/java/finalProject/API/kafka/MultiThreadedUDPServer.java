@@ -32,6 +32,7 @@ public class MultiThreadedUDPServer {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
         this.producer = new KafkaProducer<>(props);
     }
     public void startServer() {
@@ -93,7 +94,7 @@ public class MultiThreadedUDPServer {
                         "dealPrice=" + transaction.get체결가격() + ":" +
                         "dealVolume=" + transaction.get거래량() + ":" +
                         "totalDealVolume=" + transaction.get누적거래량();
-                System.out.println(logMessage);
+                //System.out.println(logMessage);
                 producer.send(new ProducerRecord<>("stock-input", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
                 // DB에  insert하기
             } catch (Exception e) {

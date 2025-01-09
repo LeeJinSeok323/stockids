@@ -19,15 +19,34 @@ public class KafkaController {
     @Autowired
     ConsumerStartService consumerStartService;
 
-    @RequestMapping("server/start")
+    @RequestMapping("server1")
     public void start(HttpSession session) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        if(!auth.isAdmin()){
-            return;
-        }
+//        if(!auth.isAdmin()){
+//            return;
+//        }
         producerStartService.execute();
+//        streamsStartService.execute();
+//        consumerStartService.execute();
+    }
+    @RequestMapping("server2")
+    public void start2(HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+//        if(!auth.isAdmin()){
+//            return;
+//        }
+//        producerStartService.execute();
         streamsStartService.execute();
+//        consumerStartService.execute();
+    }
+    @RequestMapping("server3")
+    public void start3(HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+//        if(!auth.isAdmin()){
+//            return;
+//        }
+//        producerStartService.execute();
+//        streamsStartService.execute();
         consumerStartService.execute();
     }
-
 }

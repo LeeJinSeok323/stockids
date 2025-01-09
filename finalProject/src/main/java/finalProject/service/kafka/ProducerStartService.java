@@ -10,6 +10,6 @@ public class ProducerStartService {
     public void execute() {
         // Kafka producer 시작
         MultiThreadedUDPServer.getInstance().startServer();
-
+        System.out.println(System.getProperty("java.io.tmpdir"));
     }
 }

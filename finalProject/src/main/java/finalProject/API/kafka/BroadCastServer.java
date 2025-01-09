@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BroadCastServer extends WebSocketServer {
-    private Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
+    private static Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
     public BroadCastServer(InetSocketAddress address) {
         super(address);
     }
@@ -36,7 +36,7 @@ public class BroadCastServer extends WebSocketServer {
     public void onStart() {
         System.out.println("WebSocket server started successfully");
     }
-    public void broadcastMessage(String message) {
+    public static void broadcastMessage(String message) {
         for (WebSocket conn : connections) {
             conn.send(message);
         }
