@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.RankMapper">
+
+    <update id="rankInsert">
+        MERGE INTO RANK target
+            USING (
+                SELECT
+                    RANK() OVER (ORDER BY SUM(PROFIT) DESC) AS RANKING,
+                        MEMBER_NUM,
+                    SUM(PROFIT) AS ASSET_VALUE
+                FROM
+                    SELL_VIRTURE_STOCK
+                WHERE
+                    TO_CHAR(VIRTUAL_DEAL_TIME, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+                GROUP BY
+                    MEMBER_NUM
+            ) source
+            ON (target.MEMBER_NUM = source.MEMBER_NUM)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    target.RANK = source.RANKING,
+                    target.ASSET_VALUE = source.ASSET_VALUE
+            WHEN NOT MATCHED THEN
+                INSERT (RANK, MEMBER_NUM, ASSET_VALUE)
+                    VALUES (source.RANKING, source.MEMBER_NUM, source.ASSET_VALUE)
+    </update>
+
+    <select id="rankSelect" resultType="rankDTO">
+        select RANK, r.MEMBER_NUM, ASSET_VALUE, NICKNAME from rank r join member m
+            on m.MEMBER_NUM = r.MEMBER_NUM order by rank asc
+    </select>
+</mapper>
