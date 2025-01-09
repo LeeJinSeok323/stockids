@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.KafkaMapper">
+    <sql id="selectDealNum">
+        select concat('TR_', nvl(max(substr(DEAL_NUM, 4)),100000) + 1) from DEAL
+    </sql>
+    <update id="updateTimeCode" parameterType="string">
+        merge into TIME T
+        using(
+            SELECT #{timeCode} as TIME_CODE from dual
+            ) OT
+        ON ( T.TIME_CODE = OT.TIME_CODE )
+        WHEN NOT MATCHED THEN
+        insert (TIME_CODE, START_TIME)
+        values (#{timeCode}, sysdate)
+    </update>
+    <insert id="insertDealOne" parameterType="kafkaStockDTO">
+        insert into DEAL(  DEAL_NUM, TIME_CODE, STOCK_CODE, DEAL_VOLUME, DEAL_PRICE, TOTAL_DEAL_VOLUME
+                        ,MIN_PRICE, MAX_PRICE, START_PRICE  )
+        values((<include refid="selectDealNum" />), #{timeCode}, #{stockCode}, #{dealVolume}, #{dealPrice}, #{totalDealVolume}
+              ,#{min}, #{max}, #{start})
+    </insert>
+
+
+</mapper>
