@@ -29,8 +29,14 @@ public class InquireController {
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
                            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                           Model model) {
-        inquireListService.execute(page,searchWord,model);
+                           Model model, HttpSession session)
+    {
+        AuthInfoDTO authInfo = (AuthInfoDTO) session.getAttribute("auth");
+        if(authInfo == null){
+
+        return "redirect:/login";
+    }
+        inquireListService.execute(page,searchWord,model,authInfo.getUserId());
         return "thymeleaf/inquire/inquireList";
     }
 

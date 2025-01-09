@@ -37,6 +37,10 @@
         SELECT MEMBER_NUM, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = #{userId}
     </select>
 
+    <select id="getMemberInfoByNum" parameterType="string" resultType="mem">
+        SELECT * FROM MEMBER WHERE MEMBER_NUM = #{memberNum}
+    </select>
+
     <insert id="insertInquire" parameterType="inquire">
         insert into INQUIRE (
             INQUIRE_NUM,

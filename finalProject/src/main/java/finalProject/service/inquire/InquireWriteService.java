@@ -17,7 +17,7 @@ public class InquireWriteService {
     InquireDTO inquireDTO = new InquireDTO();
     inquireDTO.setInquireNum(inquireCommand.getInquireNum());
     inquireDTO.setMemberNum(inquireCommand.getMemberNum());
-    inquireDTO.setInquireSubjects(inquireCommand.getInquireSubjects());
+    inquireDTO.setInquireSubject(inquireCommand.getInquireSubject());
     inquireDTO.setInquireContents(inquireCommand.getInquireContents());
     AuthInfoDTO auth = (AuthInfoDTO)session.getAttribute("auth");
 

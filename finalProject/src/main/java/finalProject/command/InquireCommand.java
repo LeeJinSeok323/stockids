@@ -8,7 +8,7 @@ import java.util.Date;
 public class InquireCommand {
     String inquireNum;
     String memberNum;
-    String inquireSubjects;
+    String inquireSubject;
     String inquireContents;
     Date inquireTime;
 }

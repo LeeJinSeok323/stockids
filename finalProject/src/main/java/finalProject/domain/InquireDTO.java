@@ -10,7 +10,7 @@ import java.util.Date;
 public class InquireDTO {
     String inquireNum;
     String memberNum;
-    String inquireSubjects;
+    String inquireSubject;
     String inquireContents;
     Date inquireTime;
     String memberName;
