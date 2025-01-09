@@ -84,4 +84,13 @@
         WHERE i.INQUIRE_NUM = #{inquireNum}
     </select>
 
+    <update id="inquireUpdate" parameterType="inquire">
+        update inquire
+        set
+            MEMBER_NUM = #{memberNum},
+            INQUIRE_SUBJECT = #{inquireSubject},
+            INQUIRE_CONTENTS = #{inquireContents}
+        where INQUIRE_NUM = #{inquireNum}
+    </update>
+
 </mapper>

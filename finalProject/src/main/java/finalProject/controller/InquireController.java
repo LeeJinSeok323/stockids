@@ -7,6 +7,7 @@ import finalProject.mapper.InquireMapper;
 import finalProject.service.AutoNumService;
 import finalProject.service.inquire.InquireDetailService;
 import finalProject.service.inquire.InquireListService;
+import finalProject.service.inquire.InquireUpdateService;
 import finalProject.service.inquire.InquireWriteService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,8 @@ public class InquireController {
     InquireMapper inquireMapper;
     @Autowired
     InquireDetailService inquireDetailService;
+    @Autowired
+    InquireUpdateService inquireUpdateService;
 
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -93,6 +96,19 @@ public class InquireController {
         model.addAttribute("auth", auth);
         return "thymeleaf/inquire/inquireinfo";
 
+
+    }
+
+    @GetMapping("inquireUpdate")
+    public String inquireUpdate(String inquireNum, Model model){
+        inquireDetailService.execute(model, inquireNum);
+        return "thymeleaf/inquire/inquireModify";
+    }
+
+    @PostMapping("inquireUpdate")
+    public String inquireUpdate(InquireCommand inquireCommand){
+        inquireUpdateService.execute(inquireCommand);
+        return "redirect:inquireDetail/" +inquireCommand.getInquireNum();
 
     }
 
