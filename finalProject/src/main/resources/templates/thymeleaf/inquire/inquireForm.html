@@ -64,15 +64,26 @@
 <div class="main-content" align="center">
     <h3>게시글 작성</h3>
     <form action="/inquire/inquireRegist" method="post">
-        <input type="input" name="inquireNum" th:value="${inquireCommand.inquireNum}">
-        <input type="input" name="memberNum" th:value="${inquireCommand.memberNum}">
-        <input type="input" name="memberName" th:value="${inquireCommand.memberName}">
+        <input type="hidden" name="inquireNum" th:value="${inquireCommand.inquireNum}">
+        <input type="hidden" name="memberNum" th:value="${inquireCommand.memberNum}">
+        <input type="hidden" name="memberName" th:value="${inquireCommand.memberName}">
         <table>
             <tr>
                 <td><input type="text" name="inquireSubject" placeholder="제목을 입력하세요"></td>
             </tr>
+            <td>
+                <textarea name="inquireContents" rows="10" cols="50" placeholder="문의하실 내용을 구체적으로 작성해주세요. 연락처가 필요한 경우 함께 기재해 주세요."></textarea>
+            </td>
             <tr>
-                <td><textarea name="inquireContents" rows="10" cols="50"></textarea></td>
+                <td colspan="2" style="font-size: 12px; color: gray;">
+                    <strong>문의 작성 시 유의사항</strong><br>
+                    - 민감한 개인 정보(주민등록번호, 계좌번호 등)는 작성하지 마세요.<br>
+                    - 문의 내용은 최대한 구체적으로 작성해 주시기 바랍니다.<br>
+                    - 비속어, 욕설 등 부적절한 표현이 포함된 문의는 답변이 어려울 수 있습니다.<br><br>
+                    <strong>답변 처리 안내</strong><br>
+                    - 문의 접수 후, 답변까지 최대 24~48시간이 소요될 수 있습니다.<br>
+                    - 접수된 문의는 운영 시간(평일 9:00~18:00) 내에 처리됩니다.<br>
+                </td>
             </tr>
         </table>
         <br>

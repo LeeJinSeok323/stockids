@@ -63,8 +63,8 @@
     <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
 <div class="main-content">
-    <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
-        <a href="inquireWrite" class="write-btn">문의 작성</a>
+    <div  class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
+        <a th:if="${!isAdmin}" href="inquireWrite" class="write-btn">문의 작성</a>
     </div>
     <table>
         <tr>
