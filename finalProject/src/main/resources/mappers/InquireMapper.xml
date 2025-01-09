@@ -33,5 +33,23 @@
         </where>
     </select>
 
+    <select id="getMemberInfo" parameterType="string" resultType="mem">
+        SELECT MEMBER_NUM, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = #{userId}
+    </select>
 
+    <insert id="insertInquire" parameterType="inquire">
+        insert into INQUIRE (
+            INQUIRE_NUM,
+            MEMBER_NUM,
+            INQUIRE_SUBJECT,
+            INQUIRE_CONTENTS,
+            INQUIRE_TIME
+        ) values (
+                     #{inquireNum},
+                     #{memberNum},
+                     #{inquireSubjects},
+                     #{inquireContents},
+                     sysdate
+                 )
+    </insert>
 </mapper>
