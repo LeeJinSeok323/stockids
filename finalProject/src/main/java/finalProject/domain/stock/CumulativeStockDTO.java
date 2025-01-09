@@ -9,4 +9,5 @@ public class CumulativeStockDTO {
     String memberNum;
     String stockCode;
     Integer countStock;
+    Integer avgStock;
 }
