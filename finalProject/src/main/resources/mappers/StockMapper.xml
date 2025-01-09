@@ -31,8 +31,8 @@
         values (#{virtualDealNum}, #{memberNum}, #{stockCode}, #{virtualDealPrice}, #{virtualDealVolume}, sysdate)
     </insert>
 
-    <select id="cumulativeStockSelect" resultType="integer">
-        select count_stock from cumulative_stock where member_num = #{memberNum} and stock_code = #{stockCode}
+    <select id="cumulativeStockSelect" resultType="cumulativeStockDTO">
+        select COUNT_STOCK, AVG_STOCK from cumulative_stock where member_num = #{memberNum} and stock_code = #{stockCode}
     </select>
 
     <select id="cumulativeStockSelectAll" resultType="purchaseDTO">
@@ -40,11 +40,11 @@
     </select>
 
     <insert id="cumulativeStockInsert">
-        insert into cumulative_stock (member_num, stock_code, count_stock) values (#{memberNum}, #{stockCode}, #{countStock})
+        insert into cumulative_stock (member_num, stock_code, count_stock, avg_stock) values (#{memberNum}, #{stockCode}, #{countStock}, #{price})
     </insert>
 
     <update id="cumulativeStockUpdate">
-        update cumulative_stock set count_stock = #{count} where member_num = #{memberNum} and stock_code = #{stockCode}
+        update cumulative_stock set count_stock = #{count}, avg_stock = #{avg} where member_num = #{memberNum} and stock_code = #{stockCode}
     </update>
 
     <resultMap id="MyStockResultMap" type="myStockDTO">
@@ -71,5 +71,13 @@
         WHERE
             cs.member_num = #{memberNum}
     </select>
+
+    <insert id="sell" parameterType="sellDTO">
+        insert into SELL_VIRTURE_STOCK (
+            VIRTUAL_DEAL_NUM, MEMBER_NUM, STOCK_CODE, VIRTUAL_DEAL_PRICE,
+            VIRTUAL_DEAL_VOLUME, PROFIT, VIRTUAL_DEAL_TIME)
+        values (#{virtualDealNum}, #{memberNum}, #{stockCode}, #{virtualDealPrice},
+                   #{virtualDealVolume}, #{profit}, sysdate)
+    </insert>
 
 </mapper>
