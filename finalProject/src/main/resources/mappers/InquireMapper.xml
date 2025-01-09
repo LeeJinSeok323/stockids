@@ -58,4 +58,22 @@
                      sysdate
                  )
     </insert>
+    <select id="findAuthorldByInquireNum" resultType="string">
+        SELECT m.MEMBER_ID AS inquireAuthor
+        FROM INQUIRE i
+                 JOIN MEMBER m ON i.MEMBER_NUM = m.MEMBER_NUM
+        WHERE i.INQUIRE_NUM = #{inquireNum}
+    </select>
+    <select id="inquireSelectOne" parameterType="string" resultType="inquire">
+        SELECT
+            i.INQUIRE_NUM,
+            i.INQUIRE_SUBJECT,
+            i.INQUIRE_CONTENTS,
+            i.INQUIRE_TIME,
+            m.MEMBER_NAME AS inquireAuthor
+        FROM INQUIRE i
+                 JOIN MEMBER m ON i.MEMBER_NUM = m.MEMBER_NUM
+        WHERE i.INQUIRE_NUM = #{inquireNum}
+    </select>
+
 </mapper>

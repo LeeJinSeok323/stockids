@@ -64,13 +64,13 @@
 <div class="main-content">
     <!-- 제목 -->
     <div class="post-title">
-        [[${postCommand.inquireSubject}]]
+        [[${inquireCommand.inquireSubject}]]
     </div>
 
     <!-- 세부 정보 -->
     <div class="post-info">
         <div class="left-info">
-            [[${postCommand.memberName}]] | [[${#dates.format(postCommand.inquireTime, 'yyyy-MM-dd HH:mm')}]]
+            [[${inquireCommand.memberName}]] | [[${#dates.format(inquireCommand.inquireTime, 'yyyy-MM-dd HH:mm')}]]
         </div>
         <div class="right-info">
             답변 상태 :
@@ -80,7 +80,7 @@
 
     <!-- 내용 -->
     <div class="post-content">
-        <p>[[${postCommand.inquireContents}]]</p>
+        <p>[[${inquireCommand.inquireContents}]]</p>
     </div>
     <hr>
     <!-- 하단 버튼 -->

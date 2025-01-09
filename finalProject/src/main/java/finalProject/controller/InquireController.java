@@ -5,6 +5,7 @@ import finalProject.domain.AuthInfoDTO;
 import finalProject.domain.MemberDTO;
 import finalProject.mapper.InquireMapper;
 import finalProject.service.AutoNumService;
+import finalProject.service.inquire.InquireDetailService;
 import finalProject.service.inquire.InquireListService;
 import finalProject.service.inquire.InquireWriteService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,8 @@ public class InquireController {
     InquireWriteService inquireWriteService;
     @Autowired
     InquireMapper inquireMapper;
+    @Autowired
+    InquireDetailService inquireDetailService;
 
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -83,5 +86,15 @@ public class InquireController {
         return "redirect:/inquire/inquireList";
 
     }
+    @GetMapping("inquireDetail/{inquireNum}")
+    public String inquireDetail(@PathVariable("inquireNum") String inquireNum, Model model, HttpSession session){
+        inquireDetailService.execute(model, inquireNum);
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        model.addAttribute("auth", auth);
+        return "thymeleaf/inquire/inquireinfo";
+
+
+    }
+
 }
 
