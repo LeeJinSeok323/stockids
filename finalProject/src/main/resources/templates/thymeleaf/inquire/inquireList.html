@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/title/dropDown.css">
     <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
+
     <script type="text/javascript">
         $(function () {
             $("#titleListMenu").click(function () {
@@ -73,12 +74,12 @@
             <td>작성일</td>
             <td>답변상태</td>
         </tr>
-        <tr th:each="inquire : ${list}">
-            <td th:text="${inquire.inquireNum}"></td>
-            <td th:text="${inquire.inquireSubject}"></td>
-            <td th:text="${inquire.memberName}"></td>
-            <td th:text="${#dates.format(inquire.inquireTime, 'yyyy-MM-dd')}"></td>
-            <td>미답변</td> <!-- 답변 상태는 추가 로직이 필요합니다 -->
+        <tr th:each="dto : ${list}">
+            <td>[[${dto.inquireNum.substring(8)}]]</td>
+            <td>[[${dto.memberNum}]]</td>
+            <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubjects}]]</a></td>
+            <td>[[${#dates.format(dto.inquireTime,'yyyy-MM-dd')}]]</td>
+            <td>답변 상태 : </td>
         </tr>
     </table>
 </div>

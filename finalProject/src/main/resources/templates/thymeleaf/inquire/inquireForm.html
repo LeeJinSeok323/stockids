@@ -64,30 +64,19 @@
 <div class="main-content" align="center">
     <h3>게시글 작성</h3>
     <form action="/inquire/inquireRegist" method="post">
-        <input type="hidden" name="inquireNum" th:value="${inquireCommand.inquireNum}">
+        <input type="input" name="inquireNum" th:value="${postCommand.inquireNum}">
+        <input type="input" name="memberNum" th:value="${postCommand.memberNum}">
         <table>
             <tr>
                 <td><input type="text" name="inquireSubjects" placeholder="제목을 입력하세요"></td>
             </tr>
             <tr>
-                <td><textarea name="inquireContents" rows="10" cols="50" placeholder="내용을 입력하세요"></textarea></td>
+                <td><textarea name="inquireContents" rows="10" cols="50"></textarea></td>
             </tr>
         </table>
         <br>
         <input type="button" value="취소" onclick="location.href='/inquire/inquireList'">
         <input type="submit" value="등록">
-<!--        <input type="hidden" name="postNum" th:value="${postCommand.postNum}">-->
-<!--        <table>-->
-<!--            <tr>-->
-<!--                <td><input type="text" name="postSubject" placeholder="제목을 입력하세요"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><textarea name="postContents" rows="10" cols="50"></textarea></td>-->
-<!--            </tr>-->
-<!--        </table>-->
-<!--        <br>-->
-<!--        <input type="button" value="취소" onclick="location.href='/inquire/inquireList'">-->
-<!--        <input type="submit" value="등록">-->
     </form>
 </div>
 <footer class="footer">
