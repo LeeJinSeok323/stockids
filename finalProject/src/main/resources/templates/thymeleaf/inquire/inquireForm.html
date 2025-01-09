@@ -64,11 +64,12 @@
 <div class="main-content" align="center">
     <h3>게시글 작성</h3>
     <form action="/inquire/inquireRegist" method="post">
-        <input type="input" name="inquireNum" th:value="${postCommand.inquireNum}">
-        <input type="input" name="memberNum" th:value="${postCommand.memberNum}">
+        <input type="input" name="inquireNum" th:value="${inquireCommand.inquireNum}">
+        <input type="input" name="memberNum" th:value="${inquireCommand.memberNum}">
+        <input type="input" name="memberName" th:value="${inquireCommand.memberName}">
         <table>
             <tr>
-                <td><input type="text" name="inquireSubjects" placeholder="제목을 입력하세요"></td>
+                <td><input type="text" name="inquireSubject" placeholder="제목을 입력하세요"></td>
             </tr>
             <tr>
                 <td><textarea name="inquireContents" rows="10" cols="50"></textarea></td>
