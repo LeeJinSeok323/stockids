@@ -54,7 +54,7 @@ public class InquireController {
 
 
     }
-    String autoNum=autoNumService.execute("inquire_", "inquire_num",6,"inquire");
+    String autoNum=autoNumService.execute("inquire_", "inquire_num",9,"inquire");
     InquireCommand inquireCommand = new InquireCommand();
     inquireCommand.setInquireNum(autoNum);
     model.addAttribute("inquireCommand", inquireCommand);

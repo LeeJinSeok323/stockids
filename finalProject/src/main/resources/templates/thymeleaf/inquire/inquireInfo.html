@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>inquireList</title>
+    <title>inquireInfo</title>
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/title/dropDown.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
-
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postInfo.css">
     <script type="text/javascript">
         $(function () {
             $("#titleListMenu").click(function () {
@@ -63,25 +62,39 @@
     <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
 <div class="main-content">
-    <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
-        <a href="inquireWrite" class="write-btn">문의 작성</a>
+    <!-- 제목 -->
+    <div class="post-title">
+        [[${postCommand.inquireSubject}]]
     </div>
-    <table>
-        <tr>
-            <td>번호</td>
-            <td>제목</td>
-            <td style="text-align: center;">작성자</td>
-            <td>작성일</td>
-            <td>답변상태</td>
-        </tr>
-        <tr th:each="dto : ${list}">
-            <td>[[${dto.inquireNum.substring(8)}]]</td>
-            <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubject}]]</a></td>
-            <td>[[${dto.memberName}]]</td>
-            <td>[[${#dates.format(dto.inquireTime,'yyyy-MM-dd')}]]</td>
-            <td>답변 상태 : </td>
-        </tr>
-    </table>
+
+    <!-- 세부 정보 -->
+    <div class="post-info">
+        <div class="left-info">
+            [[${postCommand.memberName}]] | [[${#dates.format(postCommand.inquireTime, 'yyyy-MM-dd HH:mm')}]]
+        </div>
+        <div class="right-info">
+            답변 상태 :
+        </div>
+    </div>
+    <hr>
+
+    <!-- 내용 -->
+    <div class="post-content">
+        <p>[[${postCommand.inquireContents}]]</p>
+    </div>
+    <hr>
+    <!-- 하단 버튼 -->
+    <div class="post-buttons">
+        <button th:if="${auth != null and auth.userId == inquireAuthorId}"
+                th:attr="onclick='location.href=\'../inquireUpdate?inquireNum=' + ${inquireCommand.inquireNum} + '\''">문의 수정
+        </button>
+        <button th:if="${isAdmin}" class="delete-button"
+                th:attr="onclick='location.href=\'/inquire/inquireDelete/' + ${inquireCommand.inquireNum} + '\''">문의 삭제
+        </button>
+        <button onclick="location.href='../inquireList'">목록</button>
+    </div>
+
+    <br>
 </div>
 <footer class="footer">
     <p>© 2024 StocKids. 모든 권리 보유.</p>
