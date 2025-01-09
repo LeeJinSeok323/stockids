@@ -43,7 +43,7 @@ public class StockPurchaseService {
             int count = 0;
             int avg = 0;
             count = cumulativeDTO.getCountStock() + purchaseDTO.getVirtualDealVolume();
-            avg = ( cumulativeDTO.getAvgStock()*cumulativeDTO.getCountStock() + purchaseDTO.getVirtualDealPrice()*purchaseDTO.getVirtualDealVolume() ) / count;
+            avg = ( cumulativeDTO.getAvgStock()*cumulativeDTO.getCountStock() + purchaseDTO.getVirtualDealPrice() ) / count;
             stockMapper.cumulativeStockUpdate(memberNum, purchaseDTO.getStockCode(), count, avg);
         } else {
             stockMapper.cumulativeStockInsert(memberNum, purchaseDTO.getStockCode(), purchaseDTO.getVirtualDealVolume(), purchaseDTO.getVirtualDealVolume() * purchaseDTO.getVirtualDealPrice());

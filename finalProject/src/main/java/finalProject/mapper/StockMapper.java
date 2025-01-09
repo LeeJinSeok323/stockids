@@ -1,9 +1,6 @@
 package finalProject.mapper;
 
-import finalProject.domain.stock.CumulativeStockDTO;
-import finalProject.domain.stock.MyStockDTO;
-import finalProject.domain.stock.PurchaseDTO;
-import finalProject.domain.stock.StockDTO;
+import finalProject.domain.stock.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,4 +17,6 @@ public interface StockMapper {
     void cumulativeStockInsert(@Param ("memberNum")String memberNum, @Param("stockCode") String stockCode, @Param("countStock") Integer countStock, @Param("price") Integer price);
     List<MyStockDTO> fetchMyStock(String memberNum);
     List<PurchaseDTO> cumulativeStockSelectAll(String memberNum);
+
+    void sell(SellDTO sellDTO);
 }
