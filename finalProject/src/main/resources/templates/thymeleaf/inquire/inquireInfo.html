@@ -85,8 +85,7 @@
     <hr>
     <!-- 하단 버튼 -->
     <div class="post-buttons">
-<!--    나중에 수정 버튼에 추가할 것    th:if="${auth != null and auth.userId == inquireAuthorId}"-->
-        <button
+        <button th:if="${!isAdmin}" class="delete-button"
                 th:attr="onclick='location.href=\'../inquireUpdate?inquireNum=' + ${inquireCommand.inquireNum} + '\''">문의 수정
         </button>
         <button th:if="${isAdmin}" class="delete-button"
