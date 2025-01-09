@@ -13,4 +13,5 @@ public class InquireDTO {
     String inquireSubjects;
     String inquireContents;
     Date inquireTime;
+    String memberName;
 }
