@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inquireList</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
+
+    <script type="text/javascript">
+        $(function () {
+            $("#titleListMenu").click(function () {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function () {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function () {
+                window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+            <li th:if="${isLoggedIn}"><a href="/inquire/inquireList">문의</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+</header>
+<div class="main-content">
+    <h1 align="center">문의</h1>
+    <table>
+        <tr>
+            <td>번호</td>
+            <td>제목</td>
+            <td>작성자</td>
+            <td>작성일</td>
+            <td>답변상태</td>
+        </tr>
+<!--        <tr th:each="dto : ${list}">-->
+<!--            <td>[[${dto.postNum.substring(5)}]]</td>-->
+<!--            <td>[[${dto.category}]]</td>-->
+<!--            <td><a th:href="|postDetail/${dto.postNum}|">[[${dto.postSubject}]]</a></td>-->
+<!--            <td>[[${dto.postAuthor}]]</td>-->
+<!--            <td>[[${#dates.format(dto.postTime,'yyyy-MM-dd')}]]</td>-->
+<!--            <td>[[${dto.viewCount}]]</td>-->
+<!--            <td>[[${dto.likeCount}]]</td>-->
+<!--        </tr>-->
+
+        <!-- 페이지 네비게이션 -->
+<!--        <tr>-->
+<!--            <th colspan="7">-->
+<!--                <span th:if="${page <= 1}">⟨이전</span>-->
+<!--                <span th:if="${page > 1}">-->
+<!--            <a th:href="|postList?page=${page-1}&searchWord=${searchWord}|">⟨이전</a>-->
+<!--        </span>-->
+<!--                <th:block th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">-->
+<!--                    <a th:href="|postList?page=${i}&searchWord=${searchWord}|"-->
+<!--                       th:style="${page == i} ? 'color: #007bff;' : ''">[[${i}]]</a>-->
+<!--                </th:block>-->
+<!--                <span th:if="${page < maxPage}">-->
+<!--            <a th:href="@{postList(page=${page+1},searchWord=${searchWord})}">다음⟩</a>-->
+<!--        </span>-->
+<!--                <span th:if="${page >= maxPage}">다음⟩</span>-->
+<!--            </th>-->
+<!--        </tr>-->
+
+    </table>
+</div>
+<footer class="footer">
+    <p>© 2024 StocKids. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
+</body>
+</html>
