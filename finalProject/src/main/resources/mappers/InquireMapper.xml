@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.InquireMapper">
+
+    <select id="inquireSelectList" resultType="inquire" parameterType="startEndPageDTO">
+        select * from (
+        select ROW_NUMBER() over (order by inquire_num desc) as rn,
+       inquire_num,
+        member_num,
+        inquire_subject,
+        inquire_contents,
+        inquire_time
+        from inquire
+        <where>
+            <if test="searchWord !=null">
+                inquire_subject like '%' || #{searchWord} ||'%'
+                or inquire_contents like '%' || #{searchWord} || '%'
+            </if>
+        </where>
+        )sub2
+        where rn between #{startRow} and #{endRow}
+    </select>
+
+    <select id="inquireCount"  parameterType = "string" resultType="integer">
+        select count(*) from inquire
+        <where>
+            <if test="searchWord !=null">
+                inquire_subject like '%' || #{searchWord} || '%'
+                or inquire_contents like '%' || #{searchWord} || '%'
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
