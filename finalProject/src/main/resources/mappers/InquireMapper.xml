@@ -16,21 +16,29 @@
         from inquire i
         join member m on i.member_num = m.member_num
         <where>
-            <if test="searchWord != null">
-                i.inquire_subject like '%' || #{searchWord} || '%'
-                or i.inquire_contents like '%' || #{searchWord} || '%'
+            <if test="sepDTO.searchWord != null">
+                i.inquire_subject like '%' || #{sepDTO.searchWord} || '%'
+                or i.inquire_contents like '%' || #{sepDTO.searchWord} || '%'
+            </if>
+            <!-- 회원일 경우 본인만 조회 -->
+            <if test="memberNum != null">
+                and i.member_num = #{memberNum}
             </if>
         </where>
         ) sub2
-        where rn between #{startRow} and #{endRow}
+        where rn between #{sepDTO.startRow} and #{sepDTO.endRow}
     </select>
 
-    <select id="inquireCount"  parameterType = "string" resultType="integer">
-        select count(*) from inquire
+    <select id="inquireCount" parameterType="map" resultType="integer">
+        select count(*) from inquire i
         <where>
-            <if test="searchWord !=null">
-                inquire_subject like '%' || #{searchWord} || '%'
-                or inquire_contents like '%' || #{searchWord} || '%'
+            <if test="sepDTO.searchWord != null">
+                inquire_subject like '%' || #{sepDTO.searchWord} || '%'
+                or inquire_contents like '%' || #{sepDTO.searchWord} || '%'
+            </if>
+            <!-- 회원일 경우 본인만 조회 -->
+            <if test="memberNum != null">
+                and i.member_num = #{memberNum}
             </if>
         </where>
     </select>

@@ -46,7 +46,7 @@ public class InquireController {
                 return "redirect:/login";
             }
         }
-        inquireListService.execute(page,searchWord,model);
+        inquireListService.execute(page,searchWord,model, session);
         return "thymeleaf/inquire/inquireList";
     }
 
