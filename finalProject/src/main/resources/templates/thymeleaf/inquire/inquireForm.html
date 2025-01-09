@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>inquireList</title>
+    <title>Title</title>
     <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/title/dropDown.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
-
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
     <script type="text/javascript">
         $(function () {
             $("#titleListMenu").click(function () {
@@ -62,47 +61,22 @@
     <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
     <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
-<div class="main-content">
-    <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
-        <a href="inquireWrite" class="write-btn">문의 작성</a>
-    </div>
-    <table>
-        <tr>
-            <td>번호</td>
-            <td>제목</td>
-            <td>작성자</td>
-            <td>작성일</td>
-            <td>답변상태</td>
-        </tr>
-<!--        <tr th:each="dto : ${list}">-->
-<!--            <td>[[${dto.postNum.substring(5)}]]</td>-->
-<!--            <td>[[${dto.category}]]</td>-->
-<!--            <td><a th:href="|postDetail/${dto.postNum}|">[[${dto.postSubject}]]</a></td>-->
-<!--            <td>[[${dto.postAuthor}]]</td>-->
-<!--            <td>[[${#dates.format(dto.postTime,'yyyy-MM-dd')}]]</td>-->
-<!--            <td>[[${dto.viewCount}]]</td>-->
-<!--            <td>[[${dto.likeCount}]]</td>-->
-<!--        </tr>-->
-
-        <!-- 페이지 네비게이션 -->
-<!--        <tr>-->
-<!--            <th colspan="7">-->
-<!--                <span th:if="${page <= 1}">⟨이전</span>-->
-<!--                <span th:if="${page > 1}">-->
-<!--            <a th:href="|postList?page=${page-1}&searchWord=${searchWord}|">⟨이전</a>-->
-<!--        </span>-->
-<!--                <th:block th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">-->
-<!--                    <a th:href="|postList?page=${i}&searchWord=${searchWord}|"-->
-<!--                       th:style="${page == i} ? 'color: #007bff;' : ''">[[${i}]]</a>-->
-<!--                </th:block>-->
-<!--                <span th:if="${page < maxPage}">-->
-<!--            <a th:href="@{postList(page=${page+1},searchWord=${searchWord})}">다음⟩</a>-->
-<!--        </span>-->
-<!--                <span th:if="${page >= maxPage}">다음⟩</span>-->
-<!--            </th>-->
-<!--        </tr>-->
-
-    </table>
+<div class="main-content" align="center">
+    <h3>게시글 작성</h3>
+    <form action="/inquire/inquireRegist" method="post">
+<!--        <input type="hidden" name="postNum" th:value="${postCommand.postNum}">-->
+<!--        <table>-->
+<!--            <tr>-->
+<!--                <td><input type="text" name="postSubject" placeholder="제목을 입력하세요"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><textarea name="postContents" rows="10" cols="50"></textarea></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--        <br>-->
+<!--        <input type="button" value="취소" onclick="location.href='/inquire/inquireList'">-->
+<!--        <input type="submit" value="등록">-->
+    </form>
 </div>
 <footer class="footer">
     <p>© 2024 StocKids. 모든 권리 보유.</p>
