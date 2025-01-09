@@ -75,11 +75,11 @@
             <td>답변상태</td>
         </tr>
         <tr th:each="dto : ${list}">
-            <td>[[${dto.inquireNum.substring(5)}]]</td>
+            <td>[[${dto.inquireNum.substring(8)}]]</td>
             <td>[[${dto.memberNum}]]</td>
             <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubjects}]]</a></td>
             <td>[[${#dates.format(dto.inquireTime,'yyyy-MM-dd')}]]</td>
-            <td></td>
+            <td>답변 상태 : </td>
         </tr>
     </table>
 </div>
