@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finalProject.mapper.AnswerMapper">
+<insert id="answerInsert" parameterType="answerDTO">
+    INSERT INTO "ANSWER"(
+        INQUIRE_NUM,
+        MEMBER_NUM,
+        ADMIN_NUM,
+        ANSWER_CONTENTS,
+        ANSWER_TIME
+    ) VALUES(
+        #{inquireNum},
+        #{memberNum},
+        #{adminNum},
+        #{answerContents},
+        SYSDATE
+    )
+</insert>
+
+<select id="answerSelectList" parameterType="answerDTO">
+SELECT
+    A.INQUIRE_NUM,
+    A.MEMBER_NUM,
+    A.ADMIN_NUM,
+    A.ANSWER_CONTENTS,
+    A.ANSWER_TIME,
+    AD.ADMIN_ID AS ADMIN_ID
+FROM
+    "ANSWER" A
+        LEFT JOIN
+    "MEMBER" M ON A.MEMBER_NUM = M.MEMBER_NUM
+        LEFT JOIN
+    "ADMIN" AD ON A.ADMIN_NUM = AD.ADMIN_NUM
+WHERE
+    A.INQUIRE_NUM = #{inquireNum}
+ORDER BY
+    A.ANSWER_TIME DESC
+
+
+</select>
+   <select id="getMemberNumByInquireNum" parameterType="String" resultType="String">
+    SELECT MEMBER_NUM
+    FROM INQUIRE
+    WHERE INQUIRE_NUM = #{inquireNum}
+</select>
+
+</mapper>
