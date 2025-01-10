@@ -5,10 +5,7 @@ import finalProject.domain.AuthInfoDTO;
 import finalProject.domain.MemberDTO;
 import finalProject.mapper.InquireMapper;
 import finalProject.service.AutoNumService;
-import finalProject.service.inquire.InquireDetailService;
-import finalProject.service.inquire.InquireListService;
-import finalProject.service.inquire.InquireUpdateService;
-import finalProject.service.inquire.InquireWriteService;
+import finalProject.service.inquire.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,10 @@ public class InquireController {
     InquireDetailService inquireDetailService;
     @Autowired
     InquireUpdateService inquireUpdateService;
+    @Autowired
+    InquireDeleteService inquireDeleteService;
+    @Autowired
+    AnswerListService answerListService;
 
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -92,6 +93,7 @@ public class InquireController {
     @GetMapping("inquireDetail/{inquireNum}")
     public String inquireDetail(@PathVariable("inquireNum") String inquireNum, Model model, HttpSession session){
         inquireDetailService.execute(model, inquireNum);
+        answerListService.execute(model, inquireNum);
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         model.addAttribute("auth", auth);
         return "thymeleaf/inquire/inquireinfo";
@@ -110,6 +112,12 @@ public class InquireController {
         inquireUpdateService.execute(inquireCommand);
         return "redirect:inquireDetail/" +inquireCommand.getInquireNum();
 
+    }
+
+    @GetMapping("inquireDelete/{inquireNum}")
+    public String inquireDelete(@PathVariable("inquireNum") String inquireNum){
+        inquireDeleteService.execute(inquireNum);
+        return "redirect:../inquireList";
     }
 
 }

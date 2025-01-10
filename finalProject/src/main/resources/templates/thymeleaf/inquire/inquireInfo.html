@@ -93,8 +93,17 @@
         </button>
         <button onclick="location.href='../inquireList'">목록</button>
     </div>
-
     <br>
+    <div class="comment-section" th:if="${isAdmin}">
+        <hr>
+        <div class="comment-section">
+            <form action="/answer/answerWrite" method="post">
+                <input type="hidden" name="postNum" th:value="${inquireCommand.inquireNum}"/>
+                <textarea id="commentContents" name="commentContents" required placeholder="댓글을 작성해주세요..."></textarea>
+                <button type="submit" class="comment-submit-btn">작성</button>
+            </form>
+        </div>
+    </div>
 </div>
 <footer class="footer">
     <p>© 2024 StocKids. 모든 권리 보유.</p>
