@@ -36,6 +36,8 @@ public class BroadCastServer extends WebSocketServer {
     public void onStart() {
         System.out.println("WebSocket server started successfully");
     }
+
+
     public static void broadcastMessage(String message) {
         for (WebSocket conn : connections) {
             conn.send(message);
