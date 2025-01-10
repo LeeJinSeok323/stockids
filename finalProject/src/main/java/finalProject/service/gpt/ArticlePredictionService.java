@@ -60,6 +60,7 @@ public class ArticlePredictionService {
 
         JSONObject json = client.sendChatCompletionRequest(request);
         ChatGPTResponse response = new ChatGPTResponse();
+        System.out.println(json.toString());
         try {
             response = mapper.readValue(json.toString(), ChatGPTResponse.class);
         }catch (Exception e){

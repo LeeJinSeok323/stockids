@@ -8,6 +8,7 @@ public class ChatGPTResponse {
     private long created;
     private Usage usage;
     private String model;
+    private String service_tier;
     private String id;
     private List<Choice> choices;
     private String system_fingerprint;
