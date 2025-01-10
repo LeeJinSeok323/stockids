@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("gpt")
+@RequestMapping("api/gpt")
 public class GPTController {
     @Autowired
     ArticlePredictionService articlePredictionService;
-    @RequestMapping("test")
+    @RequestMapping("article")
     public String test(HttpSession session) {
 //        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
 //        if(auth == null) {
