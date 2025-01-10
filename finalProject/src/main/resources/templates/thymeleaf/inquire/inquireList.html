@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inquireList</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postList.css">
+
+    <script type="text/javascript">
+        $(function () {
+            $("#titleListMenu").click(function () {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function () {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function () {
+                window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+            <li><a href="/inquire/inquireList">문의</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+</header>
+<div class="main-content">
+    <div  class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
+        <a th:if="${!isAdmin}" href="inquireWrite" class="write-btn">문의 작성</a>
+    </div>
+    <table>
+        <tr>
+            <td>번호</td>
+            <td>작성자</td>
+            <td style="text-align: center;">제목</td>
+            <td>작성일</td>
+            <td>답변상태</td>
+        </tr>
+        <tr th:each="dto : ${list}">
+            <td>[[${dto.inquireNum.substring(8)}]]</td>
+            <td>[[${dto.memberName}]]</td>
+            <td><a th:href="|inquireDetail/${dto.inquireNum}|">[[${dto.inquireSubject}]]</a></td>
+            <td>[[${#dates.format(dto.inquireTime,'yyyy-MM-dd')}]]</td>
+            <td>답변 상태 : </td>
+        </tr>
+    </table>
+</div>
+<footer class="footer">
+    <p>© 2024 StocKids. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
+</footer>
+</body>
+</html>
