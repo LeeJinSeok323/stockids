@@ -3,5 +3,48 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="finalProject.mapper.AnswerMapper">
+<insert id="answerInsert" parameterType="answerDTO">
+    INSERT INTO "ANSWER"(
+        INQUIRE_NUM,
+        MEMBER_NUM,
+        ADMIN_NUM,
+        ANSWER_CONTENTS,
+        ANSWER_TIME
+    ) VALUES(
+        #{inquireNum},
+        #{memberNum},
+        #{adminNum},
+        #{answerContents},
+        SYSDATE
+    )
+</insert>
+
+    <select id="answerSelectOne" parameterType="String" resultType="answerDTO">
+        <if test="inquireNum != null">
+        SELECT *
+        FROM answer
+        WHERE inquire_num = #{inquireNum}
+        </if>
+    </select>
+
+   <select id="getMemberNumByInquireNum" parameterType="String" resultType="String">
+    SELECT MEMBER_NUM
+    FROM INQUIRE
+    WHERE INQUIRE_NUM = #{inquireNum}
+</select>
+    <select id="findAuthByAnswerNum" resultType="string">
+        SELECT
+            m.MEMBER_ID AS answerAuthor
+        FROM ANSWER a
+                 JOIN MEMBER m ON a.MEMBER_NUM = m.MEMBER_NUM
+        WHERE a.INQUIRE_NUM = #{inquireNum}
+    </select>
+
+    <delete id = "answerDelete" parameterType="string">
+   delete
+   from "ANSWER"
+   where INQUIRE_NUM = #{inquireNum}
+
+    </delete>
 
 </mapper>

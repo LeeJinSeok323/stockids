@@ -18,11 +18,6 @@ public class CommentWriteService {
         commentDTO.setCommentAuthor(commentCommand.getCommentAuthor());
         commentDTO.setPostNum(commentCommand.getPostNum());
         commentDTO.setPostAuthor(commentMapper.getPostAuthorByPostNum(commentCommand.getPostNum()));
-        System.out.println("CommentNum: " + commentDTO.getCommentNum());
-        System.out.println("CommentContents: " + commentDTO.getCommentContents());
-        System.out.println("CommentAuthor: " + commentDTO.getCommentAuthor());
-        System.out.println("PostNum: " + commentDTO.getPostNum());
-        System.out.println("PostAuthor: " + commentDTO.getPostAuthor());
         commentMapper.commentInsert(commentDTO);
     }
 }
