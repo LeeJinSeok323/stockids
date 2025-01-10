@@ -83,18 +83,42 @@
         <p>[[${inquireCommand.inquireContents}]]</p>
     </div>
     <hr>
+    <br>
+    <div class="comment-item" th:if="${dto != null}">
+        <div class="comment-header">
+            <span class="comment-time" th:text="${#dates.format(dto.answerTime, 'MM-dd HH:mm:ss')}"></span>
+        </div>
+        <div class="comment-content">
+            <span th:text="${dto.answerContents}"></span>
+            <button th:if="${isAdmin}"
+                    class="delete-comment-btn"
+                    th:attr="onclick='location.href=\'/answer/answerDelete/' + ${inquireCommand.inquireNum} + '\''">삭제
+            </button>
+        </div>
+        <hr class="comment-divider">
+    </div>
+
+    <!-- 답변이 없을 경우에만 폼 보이기 -->
+    <div class="comment-section" th:if="${isAdmin and dto == null}">
+        <div class="comment-section">
+            <form action="/answer/answerWrite" method="post">
+                <input type="hidden" name="inquireNum" th:value="${inquireCommand.inquireNum}"/>
+                <textarea name="answerContents" required placeholder="답변을 작성해주세요..."></textarea>
+                <button type="submit" class="comment-submit-btn">작성</button>
+            </form>
+        </div>
+    </div>
     <!-- 하단 버튼 -->
     <div class="post-buttons">
         <button th:if="${!isAdmin}" class="delete-button"
-                th:attr="onclick='location.href=\'../inquireUpdate?inquireNum=' + ${inquireCommand.inquireNum} + '\''">문의 수정
+                th:attr="onclick='location.href=\'../inquireUpdate?inquireNum=' + ${inquireCommand.inquireNum} + '\''">
+            문의 수정
         </button>
         <button th:if="${isAdmin}" class="delete-button"
                 th:attr="onclick='location.href=\'/inquire/inquireDelete/' + ${inquireCommand.inquireNum} + '\''">문의 삭제
         </button>
         <button onclick="location.href='../inquireList'">목록</button>
     </div>
-
-    <br>
 </div>
 <footer class="footer">
     <p>© 2024 StocKids. 모든 권리 보유.</p>
