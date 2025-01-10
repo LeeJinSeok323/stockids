@@ -14,4 +14,6 @@ public class InquireDTO {
     String inquireContents;
     Date inquireTime;
     String memberName;
+
+    String status; //답변상태
 }
