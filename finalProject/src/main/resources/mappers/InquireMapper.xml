@@ -78,7 +78,7 @@
             i.INQUIRE_SUBJECT,
             i.INQUIRE_CONTENTS,
             i.INQUIRE_TIME,
-            m.MEMBER_NAME AS inquireAuthor
+            m.MEMBER_NAME AS memberName
         FROM INQUIRE i
                  JOIN MEMBER m ON i.MEMBER_NUM = m.MEMBER_NUM
         WHERE i.INQUIRE_NUM = #{inquireNum}
@@ -87,10 +87,14 @@
     <update id="inquireUpdate" parameterType="inquire">
         update inquire
         set
-            MEMBER_NUM = #{memberNum},
+            INQUIRE_NUM = #{inquireNum},
             INQUIRE_SUBJECT = #{inquireSubject},
             INQUIRE_CONTENTS = #{inquireContents}
         where INQUIRE_NUM = #{inquireNum}
     </update>
-
+    <delete id="inquireDelete" parameterType="string">
+    delete
+    from inquire
+    where INQUIRE_NUM = #{inquireNum}
+    </delete>
 </mapper>
