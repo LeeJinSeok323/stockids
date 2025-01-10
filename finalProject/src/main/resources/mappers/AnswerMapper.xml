@@ -38,6 +38,7 @@ WHERE
 ORDER BY
     A.ANSWER_TIME DESC
 
+
 </select>
    <select id="getMemberNumByInquireNum" parameterType="String" resultType="answerDTO">
     SELECT MEMBER_NUM
