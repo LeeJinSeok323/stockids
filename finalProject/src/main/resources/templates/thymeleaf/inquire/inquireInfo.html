@@ -92,7 +92,7 @@
             <span th:text="${dto.answerContents}"></span>
             <button th:if="${isAdmin}"
                     class="delete-comment-btn"
-                    th:attr="onclick='location.href=\'//answer/answerDelete/' + ${inquireCommand.inquireNum} + '\''">삭제
+                    th:attr="onclick='location.href=\'/answer/answerDelete/' + ${inquireCommand.inquireNum} + '\''">삭제
             </button>
         </div>
         <hr class="comment-divider">
@@ -104,7 +104,7 @@
         <div class="comment-section">
             <form action="/answer/answerWrite" method="post">
                 <input type="hidden" name="inquireNum" th:value="${inquireCommand.inquireNum}"/>
-                <textarea id="answerContents" name="answerContents" required placeholder="답변을 작성해주세요..."></textarea>
+                <textarea name="answerContents" required placeholder="답변을 작성해주세요..."></textarea>
                 <button type="submit" class="comment-submit-btn">작성</button>
             </form>
         </div>

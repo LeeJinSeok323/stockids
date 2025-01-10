@@ -11,9 +11,8 @@ public class AnswerDetailService {
     @Autowired
     AnswerMapper answerMapper;
     public void execute(Model model, String inquireNum){
-        AnswerDTO answerDTO = answerMapper.answerSelectOne(inquireNum);
-        String answerAuthorld = answerMapper.findAuthByAnswerNum(inquireNum);
-        model.addAttribute("answerCommand", answerDTO);
-        model.addAttribute("answerAuthorld", answerAuthorld);
+        AnswerDTO dto = answerMapper.answerSelectOne(inquireNum);
+        model.addAttribute("dto",dto);
+
     }
 }
