@@ -98,8 +98,8 @@
         <hr>
         <div class="comment-section">
             <form action="/answer/answerWrite" method="post">
-                <input type="hidden" name="postNum" th:value="${inquireCommand.inquireNum}"/>
-                <textarea id="commentContents" name="commentContents" required placeholder="댓글을 작성해주세요..."></textarea>
+                <input type="text" name="inquireNum" th:value="${inquireCommand.inquireNum}"/>
+                <textarea id="answerContents" name="answerContents" required placeholder="답변을 작성해주세요..."></textarea>
                 <button type="submit" class="comment-submit-btn">작성</button>
             </form>
         </div>

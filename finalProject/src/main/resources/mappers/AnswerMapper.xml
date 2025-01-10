@@ -40,10 +40,10 @@ ORDER BY
 
 
 </select>
-   <select id="getMemberNumByInquireNum" parameterType="String" resultType="answerDTO">
+   <select id="getMemberNumByInquireNum" parameterType="String" resultType="String">
     SELECT MEMBER_NUM
     FROM INQUIRE
-    WHERE INQUIRE_NUM = #{inquireNum, jdbcType=VARCHAR}
+    WHERE INQUIRE_NUM = #{inquireNum}
 </select>
 
 </mapper>
