@@ -84,7 +84,7 @@
     </div>
     <hr>
     <br>
-    <div class="comment-item">
+    <div class="comment-item" th:if="${dto.answerContents != null}">
         <div class="comment-header">
             <span class="comment-time" th:text="${#dates.format(dto.answerTime, 'MM-dd HH:mm:ss')}"></span>
         </div>
