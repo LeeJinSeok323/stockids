@@ -1,6 +1,5 @@
 package finalProject.controller;
 
-import finalProject.domain.AuthInfoDTO;
 import finalProject.service.gpt.ArticlePredictionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +13,21 @@ public class GPTController {
     ArticlePredictionService articlePredictionService;
     @RequestMapping("test")
     public String test(HttpSession session) {
-        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        if(auth == null) {
-            return "0";
-        }
-        else if(auth.isAdmin()){
-            boolean isChanged = articlePredictionService.execute();
-            if(isChanged)
-                return "200";
-            else
-                return "404";
-        }
-        else {
-            return "401";
-        }
+//        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+//        if(auth == null) {
+//            return "0";
+//        }
+//        else if(auth.isAdmin()){
+//            boolean isChanged = articlePredictionService.execute();
+//            if(isChanged)
+//                return "200";
+//            else
+//                return "404";
+//        }
+//        else {
+//            return "401";
+//        }
+        articlePredictionService.execute();
+        return "success";
     }
 }
