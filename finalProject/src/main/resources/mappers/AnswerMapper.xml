@@ -19,30 +19,12 @@
     )
 </insert>
 
-<select id="answerSelectList" parameterType="answerDTO">
-SELECT
-    A.INQUIRE_NUM,
-    A.MEMBER_NUM,
-    A.ADMIN_NUM,
-    A.ANSWER_CONTENTS,
-    A.ANSWER_TIME,
-    AD.ADMIN_ID AS ADMIN_ID
-FROM
-    "ANSWER" A
-        LEFT JOIN
-    "MEMBER" M ON A.MEMBER_NUM = M.MEMBER_NUM
-        LEFT JOIN
-    "ADMIN" AD ON A.ADMIN_NUM = AD.ADMIN_NUM
-WHERE
-    A.INQUIRE_NUM = #{inquireNum}
-ORDER BY
-    A.ANSWER_TIME DESC
-
-
-</select>
-    <select id="answerSelectOne" parameterType="string" resultType="answerDTO">
-        SELECT * from answer
-        where inquire_num = #{inquireNum}
+    <select id="answerSelectOne" parameterType="String" resultType="answerDTO">
+        <if test="inquireNum != null">
+        SELECT *
+        FROM answer
+        WHERE inquire_num = #{inquireNum}
+        </if>
     </select>
 
    <select id="getMemberNumByInquireNum" parameterType="String" resultType="String">
@@ -57,5 +39,12 @@ ORDER BY
                  JOIN MEMBER m ON a.MEMBER_NUM = m.MEMBER_NUM
         WHERE a.INQUIRE_NUM = #{inquireNum}
     </select>
+
+    <delete id = "answerDelete" parameterType="string">
+   delete
+   from "ANSWER"
+   where INQUIRE_NUM = #{inquireNum}
+
+    </delete>
 
 </mapper>

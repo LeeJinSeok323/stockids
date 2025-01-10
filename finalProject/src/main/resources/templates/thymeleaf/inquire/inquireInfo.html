@@ -84,7 +84,7 @@
     </div>
     <hr>
     <br>
-    <div class="comment-item" th:if="${dto.answerContents != null}">
+    <div class="comment-item" th:if="${dto != null}">
         <div class="comment-header">
             <span class="comment-time" th:text="${#dates.format(dto.answerTime, 'MM-dd HH:mm:ss')}"></span>
         </div>
@@ -99,8 +99,7 @@
     </div>
 
     <!-- 답변이 없을 경우에만 폼 보이기 -->
-    <div class="comment-section" th:if="${isAdmin and dto.answerContents == null}">
-        <hr>
+    <div class="comment-section" th:if="${isAdmin and dto == null}">
         <div class="comment-section">
             <form action="/answer/answerWrite" method="post">
                 <input type="hidden" name="inquireNum" th:value="${inquireCommand.inquireNum}"/>
