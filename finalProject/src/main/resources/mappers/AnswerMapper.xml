@@ -40,10 +40,35 @@ ORDER BY
 
 
 </select>
+    <select id="answerSelectOne" parameterType="string" resultMap="answerDTO">
+        SELECT
+            a.INQUIRE_NUM,
+            i.INQUIRE_SUBJECT,
+            i.INQUIRE_CONTENTS,
+            i.INQUIRE_TIME,
+            a.ANSWER_CONTENTS,
+            a.ANSWER_TIME,
+            m.MEMBER_NAME AS memberName,
+            ad.ADMIN_ID AS adminId
+        FROM ANSWER a
+                 LEFT JOIN INQUIRE i ON a.INQUIRE_NUM = i.INQUIRE_NUM
+                 LEFT JOIN MEMBER m ON i.MEMBER_NUM = m.MEMBER_NUM
+                 LEFT JOIN ADMIN ad ON a.ADMIN_NUM = ad.ADMIN_NUM
+        WHERE a.INQUIRE_NUM = #{inquireNum}
+        ORDER BY a.ANSWER_TIME DESC
+    </select>
+
    <select id="getMemberNumByInquireNum" parameterType="String" resultType="String">
     SELECT MEMBER_NUM
     FROM INQUIRE
     WHERE INQUIRE_NUM = #{inquireNum}
 </select>
+    <select id="findAuthByAnswerNum" resultType="string">
+        SELECT
+            m.MEMBER_ID AS answerAuthor
+        FROM ANSWER a
+                 JOIN MEMBER m ON a.MEMBER_NUM = m.MEMBER_NUM
+        WHERE a.INQUIRE_NUM = #{inquireNum}
+    </select>
 
 </mapper>

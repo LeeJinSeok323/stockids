@@ -36,6 +36,8 @@ public class InquireController {
     InquireDeleteService inquireDeleteService;
     @Autowired
     AnswerListService answerListService;
+    @Autowired
+    AnswerDetailService answerDetailservice;
 
     @GetMapping("inquireList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
@@ -93,12 +95,11 @@ public class InquireController {
     @GetMapping("inquireDetail/{inquireNum}")
     public String inquireDetail(@PathVariable("inquireNum") String inquireNum, Model model, HttpSession session){
         inquireDetailService.execute(model, inquireNum);
+        answerDetailservice.execute(model, inquireNum);
         answerListService.execute(model, inquireNum);
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         model.addAttribute("auth", auth);
         return "thymeleaf/inquire/inquireinfo";
-
-
     }
 
     @GetMapping("inquireUpdate")

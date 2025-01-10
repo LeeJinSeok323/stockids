@@ -6,16 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.List;
-
 @Service
-public class AnswerListService {
+public class AnswerDetailService {
     @Autowired
     AnswerMapper answerMapper;
     public void execute(Model model, String inquireNum){
-        List<AnswerDTO> list = answerMapper.answerSelectList(inquireNum);
-        model.addAttribute("List",list);
-
+        AnswerDTO answerDTO = answerMapper.answerSelectOne(inquireNum);
+        String answerAuthorld = answerMapper.findAuthByAnswerNum(inquireNum);
+        model.addAttribute("answerCommand", answerDTO);
+        model.addAttribute("answerAuthorld", answerAuthorld);
     }
-
 }
