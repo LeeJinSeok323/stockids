@@ -99,51 +99,106 @@
             });
 
         });
-
-
+    </script>
+    <script type="text/javascript">
         $(function () {
-            // On click of the titleListMenu
+
+            function handleNavigation(moveWord) {
+                $.ajax({
+                    url: `/move?moveWord=${moveWord}`,
+                    method: 'GET',
+                    success: function (response) {
+                        if (response !== "error") {
+                            console.log(response);
+                            window.location.href = "http://localhost:3000";
+                        } else {
+                            console.log(response);
+                            alert("올바르지 않은 메뉴입니다.");
+                        }
+                    },
+                    error: function () {
+                        alert("요청 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+
             $("#titleListMenu").click(function () {
-                // Remove the 'selected' class from all menu items
-                $(".nav-link").removeClass("selected");
-
-                // Add 'selected' class to the clicked item
-                $(this).find(".nav-link").addClass("selected");
-
-                // Navigate to the corresponding page
                 window.location.href = "/user1/titleList";
             });
-
-            // On click of the memberListMenu
             $("#memberListMenu").click(function () {
-                $(".nav-link").removeClass("selected");
-                $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/memberList";
             });
-
-            // On click of the titleWriteMenu
             $("#titleWriteMenu").click(function () {
-                $(".nav-link").removeClass("selected");
-                $(this).find(".nav-link").addClass("selected");
                 window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+
+            $("a[href='#news']").click(function () {
+                handleNavigation("news");
+            });
+            $("a[href='#stock']").click(function () {
+                handleNavigation("stock");
+            });
+            $("a[href='#rank']").click(function () {
+                handleNavigation("rank");
+            });
+            $("a[href='#home']").click(function () {
+                handleNavigation("home");
             });
         });
     </script>
 </head>
 <body>
-<div th:unless="${isLoggedIn}">
-    <header class="header">
-        <div class="logo">StocKids</div>
-        <nav>
-            <ul>
-                <li><a href="/">홈</a></li>
-                <li><a href="#">주식 골라보기</a></li>
-                <li><a href="/post/postList">게시판</a></li>
-            </ul>
-        </nav>
-        <button class="login-btn" onclick="location.href='/login';">로그인</button>
-    </header>
-</div>
+
+<header class="header">
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="#home">홈</a></li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                알림
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="alertWriteMenu">
+                        <span class="nav-link">알림등록</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="alertListMenu">
+                        <span class="nav-link">알림관리</span>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#news">뉴스</a></li>
+            <li><a href="#stock">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+            <li><a href="/inquire/inquireList">문의</a></li>
+            <li><a href="#rank">랭킹</a></li>
+        </ul>
+    </nav>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+</header>
 <div class="main-content">
     <!-- 관리자 목록이 로드될 위치 -->
     <div id="contents"></div>
