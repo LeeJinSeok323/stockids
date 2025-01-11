@@ -29,6 +29,26 @@
     </script>
     <script type="text/javascript">
         $(function () {
+
+            function handleNavigation(moveWord) {
+                $.ajax({
+                    url: `/move?moveWord=${moveWord}`,
+                    method: 'GET',
+                    success: function (response) {
+                        if (response !== "error") {
+                            console.log(response);
+                            window.location.href = "http://localhost:3000";
+                        } else {
+                            console.log(response);
+                            alert("올바르지 않은 메뉴입니다.");
+                        }
+                    },
+                    error: function () {
+                        alert("요청 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+
             $("#titleListMenu").click(function () {
                 window.location.href = "/user1/titleList";
             });
@@ -49,15 +69,29 @@
             $("#list").click(function () {
                 window.location.href = "/user1/home";
             });
+
+            $("a[href='#news']").click(function () {
+                handleNavigation("news");
+            });
+            $("a[href='#stock']").click(function () {
+                handleNavigation("stock");
+            });
+            $("a[href='#rank']").click(function () {
+                handleNavigation("rank");
+            });
+            $("a[href='#home']").click(function () {
+                handleNavigation("home");
+            });
         });
     </script>
 </head>
 <body>
+
 <header class="header">
     <div class="logo">StocKids</div>
     <nav>
         <ul>
-            <li><a href="/">홈</a></li>
+            <li><a href="#home">홈</a></li>
             <li th:if="${isAdmin}" id="list">관리자</li>
             <li th:if="${isAdmin}" class="admin-menu">
                 칭호
@@ -73,8 +107,11 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="#news">뉴스</a></li>
+            <li><a href="#stock">주식 골라보기</a></li>
             <li><a href="/post/postList">게시판</a></li>
+            <li><a href="/inquire/inquireList">문의</a></li>
+            <li><a href="#rank">랭킹</a></li>
         </ul>
     </nav>
     <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
@@ -83,31 +120,31 @@
 <div class="main-content" align="center">
     <h3>게시글 수정</h3>
     <form action="postUpdate" method="post" th:object="${postCommand}">
-    <input type="hidden" name="postNum" th:field="*{postNum}" readonly="readonly">
-    <table>
-        <tr>
-            <td colspan="2">
-                <div class="category-title-wrapper">
-                    <select name="category">
-                        <option value="국내주식">국내주식</option>
-                        <option value="해외주식">해외주식</option>
-                        <option value="질문">질문</option>
-                        <option value="종목추천,분석">종목추천,분석</option>
-                        <option value="정보공유">정보공유</option>
-                    </select>
-                    <input type="text" th:field="*{postSubject}" name="postSubject" placeholder="제목을 입력하세요">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><textarea name="postContents"  rows="10" cols="50">[[${postCommand.postContents}]]</textarea></td>
-        </tr>
+        <input type="hidden" name="postNum" th:field="*{postNum}" readonly="readonly">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <div class="category-title-wrapper">
+                        <select name="category">
+                            <option value="국내주식">국내주식</option>
+                            <option value="해외주식">해외주식</option>
+                            <option value="질문">질문</option>
+                            <option value="종목추천,분석">종목추천,분석</option>
+                            <option value="정보공유">정보공유</option>
+                        </select>
+                        <input type="text" th:field="*{postSubject}" name="postSubject" placeholder="제목을 입력하세요">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><textarea name="postContents" rows="10" cols="50">[[${postCommand.postContents}]]</textarea></td>
+            </tr>
 
-    </table>
-    <br>
-    <input type="button" value="취소" onclick="javascript:location.href='postList'" >
-    <input type="submit" value="수정" >
-</form>
+        </table>
+        <br>
+        <input type="button" value="취소" onclick="javascript:location.href='postList'">
+        <input type="submit" value="수정">
+    </form>
 </div>
 <footer class="footer">
     <p>© 2024 StocKids. 모든 권리 보유.</p>

@@ -21,6 +21,26 @@
     </script>
     <script type="text/javascript">
         $(function () {
+
+            function handleNavigation(moveWord) {
+                $.ajax({
+                    url: `/move?moveWord=${moveWord}`,
+                    method: 'GET',
+                    success: function (response) {
+                        if (response !== "error") {
+                            console.log(response);
+                            window.location.href = "http://localhost:3000";
+                        } else {
+                            console.log(response);
+                            alert("올바르지 않은 메뉴입니다.");
+                        }
+                    },
+                    error: function () {
+                        alert("요청 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+
             $("#titleListMenu").click(function () {
                 window.location.href = "/user1/titleList";
             });
@@ -41,6 +61,19 @@
             $("#list").click(function () {
                 window.location.href = "/user1/home";
             });
+
+            $("a[href='#news']").click(function () {
+                handleNavigation("news");
+            });
+            $("a[href='#stock']").click(function () {
+                handleNavigation("stock");
+            });
+            $("a[href='#rank']").click(function () {
+                handleNavigation("rank");
+            });
+            $("a[href='#home']").click(function () {
+                handleNavigation("home");
+            });
         });
     </script>
 </head>
@@ -50,7 +83,7 @@
     <div class="logo">StocKids</div>
     <nav>
         <ul>
-            <li><a href="/">홈</a></li>
+            <li><a href="#home">홈</a></li>
             <li th:if="${isAdmin}" id="list">관리자</li>
             <li th:if="${isAdmin}" class="admin-menu">
                 칭호
@@ -66,8 +99,11 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="#">주식 골라보기</a></li>
+            <li><a href="#news">뉴스</a></li>
+            <li><a href="#stock">주식 골라보기</a></li>
             <li><a href="/post/postList">게시판</a></li>
+            <li><a href="/inquire/inquireList">문의</a></li>
+            <li><a href="#rank">랭킹</a></li>
         </ul>
     </nav>
     <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
