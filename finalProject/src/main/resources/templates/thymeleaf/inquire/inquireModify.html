@@ -3,101 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <title>inquireModify</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
-  <link rel="stylesheet" href="/static/css/title/dropDown.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
-  <script type="text/javascript">
-    $(function () {
-      $("#titleListMenu").click(function () {
-        window.location.href = "/user1/titleList";
-      });
+    <link rel="stylesheet" type="text/css" href="/static/css/footer2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header2.css">
+    <link rel="stylesheet" href="/static/css/title/dropDown.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/post/postFormModify.css">
+    <script type="text/javascript">
+        $(function () {
 
-      $("#memberListMenu").click(function () {
-        window.location.href = "/user1/memberList";
-      });
+            function handleNavigation(moveWord) {
+                $.ajax({
+                    url: `/move?moveWord=${moveWord}`,
+                    method: 'GET',
+                    success: function (response) {
+                        if (response !== "error") {
+                            console.log(response);
+                            window.location.href = "http://localhost:3000";
+                        } else {
+                            console.log(response);
+                            alert("올바르지 않은 메뉴입니다.");
+                        }
+                    },
+                    error: function () {
+                        alert("요청 중 오류가 발생했습니다.");
+                    }
+                });
+            }
 
-      $("#titleWriteMenu").click(function () {
-        window.location.href = "/user1/titleWrite";
-      });
-      $("#alertWriteMenu").click(function () {
-        window.location.href = "/user1/alertWrite";
-      });
-      $("#alertListMenu").click(function () {
-        window.location.href = "/user1/alertList";
-      });
-      $("#list").click(function () {
-        window.location.href = "/user1/home";
-      });
-    });
-  </script>
+            $("#titleListMenu").click(function () {
+                window.location.href = "/user1/titleList";
+            });
+
+            $("#memberListMenu").click(function () {
+                window.location.href = "/user1/memberList";
+            });
+
+            $("#titleWriteMenu").click(function () {
+                window.location.href = "/user1/titleWrite";
+            });
+            $("#alertWriteMenu").click(function () {
+                window.location.href = "/user1/alertWrite";
+            });
+            $("#alertListMenu").click(function () {
+                window.location.href = "/user1/alertList";
+            });
+            $("#list").click(function () {
+                window.location.href = "/user1/home";
+            });
+
+            $("a[href='#news']").click(function () {
+                handleNavigation("news");
+            });
+            $("a[href='#stock']").click(function () {
+                handleNavigation("stock");
+            });
+            $("a[href='#rank']").click(function () {
+                handleNavigation("rank");
+            });
+            $("a[href='#home']").click(function () {
+                handleNavigation("home");
+            });
+        });
+    </script>
 </head>
 <body>
+
 <header class="header">
-  <div class="logo">StocKids</div>
-  <nav>
-    <ul>
-      <li><a href="/">홈</a></li>
-      <li th:if="${isAdmin}" id="list">관리자</li>
-      <li th:if="${isAdmin}" class="admin-menu">
-        칭호
-        <ul class="dropdown-menu">
-          <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
-            <span class="nav-link">칭호내역</span>
-          </li>
-          <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
-            <span class="nav-link">유저칭호</span>
-          </li>
-          <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
-            <span class="nav-link">칭호등록</span>
-          </li>
+    <div class="logo">StocKids</div>
+    <nav>
+        <ul>
+            <li><a href="#home">홈</a></li>
+            <li th:if="${isAdmin}" id="list">관리자</li>
+            <li th:if="${isAdmin}" class="admin-menu">
+                칭호
+                <ul class="dropdown-menu">
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
+                        <span class="nav-link">칭호내역</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
+                        <span class="nav-link">유저칭호</span>
+                    </li>
+                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
+                        <span class="nav-link">칭호등록</span>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#news">뉴스</a></li>
+            <li><a href="#stock">주식 골라보기</a></li>
+            <li><a href="/post/postList">게시판</a></li>
+            <li><a href="/inquire/inquireList">문의</a></li>
+            <li><a href="#rank">랭킹</a></li>
         </ul>
-      </li>
-      <li><a href="#">주식 골라보기</a></li>
-      <li><a href="/post/postList">게시판</a></li>
-      <li><a href="/inquire/inquireList">문의</a></li>
-    </ul>
-  </nav>
-  <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
-  <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+    </nav>
+    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
 <div class="main-content" align="center">
-  <h3>문의 수정</h3>
-  <form action="inquireUpdate" method="post" th:object="${inquireCommand}">
-    <input type="hidden" name="inquireNum" th:field="*{inquireNum}" readonly="readonly">
-    <table>
-      <tr>
-        <td>
-            <input type="text" th:field="*{inquireSubject}" name="inquireSubject">
-        </td>
-      </tr>
-      <tr>
-        <td><textarea name="inquireContents"  rows="10" cols="50">[[${inquireCommand.inquireContents}]]</textarea></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="font-size: 12px; color: gray;">
-          <strong>문의 작성 시 유의사항</strong><br>
-          - 민감한 개인 정보(주민등록번호, 계좌번호 등)는 작성하지 마세요.<br>
-          - 문의 내용은 최대한 구체적으로 작성해 주시기 바랍니다.<br>
-          - 비속어, 욕설 등 부적절한 표현이 포함된 문의는 답변이 어려울 수 있습니다.<br><br>
-          <strong>답변 처리 안내</strong><br>
-          - 문의 접수 후, 답변까지 최대 24~48시간이 소요될 수 있습니다.<br>
-          - 접수된 문의는 운영 시간(평일 9:00~18:00) 내에 처리됩니다.<br>
-        </td>
-      </tr>
-    </table>
-    <br>
-    <input type="button" value="취소" onclick="javascript:location.href='inquireList'" >
-    <input type="submit" value="수정" >
-  </form>
+    <h3>문의 수정</h3>
+    <form action="inquireUpdate" method="post" th:object="${inquireCommand}">
+        <input type="hidden" name="inquireNum" th:field="*{inquireNum}" readonly="readonly">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" th:field="*{inquireSubject}" name="inquireSubject">
+                </td>
+            </tr>
+            <tr>
+                <td><textarea name="inquireContents" rows="10"
+                              cols="50">[[${inquireCommand.inquireContents}]]</textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-size: 12px; color: gray;">
+                    <strong>문의 작성 시 유의사항</strong><br>
+                    - 민감한 개인 정보(주민등록번호, 계좌번호 등)는 작성하지 마세요.<br>
+                    - 문의 내용은 최대한 구체적으로 작성해 주시기 바랍니다.<br>
+                    - 비속어, 욕설 등 부적절한 표현이 포함된 문의는 답변이 어려울 수 있습니다.<br><br>
+                    <strong>답변 처리 안내</strong><br>
+                    - 문의 접수 후, 답변까지 최대 24~48시간이 소요될 수 있습니다.<br>
+                    - 접수된 문의는 운영 시간(평일 9:00~18:00) 내에 처리됩니다.<br>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <input type="button" value="취소" onclick="javascript:location.href='inquireList'">
+        <input type="submit" value="수정">
+    </form>
 </div>
 <footer class="footer">
-  <p>© 2024 StocKids. 모든 권리 보유.</p>
-  <ul>
-    <li>이용약관</li>
-    <li>개인정보 처리방침</li>
-    <li>고객센터</li>
-  </ul>
+    <p>© 2024 StocKids. 모든 권리 보유.</p>
+    <ul>
+        <li>이용약관</li>
+        <li>개인정보 처리방침</li>
+        <li>고객센터</li>
+    </ul>
 </footer>
 </body>
 </html>
