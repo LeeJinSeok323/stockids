@@ -118,7 +118,8 @@
             [[${inquireCommand.memberName}]] | [[${#dates.format(inquireCommand.inquireTime, 'yyyy-MM-dd HH:mm')}]]
         </div>
         <div class="right-info">
-            답변 상태 :
+            <span th:if="${dto != null}">답변완료</span>
+            <span th:if="${dto == null}">답변대기중</span>
         </div>
     </div>
     <hr>
