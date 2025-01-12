@@ -3,12 +3,11 @@ package finalProject.controller;
 
 
 import finalProject.domain.stock.MyStockDTO;
-import finalProject.service.Stock.StockDBService;
-import finalProject.service.Stock.StockInfoService;
-import finalProject.service.Stock.StockMyFinancesService;
-import finalProject.service.Stock.StockMyService;
+import finalProject.domain.stock.StockDTO;
+import finalProject.service.Stock.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +26,9 @@ public class StockInfoController {
 
     @Autowired
     StockMyFinancesService stockMyFinancesService;
+
+    @Autowired
+    StockDefaultDataService stockDefaultDataService;
 
     @GetMapping("/api/stock-info")
     public String getStockInfo(
@@ -84,5 +86,11 @@ public class StockInfoController {
     public Integer getMyFinances(HttpSession session){
         Integer MyFinances = stockMyFinancesService.execute(session);
         return MyFinances;
+    }
+
+    @GetMapping("/stock/default/data")
+    public ResponseEntity<List<StockDTO>> getDefaultData(){
+        List<StockDTO> dto = stockDefaultDataService.execute();
+        return ResponseEntity.ok(dto);
     }
 }
