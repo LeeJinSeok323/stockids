@@ -3,6 +3,7 @@ package finalProject.service.Stock;
 import finalProject.domain.AuthInfoDTO;
 import finalProject.domain.stock.CumulativeStockDTO;
 import finalProject.domain.stock.PurchaseDTO;
+import finalProject.domain.stock.StockDTO;
 import finalProject.mapper.StockMapper;
 import finalProject.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
@@ -25,10 +26,15 @@ public class StockMyFinancesService {
         String memberNum = userMapper.getUserNumById(auth.getUserId());
 
         Integer count = 0;
-        List<PurchaseDTO> dto = stockMapper.cumulativeStockSelectAll(memberNum);
-        for(PurchaseDTO p : dto) {
-            int plus = p.getVirtualDealPrice() * p.getVirtualDealVolume();
-            count += plus;
+        List<CumulativeStockDTO> dto = stockMapper.cumulativeStockSelectAll(memberNum);
+        List<StockDTO> stockDTO = stockMapper.stockInfo();
+        for(CumulativeStockDTO p : dto) {
+            for(StockDTO d : stockDTO) {
+                if(d.getStockCode().equals(p.getStockCode())) {
+                    Integer plus = p.getCountStock() * d.getClosePrice();
+                    count += plus;
+                }
+            }
         }
         return count;
     }
