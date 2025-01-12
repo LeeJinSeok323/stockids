@@ -96,6 +96,7 @@ public class MultiThreadedUDPServer {
                         "totalDealVolume=" + transaction.get누적거래량();
                 //System.out.println(logMessage);
                 producer.send(new ProducerRecord<>("stock-input", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
+                producer.send(new ProducerRecord<>("stock", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
                 // DB에  insert하기
             } catch (Exception e) {
                 e.printStackTrace();
