@@ -35,8 +35,8 @@
         select COUNT_STOCK, AVG_STOCK from cumulative_stock where member_num = #{memberNum} and stock_code = #{stockCode}
     </select>
 
-    <select id="cumulativeStockSelectAll" resultType="purchaseDTO">
-        select virtual_deal_price, virtual_deal_volume from virture_stock where member_num = #{memberNum}
+    <select id="cumulativeStockSelectAll" resultType="cumulativeStockDTO">
+        select STOCK_CODE, count_stock, avg_stock from cumulative_stock where member_num = #{memberNum}
     </select>
 
     <insert id="cumulativeStockInsert">
@@ -79,5 +79,9 @@
         values (#{virtualDealNum}, #{memberNum}, #{stockCode}, #{virtualDealPrice},
                    #{virtualDealVolume}, #{profit}, sysdate)
     </insert>
+
+    <select id="stockInfo" resultType="stockDTO">
+        select STOCK_CODE, STOCK_NAME, OPEN_PRICE, CLOSE_PRICE, LOW_PRICE, HIGH_PRICE from stock_info
+    </select>
 
 </mapper>
