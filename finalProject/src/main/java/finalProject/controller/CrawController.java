@@ -23,7 +23,7 @@ public class CrawController {
     @GetMapping("/craw/news")
     public List<CrawItem> getNews(@RequestParam String query) throws IOException {
         List<CrawItem> filteredItems = crawServices.fetchNews(query);
-        crawDbSaveService.execute(filteredItems);
+        crawDbSaveService.execute(filteredItems, query);
         return filteredItems;
     }
 }

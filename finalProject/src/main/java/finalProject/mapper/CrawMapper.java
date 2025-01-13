@@ -13,7 +13,8 @@ public interface CrawMapper {
                     @Param("title") String title,
                      @Param("description") String description,
                      @Param("link") String link,
-                     @Param("body") String body);
+                     @Param("body") String body,
+                     @Param("name") String name);
 
     public List<CrawDTO> crawList();
 }

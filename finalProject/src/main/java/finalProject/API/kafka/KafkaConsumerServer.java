@@ -25,7 +25,7 @@ public class KafkaConsumerServer {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList("stock-input"));  // 읽고자 하는 Kafka 토픽명
+        consumer.subscribe(Collections.singletonList("stock-output"));  // 읽고자 하는 Kafka 토픽명
         // Kafka 메시지 수신 및 WebSocket 전송 쓰레드 실행
         new Thread(() -> {
             try {
@@ -47,7 +47,7 @@ public class KafkaConsumerServer {
                         }
                         sb.deleteCharAt(sb.length() - 1);
                         sb.append("}");
-                        System.out.println("Statistics Stock Info = " + sb.toString());
+                        //System.out.println("Statistics Stock Info = " + sb.toString());
 
                         insertDealService.execute(sb.toString());
                     }

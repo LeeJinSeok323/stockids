@@ -12,4 +12,5 @@ public class CrawDTO {
     String originalUrl;
     String articleStoreDate;
     String articleContents;
+    String companyName;
 }

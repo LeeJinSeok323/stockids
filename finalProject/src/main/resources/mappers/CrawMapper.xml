@@ -11,7 +11,8 @@
         ARTICLE_SUMMARY,
         ARTICLE_CONTENTS,
         ORIGINAL_URL,
-        ARTICLE_STORE_DATE
+        ARTICLE_STORE_DATE,
+        COMPANY_NAME
         )
         VALUES
             (
@@ -20,7 +21,8 @@
             #{description},
             #{body},
             #{link},
-            sysdate
+            sysdate,
+             #{name}
             )
     </insert>
 

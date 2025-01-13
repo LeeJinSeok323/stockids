@@ -20,4 +20,6 @@ public interface StockMapper {
 
     void sell(SellDTO sellDTO);
     List<StockDTO> stockInfo();
+
+    List<ChartDTO> stockChart();
 }

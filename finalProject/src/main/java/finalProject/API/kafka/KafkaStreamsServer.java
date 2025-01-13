@@ -8,10 +8,6 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.processor.api.ContextualProcessor;
-import org.apache.kafka.streams.processor.api.ProcessorContext;
-import org.apache.kafka.streams.processor.api.Record;
-import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.Stores;
 
 import java.util.Properties;
@@ -72,40 +68,8 @@ public class KafkaStreamsServer {
                         (oldValue, newValue) -> StockStatistics.get(oldValue, newValue), // 최신 값 유지
                         Materialized.with(Serdes.String(), Serdes.String())
                 )
-                .toStream();
-
-
-        KStream<String, String> processedStream = groupedStream.process(() -> new ContextualProcessor<String, String, String, String>() {
-            private KeyValueStore<String, String> stateStore;
-            private ProcessorContext<String, String> context;
-            @Override
-            public void init(ProcessorContext<String, String> context) {
-                this.context = context;
-                // 상태 저장소 초기화
-                this.stateStore = context.getStateStore(STATE_STORE_NAME);
-            }
-
-            @Override
-            public void process(Record<String, String> record) {
-                String key = record.key();
-                String value = record.value();
-
-                // 상태 저장소에서 이전 값을 가져옴
-                String previousValue = stateStore.get(key);
-
-                // 상태 저장소 업데이트
-                stateStore.put(key, value);
-
-                // 키 값이 변경되었을 때만 전송
-                if (previousValue == null || !previousValue.equals(value)) {
-                    context.forward(record); // 변경된 값만 전송
-                }
-            }
-        }, STATE_STORE_NAME);
-
-        // 최종적으로 데이터를 OUTPUT_TOPIC으로 전송
-        processedStream.to(OUTPUT_TOPIC);
-
+                .toStream()
+                .to(OUTPUT_TOPIC);
 
 
 

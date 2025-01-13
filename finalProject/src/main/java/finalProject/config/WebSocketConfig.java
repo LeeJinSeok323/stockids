@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatMessageHandler, "api")
-                .setAllowedOrigins("172.16.99.41");
+        registry.addHandler(chatMessageHandler, "")
+                .setAllowedOrigins("http://localhost:8081");
     }
 }
