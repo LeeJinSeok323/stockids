@@ -17,4 +17,6 @@ public interface CrawMapper {
                      @Param("name") String name);
 
     public List<CrawDTO> crawList();
+    List<CrawDTO> predictionCraw();
+    List<CrawDTO> crawScore();
 }
