@@ -20,7 +20,7 @@ public class CrawDbSaveService {
     @Autowired
     AutoNumService autoNumService;
 
-    public void execute(List<CrawItem> filteredItems) {
+    public void execute(List<CrawItem> filteredItems, String query) {
         List<CrawDTO> existingItems = crawMapper.crawList();
         Set<String> existingTitles = new HashSet<>();
         for (CrawDTO dto : existingItems) {
@@ -33,7 +33,7 @@ public class CrawDbSaveService {
             }
 
             String autuNum = autoNumService.execute("article_", "ARTICLE_NUM", 9, "article");
-            crawMapper.craw(autuNum, crawItem.title, crawItem.description, crawItem.link, crawItem.body);
+            crawMapper.craw(autuNum, crawItem.title, crawItem.description, crawItem.link, crawItem.body, query);
 
             existingTitles.add(crawItem.title);
         }
