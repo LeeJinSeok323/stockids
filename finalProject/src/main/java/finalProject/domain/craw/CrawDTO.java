@@ -13,4 +13,6 @@ public class CrawDTO {
     String articleStoreDate;
     String articleContents;
     String companyName;
+    Integer articlePredictionValue;
+    String articlePredictionContents;
 }

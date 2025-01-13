@@ -30,4 +30,14 @@
         select * from article
     </select>
 
+    <select id="predictionCraw" resultType="CrawDTO">
+        select a.ARTICLE_NUM, ARTICLE_SUBJECT, ARTICLE_SUMMARY, ORIGINAL_URL, ARTICLE_STORE_DATE, ARTICLE_CONTENTS, COMPANY_NAME, ARTICLE_PREDICTION_VALUE, ARTICLE_PREDICTION_CONTENTS from article a join
+            day_article_prediction dp on dp.ARTICLE_PREDICTION_NUM = a.ARTICLE_NUM
+    </select>
+
+    <select id="crawScore" resultType="CrawDTO">
+        select COMPANY_NAME, ARTICLE_PREDICTION_VALUE from article a join
+            day_article_prediction dp on dp.ARTICLE_PREDICTION_NUM = a.ARTICLE_NUM
+    </select>
+
 </mapper>
