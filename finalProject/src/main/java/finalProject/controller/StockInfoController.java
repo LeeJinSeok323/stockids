@@ -2,6 +2,7 @@
 package finalProject.controller;
 
 
+import finalProject.domain.stock.ChartDTO;
 import finalProject.domain.stock.MyStockDTO;
 import finalProject.domain.stock.StockDTO;
 import finalProject.service.Stock.*;
@@ -29,6 +30,9 @@ public class StockInfoController {
 
     @Autowired
     StockDefaultDataService stockDefaultDataService;
+
+    @Autowired
+    StockChartDataService stockChartDataService;
 
     @GetMapping("/api/stock-info")
     public String getStockInfo(
@@ -91,6 +95,12 @@ public class StockInfoController {
     @GetMapping("/stock/default/data")
     public ResponseEntity<List<StockDTO>> getDefaultData(){
         List<StockDTO> dto = stockDefaultDataService.execute();
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/stock/chartData")
+    public ResponseEntity<List<ChartDTO>> getChartData(){
+        List<ChartDTO> dto = stockChartDataService.execute();
         return ResponseEntity.ok(dto);
     }
 }

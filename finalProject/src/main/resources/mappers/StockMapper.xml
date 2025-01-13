@@ -84,4 +84,8 @@
         select STOCK_CODE, STOCK_NAME, OPEN_PRICE, CLOSE_PRICE, LOW_PRICE, HIGH_PRICE from stock_info
     </select>
 
+    <select id="stockChart" resultType="chartDTO">
+        select DEAL_NUM, TIME_CODE, STOCK_CODE, DEAL_VOLUME, DEAL_PRICE, MAX_PRICE, MIN_PRICE, START_PRICE, TOTAL_DEAL_VOLUME from deal
+    </select>
+
 </mapper>
