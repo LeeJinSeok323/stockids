@@ -157,7 +157,7 @@
     <hr>
 
     <!-- 추천 이미지 버튼 -->
-    <div class="recommend-button">
+    <div class="recommend-button" th:if="${!isAdmin}">
         <form action="/post/postLike" method="post">
             <input type="hidden" name="postNum" th:value="${postCommand.postNum}"/>
             <button type="submit" class="recommend-btn">
@@ -177,7 +177,7 @@
             </div>
             <div class="comment-content">
                 <span th:text="${dto.commentContents}"></span>
-                <button th:if="${auth != null and auth.userId == dto.commentAuthorId}"
+                <button th:if="${auth != null and (auth.userId == dto.commentAuthorId or isAdmin)}"
                         class="delete-comment-btn"
                         th:attr="data-comment-num=${dto.commentNum}, data-post-num=${postCommand.postNum}">
                     삭제
@@ -186,7 +186,7 @@
             <hr class="comment-divider">
         </div>
     </div>
-    <div class="comment-section">
+    <div class="comment-section" th:if="${!isAdmin}">
         <form action="/comment/commentWrite" method="post">
             <input type="hidden" name="postNum" th:value="${postCommand.postNum}"/>
             <textarea id="commentContents" name="commentContents" required placeholder="댓글을 작성해주세요..."></textarea>
