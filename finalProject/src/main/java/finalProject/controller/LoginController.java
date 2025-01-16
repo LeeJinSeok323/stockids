@@ -52,8 +52,8 @@ public class LoginController {
 
     @GetMapping("logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // 세션 무효화
-        return "redirect:/"; // 로그아웃 후 메인 페이지로 이동
+        session.invalidate();
+        return "redirect:http://localhost:3000";
     }
 
     //React 로그인 부분
@@ -65,18 +65,22 @@ public class LoginController {
     @PostMapping("react/login")
     public String reactLogin(LoginCommand loginCommand, BindingResult result, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         userLoginService.execute(loginCommand, session, result);
+
         if (result.hasErrors()) {
             return "thymeleaf/react/reactLogin";
         }
+
         AuthInfoDTO authInfo = (AuthInfoDTO) session.getAttribute("auth");
         if (authInfo == null) {
             return "thymeleaf/react/reactLogin";
         }
-        if (authInfo != null) {
-            redirectAttributes.addFlashAttribute("isLoggedIn", true);
-            redirectAttributes.addFlashAttribute("isAdmin", authInfo.isAdmin());
-            return "thymeleaf/react/reactLogin";
+
+        if (authInfo.isAdmin()) {
+            return "redirect:http://localhost:8080/user1/home";
         }
+
+        redirectAttributes.addFlashAttribute("isLoggedIn", true);
+        redirectAttributes.addFlashAttribute("isAdmin", false);
         return "thymeleaf/react/reactLogin";
     }
 
