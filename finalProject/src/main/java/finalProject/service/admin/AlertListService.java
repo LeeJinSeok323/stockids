@@ -1,14 +1,13 @@
 package finalProject.service.admin;
 
-import finalProject.domain.AlertDTO;
-import finalProject.domain.MemberDTO;
-import finalProject.domain.StartEndPageDTO;
-import finalProject.domain.TitleDTO;
+import finalProject.domain.*;
+import finalProject.domain.alert.AlertMemberDTO;
 import finalProject.mapper.AlertMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +30,31 @@ public class AlertListService {
     }
 
     public List<AlertDTO> getAllAlerts() {
-        return alertMapper.getAllAlerts();}
+        return alertMapper.getAllAlerts();
+    }
+
+    public String getAlertContent(String alertNum){
+        return alertMapper.getAlertContent(alertNum);
+    }
+
+    public List<AlertMemberDTO> getAllMembers(String alertNum) {
+        List<AlertListDTO> alDTO = alertMapper.getAllAlertList(alertNum);
+        List<AlertMemberDTO> memDTO = alertMapper.getAllMembers();
+        List<AlertMemberDTO> memberDTO = new ArrayList<>();
+
+        for(AlertMemberDTO mdto : memDTO) {
+            boolean matchFound = false;
+            for(AlertListDTO dto : alDTO) {
+                if(mdto.getMemberNum().equals(dto.getMemberNum())) {
+                    matchFound = true;
+                    break;
+                }
+            }
+            if (!matchFound) {
+                memberDTO.add(mdto);
+            }
+        }
+        return memberDTO;
+    }
 
 }

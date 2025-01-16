@@ -65,7 +65,38 @@
         INSERT INTO ALERT_LIST (ALERT_NUM, MEMBER_NUM, ALERT_DATE)
         VALUES (#{alertNum}, #{memberNum}, #{alertDate})
     </insert>
-    <select id="getAllMembers" resultType="mem">
-        SELECT MEMBER_NUM, MEMBER_NAME FROM MEMBER
+    <select id="getAllMembers" resultType="alertMemberDTO">
+        SELECT
+            M.MEMBER_NUM AS memberNum,
+            M.MEMBER_NAME AS memberName,
+            NVL(A.ACCOUNT_BALANCE, 0) AS account,
+            NVL(SUM(S.COUNT_STOCK * S.AVG_STOCK), 0) AS stockAccount,
+            NVL(A.ACCOUNT_BALANCE, 0) + NVL(SUM(S.COUNT_STOCK * S.AVG_STOCK), 0) AS totalAccount
+        FROM
+            MEMBER M
+                LEFT JOIN
+            ACCOUNT A ON M.MEMBER_NUM = A.MEMBER_NUM
+                LEFT JOIN
+            cumulative_Stock S ON M.MEMBER_NUM = S.MEMBER_NUM
+        GROUP BY
+            M.MEMBER_NUM, M.MEMBER_NAME, A.ACCOUNT_BALANCE
+        ORDER BY
+            totalAccount DESC
+    </select>
+
+    <select id="getAlertList" parameterType="string" resultType="alertListDTO">
+        select ALERT_NUM, MEMBER_NUM, ALERT_DATE, ALERT_OK from alert_list where member_num = #{memberNum}
+    </select>
+
+    <select id="getAlertContent" parameterType="string" resultType="string">
+        select ALERT_CONTENTS from alert where alert_num = #{alertNum}
+    </select>
+
+    <insert id="alertSend" parameterType="alertListDTO">
+        insert into alert_list (ALERT_NUM, MEMBER_NUM, ALERT_DATE, ALERT_OK) values (#{alertNum}, #{memberNum}, sysdate, 'F')
+    </insert>
+
+    <select id="getAllAlertList" resultType="alertListDTO" parameterType="string">
+        select ALERT_NUM, MEMBER_NUM, ALERT_DATE, ALERT_OK from alert_list where alert_num = #{alertNum}
     </select>
 </mapper>
