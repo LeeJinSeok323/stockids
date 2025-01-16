@@ -6,6 +6,7 @@ import finalProject.service.login.UserLoginService;
 import finalProject.command.LoginCommand;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,22 +66,18 @@ public class LoginController {
     @PostMapping("react/login")
     public String reactLogin(LoginCommand loginCommand, BindingResult result, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         userLoginService.execute(loginCommand, session, result);
-
         if (result.hasErrors()) {
             return "thymeleaf/react/reactLogin";
         }
-
         AuthInfoDTO authInfo = (AuthInfoDTO) session.getAttribute("auth");
         if (authInfo == null) {
             return "thymeleaf/react/reactLogin";
         }
-
-        if (authInfo.isAdmin()) {
-            return "redirect:http://localhost:8080/user1/home";
+        if (authInfo != null) {
+            redirectAttributes.addFlashAttribute("isLoggedIn", true);
+            redirectAttributes.addFlashAttribute("isAdmin", authInfo.isAdmin());
+            return "thymeleaf/react/reactLogin";
         }
-
-        redirectAttributes.addFlashAttribute("isLoggedIn", true);
-        redirectAttributes.addFlashAttribute("isAdmin", false);
         return "thymeleaf/react/reactLogin";
     }
 
@@ -105,7 +102,7 @@ public class LoginController {
         if (authInfo != null) {
             model.addAttribute("isAdmin", authInfo.isAdmin());
             model.addAttribute("isLoggedIn", true);
-            return "thymeleaf/adminhome"; // 모든 로그인 사용자를 위해 adminhome.html 반환
+            return "thymeleaf/adminhome";
         } else {
             return "redirect:/login";
         }
@@ -153,5 +150,13 @@ public class LoginController {
                 model.addAttribute("isAdmin", authInfo.isAdmin());
             }
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/session/data")
+    public ResponseEntity<Boolean> fetchSessionPosition(HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        Boolean isAdmin = auth.isAdmin();
+        return ResponseEntity.ok(isAdmin);
     }
 }
