@@ -196,7 +196,8 @@
         <button th:if="${auth != null and auth.userId == postAuthorId}"
                 th:attr="onclick='location.href=\'../postUpdate?postNum=' + ${postCommand.postNum} + '\''">글 수정
         </button>
-        <button th:if="${auth != null and auth.userId == postAuthorId}" class="delete-button"
+        <button th:if="${auth != null and (auth.userId == postAuthorId or isAdmin)}" 
+                class="delete-button"
                 th:attr="onclick='location.href=\'/post/postDelete/' + ${postCommand.postNum} + '\''">글 삭제
         </button>
         <button onclick="location.href='../postList'">글목록</button>
