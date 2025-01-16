@@ -1,0 +1,105 @@
+/* 전체 폰트 및 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* 제목 스타일 */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 게시글 목록 테이블 */
+table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 테이블 셀 공통 스타일 */
+table th, table td {
+    padding: 16px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* 첫 번째 tr (헤더 행) 배경색 파란색 */
+table thead tr:first-child {
+    background-color: #007bff;
+    color:white;
+}
+
+/* 짝수 행 배경색 */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 제목 열 너비 조정 */
+table th:nth-child(3), table td:nth-child(3) {
+    width: 30%;
+    text-align: left;
+    padding-left: 16px;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* 버튼 스타일 */
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.main-content {
+    flex: 1; /* 유동적으로 공간 채움 */
+    margin-top: 60px; /* 헤더 높이만큼 여백 */
+    padding: 20px; /* 본문 내용 여백 */
+    box-sizing: border-box;
+    overflow-y: auto; /* 내용이 길 경우 스크롤 추가 */
+}
+
+header{
+    margin-top: -60px;
+    margin-left: -20px;
+}
+
+.navBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 685px;
+}
+
+.navBar ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navBar ul a {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+}

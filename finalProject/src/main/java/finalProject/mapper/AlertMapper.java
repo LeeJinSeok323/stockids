@@ -1,8 +1,10 @@
 package finalProject.mapper;
 
 import finalProject.domain.AlertDTO;
+import finalProject.domain.AlertListDTO;
 import finalProject.domain.MemberDTO;
 import finalProject.domain.StartEndPageDTO;
+import finalProject.domain.alert.AlertMemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,6 +25,12 @@ public interface AlertMapper {
     void insertAlertToAlertList(@Param("alertNum") String alertNum,
                                 @Param("memberNum") String memberNum,
                                 @Param("alertDate") Date alertDate);
-    List<MemberDTO> getAllMembers();
+    List<AlertMemberDTO> getAllMembers();
+
+    List<AlertListDTO> getAlertList(String memberNum);
+    List<AlertListDTO> getAllAlertList(String alertNum);
+    String getAlertContent(String alertNum);
+
+    void alertSend(AlertListDTO alert);
 }
 

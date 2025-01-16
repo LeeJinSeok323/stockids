@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>칭호 등록</title>
+    <title>Send Alert</title>
+    <link rel="stylesheet" href="/static/css/alertSend.css">
     <link rel="stylesheet" href="/static/css/header2.css">
-    <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
     <link rel="stylesheet" href="/static/css/title/dropDown.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/title/titleList.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -155,10 +154,9 @@
     </script>
 </head>
 <body>
-
 <header class="header">
     <div class="logo">StocKids</div>
-    <nav>
+    <nav class="navBar">
         <ul>
             <li><a href="#home">홈</a></li>
             <li th:if="${isAdmin}" id="list">관리자</li>
@@ -197,46 +195,59 @@
     <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
     <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
 </header>
-<br><br><br><br><br><br><br><br>
-<!-- 관리자 목록이 로드될 위치 -->
-<div id="contents"></div>
-<div id="title-form">
-    <h1>알림 리스트</h1>
-    <table border="1" width="800" align="center">
-        <form action="/user1/alertList" method="get">
+<div class="main-content">
+    <h1>알림 보내기</h1>
+    <form id="send-alert-form">
+        <input type="hidden" name="alertNum" th:value="${alertNum}">
+        <h1 style="text-align: center">알림 내용: [[${alertContent}]]</h1><br>
+        <table class="styled-table">
+            <thead>
             <tr>
-                <td colspan="6">
-                    알림 검색:
-                    <input type="search" name="searchWord" size="60" th:value="${searchWord}"/>
-                    <input type="submit" value="검색"/>
+                <th>회원 번호</th>
+                <th>회원 이름</th>
+                <th>보유 포인트</th>
+                <th>보유 주식 포인트</th>
+                <th>총합</th>
+                <th>선택</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dto : ${memberDTOS}">
+                <td style="text-align: left;">[[${dto.memberNum}]]</td>
+                <td style="text-align: left;">[[${dto.memberName}]]</td>
+                <td style="text-align: left;">[[${dto.account}]]</td>
+                <td style="text-align: left;">[[${dto.stockAccount}]]</td>
+                <td style="text-align: left;">[[${dto.totalAccount}]]</td>
+                <td style="text-align: center;">
+                    <input type="checkbox" name="selectedMembers" th:value="${dto.memberNum}">
                 </td>
             </tr>
-        </form>
-        <form action="alertDelete" method="post" id="frm">
-            <table>
-                <tr>
-                    <th>알림 번호</th>
-                    <th>알림 역할</th>
-                    <th>
-                        <div style="display: flex; align-items: center; justify-content: center;">
-                            <input type="checkbox" id="checkBoxs"/>
-                            <input type="submit" value="삭제"/>
-
-                        </div>
-                    </th>
-                </tr>
-                <tr th:each="dto : ${list}">
-                    <td style="text-align: center;">
-                        <a href="#" th:attr="onclick=|javascript:location.href='../user1/alert/send?alertNum=${dto.alertNum}'|")>[[${dto.alertNum}]]</a>
-                    </td>
-                    <td style="text-align: left;">[[${dto.alertContents}]]</td>
-                    <td>
-                        <input type="checkbox" name="alertDels" th:value="${dto.alertNum}"/>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </table>
+            </tbody>
+        </table>
+        <button type="submit">전송</button>
+    </form>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#send-alert-form').submit(function (event) {
+            event.preventDefault();
+
+            const formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/user1/send-alert',
+                data: formData,
+                success: function (response) {
+                    alert("알림이 성공적으로 전송되었습니다.");
+                },
+                error: function (xhr, status, error) {
+                    alert("알림 전송 중 오류가 발생했습니다.");
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
