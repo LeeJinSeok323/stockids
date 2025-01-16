@@ -9,7 +9,8 @@ public class InquireDeleteService {
     @Autowired
     InquireMapper inquireMapper;
     public void execute(String inquireNum){
-        inquireMapper.inquireDelete(inquireNum);
+        inquireMapper.deleteAnswerByInquireNum(inquireNum);  // 답변 삭제
+        inquireMapper.deleteInquireByInquireNum(inquireNum); // 문의글 삭제
     }
 
 }

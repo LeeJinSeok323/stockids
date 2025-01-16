@@ -92,9 +92,15 @@
             INQUIRE_CONTENTS = #{inquireContents}
         where INQUIRE_NUM = #{inquireNum}
     </update>
-    <delete id="inquireDelete" parameterType="string">
-    delete
-    from inquire
-    where INQUIRE_NUM = #{inquireNum}
+    <!-- 답변 삭제 -->
+    <delete id="deleteAnswerByInquireNum" parameterType="string">
+        DELETE FROM answer
+        WHERE INQUIRE_NUM = #{inquireNum}
+    </delete>
+
+    <!-- 문의글 삭제 -->
+    <delete id="deleteInquireByInquireNum" parameterType="string">
+        DELETE FROM inquire
+        WHERE INQUIRE_NUM = #{inquireNum}
     </delete>
 </mapper>

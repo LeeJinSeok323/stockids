@@ -20,5 +20,6 @@ public interface InquireMapper {
     public void insertInquire(InquireDTO inquireDTO);
     public String findAuthorldByInquireNum(String inquireNum);
     public void inquireUpdate(InquireDTO dto);
-    public void inquireDelete(String inquireNum);
+    public void deleteAnswerByInquireNum(String inquireNum);
+    public void deleteInquireByInquireNum(String inquireNum);
 }
