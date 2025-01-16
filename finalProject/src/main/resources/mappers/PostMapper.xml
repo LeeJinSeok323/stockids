@@ -74,10 +74,19 @@
         where POST_NUM = #{postNum}
     </update>
 
-    <delete id="postDelete" parameterType="string">
-        delete
-        from post
-        where POST_NUM = #{postNum}
+    <delete id="deleteCommentsByPostNum" parameterType="string">
+        DELETE FROM "COMMENT"
+        WHERE POST_NUM = #{postNum}
+    </delete>
+
+    <delete id="deletePostLikesByPostNum" parameterType="string">
+        DELETE FROM post_like
+        WHERE POST_NUM = #{postNum}
+    </delete>
+
+    <delete id="deletePostByPostNum" parameterType="string">
+        DELETE FROM post
+        WHERE POST_NUM = #{postNum}
     </delete>
 
     <update id="postViewCountUpdate" parameterType="string">

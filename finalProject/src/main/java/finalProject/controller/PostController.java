@@ -106,7 +106,6 @@ public class PostController {
                 String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
                 return "redirect:/login?message=" + message;
             } catch (UnsupportedEncodingException e) {
-                // 예외 처리
                 e.printStackTrace();
                 return "redirect:/login";
             }
