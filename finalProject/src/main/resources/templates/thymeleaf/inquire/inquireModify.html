@@ -30,6 +30,25 @@
                 });
             }
 
+            $(function () {
+                $("form").submit(function (e) {
+                    var inquireSubject = $("input[name='inquireSubject']").val();
+                    var inquireContents = $("textarea[name='inquireContents']").val();
+
+                    if (!inquireSubject || inquireSubject.trim() === "") {
+                        alert("제목을 입력해 주세요.");
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (!inquireContents || inquireContents.trim() === "") {
+                        alert("문의 내용을 작성해 주세요.");
+                        e.preventDefault();
+                        return;
+                    }
+                });
+            });
+
             $("#titleListMenu").click(function () {
                 window.location.href = "/user1/titleList";
             });
