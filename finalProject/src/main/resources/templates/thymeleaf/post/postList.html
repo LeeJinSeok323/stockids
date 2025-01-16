@@ -61,6 +61,14 @@
                 handleNavigation("home");
             });
         });
+
+        function openPopup() {
+            window.open(
+                "https://www.MyPage.com",
+                "MyPage",
+                "width=600,height=400,resizable=yes,scrollbars=yes"
+            );
+        }
     </script>
 </head>
 <body>
@@ -103,8 +111,11 @@
             <li><a href="#rank">랭킹</a></li>
         </ul>
     </nav>
-    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
-    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+    <div class="login-buttons">
+        <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
+        <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
+        <button class="login-btn" th:if="${isLoggedIn}" onclick="openPopup()">MY</button>
+    </div>
 </header>
 <div class="main-content">
     <!-- 글 작성 버튼을 최상단 우측에 위치 -->

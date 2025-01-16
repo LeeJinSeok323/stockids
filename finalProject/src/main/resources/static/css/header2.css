@@ -38,7 +38,7 @@
 
 .header .login-btn {
     padding: 5px 10px;
-    margin-right: 50px;
+    margin-right: 30px;
     border-radius: 5px;
     background-color: #007bff;
     color: #ffffff;
@@ -104,4 +104,9 @@
     body {
         padding-top: 50px; /* 모바일 화면에서 여백 조정 */
     }
+}
+
+.login-buttons {
+    display: flex;
+    gap: 0;  /* 버튼 간 간격을 0으로 설정 */
 }
