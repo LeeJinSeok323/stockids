@@ -16,7 +16,6 @@ public interface InquireMapper {
     public InquireDTO inquireSelectOne(String inquireNum);
     MemberDTO getMemberInfo(String userId);
     MemberDTO getMemberInfoByNum(String memberNum);
-    // 등록 처리 메서드 추가
     public void insertInquire(InquireDTO inquireDTO);
     public String findAuthorldByInquireNum(String inquireNum);
     public void inquireUpdate(InquireDTO dto);
