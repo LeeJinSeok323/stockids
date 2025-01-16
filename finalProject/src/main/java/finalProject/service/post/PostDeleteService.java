@@ -9,6 +9,8 @@ public class PostDeleteService {
     @Autowired
     PostMapper postMapper;
     public void execute(String postNum) {
-        postMapper.postDelete(postNum);
+        postMapper.deleteCommentsByPostNum(postNum);
+        postMapper.deletePostLikesByPostNum(postNum);
+        postMapper.deletePostByPostNum(postNum);
     }
 }

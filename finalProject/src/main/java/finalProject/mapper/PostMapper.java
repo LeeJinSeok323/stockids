@@ -14,7 +14,9 @@ public interface PostMapper {
     public int postCount();
     public PostDTO postSelectOne(String postNum);
     public void postUpdate(PostDTO dto);
-    public void postDelete(String postNum);
+    public void deleteCommentsByPostNum(String postNum);
+    public void deletePostLikesByPostNum(String postNum);
+    public void deletePostByPostNum(String postNum);
     public int postViewCountUpdate(String goodsNum);
     public String findAuthorIdByPostNum(String postNum);
 }

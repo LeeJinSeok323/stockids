@@ -39,8 +39,6 @@ AnswerDeleteService answerDeleteService;
     @GetMapping("answerDelete/{inquireNum}")
     public String answerDelete(@PathVariable("inquireNum") String inquireNum, Model model, HttpSession session){
         answerDeleteService.execute(inquireNum);
-        return "redirect:/inquire/inquireDetial/" + inquireNum;
+        return "redirect:/inquire/inquireDetail/" + inquireNum;
     }
-
-
 }

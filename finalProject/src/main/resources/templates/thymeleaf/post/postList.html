@@ -120,12 +120,10 @@
     </div>
 </header>
 <div class="main-content">
-    <!-- 글 작성 버튼을 최상단 우측에 위치 -->
     <div class="write-btn-container" style="text-align: right; margin-bottom: 20px;">
-        <a href="postWrite" class="write-btn">글 작성</a>
+        <a href="postWrite" class="write-btn" th:if="${!isAdmin}">글 작성</a>
     </div>
 
-    <!-- 게시글 목록 테이블 -->
     <table border="1" width="600" align="center">
         <tr>
             <td>번호</td>
