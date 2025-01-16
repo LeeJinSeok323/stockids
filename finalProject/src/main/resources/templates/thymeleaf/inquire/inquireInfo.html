@@ -64,7 +64,7 @@
         });
         function openPopup() {
             window.open(
-                "https://www.MyPage.com",
+                "http://localhost:3000/Mypage",
                 "MyPage",
                 "width=600,height=400,resizable=yes,scrollbars=yes"
             );
@@ -77,7 +77,7 @@
     <div class="logo">StocKids</div>
     <nav>
         <ul>
-            <li><a href="#home">홈</a></li>
+            <li th:if="${!isAdmin}"><a href="#home">홈</a></li>
             <li th:if="${isAdmin}" id="list">관리자</li>
             <li th:if="${isAdmin}" class="admin-menu">
                 칭호
@@ -93,6 +93,7 @@
                     </li>
                 </ul>
             </li>
+
             <li th:if="${isAdmin}" class="admin-menu">
                 알림
                 <ul class="dropdown-menu">
@@ -104,11 +105,12 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="#news">뉴스</a></li>
-            <li><a href="#stock">주식 골라보기</a></li>
+
+            <li th:if="${!isAdmin}"><a href="#news">뉴스</a></li>
+            <li th:if="${!isAdmin}"><a href="#stock">주식 골라보기</a></li>
             <li><a href="/post/postList">게시판</a></li>
             <li><a href="/inquire/inquireList">문의</a></li>
-            <li><a href="#rank">랭킹</a></li>
+            <li th:if="${!isAdmin}"><a href="#rank">랭킹</a></li>
         </ul>
     </nav>
     <div class="login-buttons">

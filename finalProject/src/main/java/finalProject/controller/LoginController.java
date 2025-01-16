@@ -6,6 +6,7 @@ import finalProject.service.login.UserLoginService;
 import finalProject.command.LoginCommand;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,8 +53,8 @@ public class LoginController {
 
     @GetMapping("logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // 세션 무효화
-        return "redirect:/"; // 로그아웃 후 메인 페이지로 이동
+        session.invalidate();
+        return "redirect:http://localhost:3000";
     }
 
     //React 로그인 부분
@@ -101,7 +102,7 @@ public class LoginController {
         if (authInfo != null) {
             model.addAttribute("isAdmin", authInfo.isAdmin());
             model.addAttribute("isLoggedIn", true);
-            return "thymeleaf/adminhome"; // 모든 로그인 사용자를 위해 adminhome.html 반환
+            return "thymeleaf/adminhome";
         } else {
             return "redirect:/login";
         }
@@ -149,5 +150,13 @@ public class LoginController {
                 model.addAttribute("isAdmin", authInfo.isAdmin());
             }
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/session/data")
+    public ResponseEntity<Boolean> fetchSessionPosition(HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+        Boolean isAdmin = auth.isAdmin();
+        return ResponseEntity.ok(isAdmin);
     }
 }

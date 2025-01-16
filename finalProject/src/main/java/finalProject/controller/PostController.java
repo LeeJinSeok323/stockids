@@ -39,25 +39,34 @@ public class PostController {
     @GetMapping("postList")
     public String postList(@RequestParam(value = "searchWord", required = false) String searchWord,
                            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                           Model model) {
+                           Model model, HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+
+        // isAdmin 기본값 처리
+        boolean isAdmin = (auth != null) && auth.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
+
         postListService.execute(page, searchWord, model);
         return "thymeleaf/post/postList";
     }
 
     @GetMapping("postWrite")
     public String postWrite(Model model, HttpSession session) {
-        // 세션에서 사용자 정보를 확인
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         if (auth == null) {
             try {
                 String message = URLEncoder.encode("로그인이 필요합니다.", "UTF-8");
                 return "redirect:/login?message=" + message;
             } catch (UnsupportedEncodingException e) {
-                // 예외 처리
                 e.printStackTrace();
                 return "redirect:/login";
             }
         }
+
+        // isAdmin 기본값 처리
+        boolean isAdmin = auth.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
+
         String autoNum = autoNumService.execute("post_", "post_num", 6, "post");
         PostCommand postCommand = new PostCommand();
         postCommand.setPostNum(autoNum);
@@ -73,27 +82,42 @@ public class PostController {
 
     @GetMapping("postDetail/{postNum}")
     public String postDetail(@PathVariable("postNum") String postNum, Model model, HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+
+        // isAdmin 기본값 처리
+        boolean isAdmin = (auth != null) && auth.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
+
         postDetailService.execute(model, postNum);
         commentListService.execute(model, postNum);
-        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         model.addAttribute("auth", auth);
         return "thymeleaf/post/postInfo";
     }
 
     @GetMapping("postUpdate")
-    public String postUpdate(String postNum, Model model) {
+    public String postUpdate(String postNum, Model model, HttpSession session) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+
+        boolean isAdmin = (auth != null) && auth.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
+
         postDetailService.execute(model, postNum);
         return "thymeleaf/post/postModify";
     }
 
     @PostMapping("postUpdate")
-    public String postupdate(PostCommand postCommand) {
+    public String postUpdate(PostCommand postCommand) {
         postUpdateService.execute(postCommand);
         return "redirect:postDetail/" + postCommand.getPostNum();
     }
 
     @GetMapping("postDelete/{postNum}")
-    public String postDelete(@PathVariable("postNum") String postNum) {
+    public String postDelete(@PathVariable("postNum") String postNum, HttpSession session, Model model) {
+        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+
+        boolean isAdmin = (auth != null) && auth.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
+
         postDeleteService.execute(postNum);
         return "redirect:../postList";
     }
