@@ -85,7 +85,9 @@
     </select>
 
     <select id="getAlertList" parameterType="string" resultType="alertListDTO">
-        select ALERT_NUM, MEMBER_NUM, ALERT_DATE, ALERT_OK from alert_list where member_num = #{memberNum}
+        select a.ALERT_NUM, ALERT_CONTENTS, MEMBER_NUM, ALERT_DATE, ALERT_OK from alert a
+            join alert_list al
+            on a.ALERT_NUM = al.ALERT_NUM where member_num = #{memberNum} and alert_ok = 'F'
     </select>
 
     <select id="getAlertContent" parameterType="string" resultType="string">
@@ -99,4 +101,11 @@
     <select id="getAllAlertList" resultType="alertListDTO" parameterType="string">
         select ALERT_NUM, MEMBER_NUM, ALERT_DATE, ALERT_OK from alert_list where alert_num = #{alertNum}
     </select>
+
+    <update id="alertCheck">
+        update alert_list
+        set alert_ok = 'T'
+        where alert_num = #{alertNum}
+          and member_num = #{memberNum}
+    </update>
 </mapper>
