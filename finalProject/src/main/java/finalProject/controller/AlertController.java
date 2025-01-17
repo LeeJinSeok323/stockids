@@ -6,6 +6,7 @@ import finalProject.domain.AlertListDTO;
 import finalProject.domain.MemberDTO;
 import finalProject.domain.alert.AlertMemberDTO;
 import finalProject.service.admin.*;
+import finalProject.service.alert.AlertCheckService;
 import finalProject.service.alert.AlertDataService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user1")
@@ -93,6 +95,16 @@ public class AlertController {
             @RequestParam("selectedMembers") List<String> selectedMembers) {
         alertSendService.execute(alertNum, selectedMembers);
         return ResponseEntity.ok("알림이 성공적으로 전송되었습니다.");
+    }
+
+    @Autowired
+    AlertCheckService alertCheckService;
+    @PostMapping("/alert/check")
+    @ResponseBody
+    public void checkAlert(@RequestBody Map<String, String> request, HttpSession session) {
+        String alertNum = request.get("alertNum");
+        System.out.println(alertNum);
+        alertCheckService.execute(alertNum, session);
     }
 
 }

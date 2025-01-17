@@ -32,5 +32,6 @@ public interface AlertMapper {
     String getAlertContent(String alertNum);
 
     void alertSend(AlertListDTO alert);
+    void alertCheck(@Param("memberNum") String memberNum, @Param("alertNum") String alertNum);
 }
 
