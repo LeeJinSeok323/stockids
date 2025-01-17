@@ -2,6 +2,7 @@ package finalProject.controller;
 
 import finalProject.domain.rank.RankDTO;
 import finalProject.service.rank.RankInsertService;
+import finalProject.service.rank.RankProfitService;
 import finalProject.service.rank.RankSelectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RankController {
     @Autowired
     RankSelectService rankSelectService;
 
+    @Autowired
+    RankProfitService rankProfitService;
+
 //    @GetMapping("/rank/insert")
 //    public ResponseEntity<List<RankDTO>> setRank(HttpSession session) {
 //        List<RankDTO> rankDTO = rankInsertService.execute(session);
@@ -37,5 +41,11 @@ public class RankController {
     public ResponseEntity<List<RankDTO>> rankSelect() {
         List<RankDTO> dto = rankSelectService.execute();
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/profit")
+    public ResponseEntity<Integer> profit(HttpSession session) {
+        Integer i = rankProfitService.execute(session);
+        return ResponseEntity.ok(i);
     }
 }

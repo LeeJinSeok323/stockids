@@ -9,4 +9,5 @@ import java.util.List;
 public interface RankMapper {
     Integer rankInsert();
     List<RankDTO> rankSelect();
+    Integer rankProfit(String memberNum);
 }

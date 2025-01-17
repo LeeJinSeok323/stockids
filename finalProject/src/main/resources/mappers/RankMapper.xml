@@ -32,4 +32,16 @@
         select RANK, r.MEMBER_NUM, ASSET_VALUE, NICKNAME from rank r join member m
             on m.MEMBER_NUM = r.MEMBER_NUM order by rank asc
     </select>
+
+    <select id="rankProfit" parameterType="string" resultType="integer">
+        SELECT
+            SUM(PROFIT) AS ASSET_VALUE
+        FROM
+            SELL_VIRTURE_STOCK
+        WHERE
+            TO_CHAR(VIRTUAL_DEAL_TIME, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+        GROUP BY
+            MEMBER_NUM
+        having MEMBER_NUM = #{memberNum}
+    </select>
 </mapper>
