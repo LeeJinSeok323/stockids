@@ -13,7 +13,8 @@ public interface TitleMapper {
                         @Param("columnName") String columnName,
                         @Param("sep") String sep,
                         @Param("padding") int padding);
-
+    void memberUpdateTitleNumToNull(@Param("title") String[] title);
+    void titleListDelete(@Param("title") String[] title);
     int titleInsert(TitleDTO dto);
     public List<TitleDTO> allSelect(StartEndPageDTO sepDTO);
     public int titleCount(String searchWord);
