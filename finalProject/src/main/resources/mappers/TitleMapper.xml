@@ -40,6 +40,21 @@ where rn between #{startRow} and #{endRow}
         </if>
     </where>
 </select>
+    <update id="memberUpdateTitleNumToNull" parameterType="string">
+        UPDATE MEMBER
+        SET TITLE_NUM = NULL
+        WHERE TITLE_NUM IN
+        <foreach collection="title" item="titleNum" open="(" close=")" separator=",">
+            #{titleNum}
+        </foreach>
+    </update>
+    <delete id="titleListDelete" parameterType="string">
+        DELETE FROM TITLE_LIST
+        WHERE TITLE_NUM IN
+        <foreach collection="title" item="titleNum" open="(" close=")" separator=",">
+            #{titleNum}
+        </foreach>
+    </delete>
 <delete id="titleDelete" parameterType="string">
  delete from title
   where title_num in <foreach collection="title" item="titleNum" open="(" close=")"

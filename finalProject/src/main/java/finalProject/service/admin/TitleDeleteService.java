@@ -9,7 +9,9 @@ public class TitleDeleteService {
    @Autowired
    TitleMapper titleMapper;
     public void execute(String title[]){
-      titleMapper.titleDelete(title);
+        titleMapper.memberUpdateTitleNumToNull(title);
+        titleMapper.titleListDelete(title);
+        titleMapper.titleDelete(title);
 
   }
 

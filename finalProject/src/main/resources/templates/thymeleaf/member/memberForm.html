@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>칭호 등록</title>
+    <title>회원 등록</title>
     <link rel="stylesheet" href="/static/css/header2.css">
     <link rel="stylesheet" href="/static/css/footer2.css">
     <link rel="stylesheet" href="/static/css/adminHome.css">
@@ -154,51 +154,33 @@
                 handleNavigation("home");
             });
         });
+
+        $(document).ready(function() {
+            // 제출 성공 후 리액터 창 닫기
+            $('form').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/user1/memberRegist',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // 서버에서 성공 응답이 오면 창을 닫음
+                        if (response === 'success') {
+                        } else {
+                            alert('회원등록 성공하였습니다!');
+                            window.close();
+                        }
+                    },
+                    error: function() {
+                        alert('서버 오류가 발생했습니다.');
+                    }
+                });
+            });
+        });
     </script>
 </head>
 <body>
 
-<header class="header">
-    <div class="logo">StocKids</div>
-    <nav>
-        <ul>
-            <li><a href="#home">홈</a></li>
-            <li th:if="${isAdmin}" id="list">관리자</li>
-            <li th:if="${isAdmin}" class="admin-menu">
-                칭호
-                <ul class="dropdown-menu">
-                    <li th:if="${isAdmin}" class="admin-menu" id="titleListMenu">
-                        <span class="nav-link">칭호내역</span>
-                    </li>
-                    <li th:if="${isAdmin}" class="admin-menu" id="memberListMenu">
-                        <span class="nav-link">유저칭호</span>
-                    </li>
-                    <li th:if="${isAdmin}" class="admin-menu" id="titleWriteMenu">
-                        <span class="nav-link">칭호등록</span>
-                    </li>
-                </ul>
-            </li>
-            <li th:if="${isAdmin}" class="admin-menu">
-                알림
-                <ul class="dropdown-menu">
-                    <li th:if="${isAdmin}" class="admin-menu" id="alertWriteMenu">
-                        <span class="nav-link">알림등록</span>
-                    </li>
-                    <li th:if="${isAdmin}" class="admin-menu" id="alertListMenu">
-                        <span class="nav-link">알림관리</span>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#news">뉴스</a></li>
-            <li><a href="#stock">주식 골라보기</a></li>
-            <li><a href="/post/postList">게시판</a></li>
-            <li><a href="/inquire/inquireList">문의</a></li>
-            <li><a href="#rank">랭킹</a></li>
-        </ul>
-    </nav>
-    <button class="login-btn" th:if="${!isLoggedIn}" onclick="location.href='/login';">로그인</button>
-    <button class="login-btn" th:if="${isLoggedIn}" onclick="location.href='/login/logout';">로그아웃</button>
-</header>
 <div class="main-content">
     <!-- 관리자 목록이 로드될 위치 -->
     <div id="contents"></div>
